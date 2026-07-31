@@ -1,0 +1,37 @@
+# ── Secrets und lokale Konfiguration ─────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets.yaml
+secrets.yml
+config.local.yaml
+config.local.yml
+
+# ── Laufzeit- und Datenverzeichnisse ─────────────────────────────────────────
+data/
+logs/
+*.db
+*.sqlite
+*.sqlite3
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# ── Node / Build ─────────────────────────────────────────────────────────────
+node_modules/
+dist/
+build/
+coverage/
+
+# ── Editor / OS ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
