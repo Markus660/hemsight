@@ -1,0 +1,30 @@
+name: Wunsch oder Idee / Feature request
+description: Etwas fehlt oder ginge besser. / Something is missing or could be better.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ich lese jeden Wunsch, umsetzen kann ich nicht jeden. Am meisten hilft mir, wofür
+        du es brauchst – nicht nur, wie es heißen soll.
+
+        *I read every request; I can't build them all. Telling me what you need it for
+        helps more than the feature name.*
+  - type: textarea
+    id: wish
+    attributes:
+      label: Was fehlt dir? / What's missing?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Wofür brauchst du es? / What for?
+      description: Und was machst du heute stattdessen?
+    validations:
+      required: true
+  - type: input
+    id: hardware
+    attributes:
+      label: Um welche Geräte geht es? / Which devices?
+      description: Marke und Modell, falls es an einem Gerät hängt.

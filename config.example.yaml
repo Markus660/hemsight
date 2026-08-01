@@ -1,0 +1,1235 @@
+# =====================================================================================
+# HEMSight - every setting at a glance, for looking things up.
+#
+# Each setting is listed with what it means and an example value. The values are
+# placeholders and don't describe a real home.
+#
+# This file is not loaded; changing it does nothing. HEMSight manages its own
+# configuration: the guided setup writes it to data/config.yaml (with the Home
+# Assistant app /data/config.yaml), passwords and tokens encrypted into the
+# secrets.yaml next to it.
+#
+# The role names are fixed: wallbox, battery, grid_meter, pv, vehicle,
+# dishwasher, washing_machine, dhw, flexible_load, heatpump.
+# =====================================================================================
+
+site_timezone: UTC
+mode_default: live
+
+limits:
+  # Continuous inverter output on the AC side.
+  inverter_ac_cap_w: 4800
+  aux_pv_inverter_max_w: 0     # 0 = no second inverter and no microinverter
+  grid_export_max_w: 0         # 0 = no export; the setup asks for this with solar and battery
+  battery_min_soc_percent: 5
+  battery_max_soc_percent: 100
+  battery_max_charge_w: 4800
+  battery_max_discharge_w: 4800
+  optimizer_step_minutes: 15
+  live_replan_minutes: 5
+  actuator_watchdog_seconds: 60
+
+forecast:
+  horizon_hours: 72
+  pv_source_policy: custom_preferred
+  custom_pv_forecast:
+    today_profile_entity:
+    tomorrow_profile_entity:
+    day_after_tomorrow_profile_entity:
+    day3_profile_entity:
+    today_energy_entity:
+    tomorrow_energy_entity:
+    day_after_tomorrow_energy_entity:
+    day3_energy_entity:
+    blend_enabled: true
+    blend_energy_weight: 0.4
+    blend_divergence_threshold: 0.25
+    blend_max_day_offset: 1
+    # Shading/horizon (optional, default 0 = off): damps the external PV forecast
+    # at the edges of the day when morning or evening sun is blocked by trees,
+    # buildings or the horizon. 0.0 = no damping, 1.0 = maximum.
+    # damping_morning acts towards sunrise, damping_evening towards the evening
+    # (local time). Example: heavy evening shading -> damping_evening: 0.7
+    damping_morning: 0.0
+    damping_evening: 0.0
+    # Model 2 (optional, default empty = off): shading windows by local clock time -
+    # a sharp cutoff instead of linear damping. For hard horizon or tree edges (say
+    # evening sun disappearing behind trees from 19:00). Morning: 0 before
+    # morning_shading_from_hour, linear up to full at morning_shading_to_hour. Evening:
+    # full until evening_shading_from_hour, linear down to 0 at evening_shading_to_hour.
+    # Example for evening trees: evening_shading_from_hour: 18, evening_shading_to_hour: 21
+    morning_shading_from_hour:
+    morning_shading_to_hour:
+    evening_shading_from_hour:
+    evening_shading_to_hour:
+  hemsight_native_pv:
+    location_source: ha_home
+    openmeteo_base_url: https://api.open-meteo.com
+    model: pvlib_pvwatts
+    yield_calibration_mode: auto
+    yield_calibration: 1.0
+    arrays:
+      - {name: pv_south, module_power_w: 5000, tilt_deg: 30, azimuth_deg: 180, derate_factor: 0.85}
+      - {name: pv_east, module_power_w: 2500, tilt_deg: 30, azimuth_deg: 90, derate_factor: 0.85}
+      - {name: pv_west, module_power_w: 2500, tilt_deg: 30, azimuth_deg: 270, derate_factor: 0.85}
+  # PV clipping reserve and storage strategy. Example values, off by default.
+  # Turn it on when the system is AC/DC oversized or export-limited and HEMSight
+  # should deliberately keep battery room free ahead of a clipping window
+  # (say a 12 kW AC inverter with 15 kWp DC and a DC-coupled battery).
+  # Note: the reserve only uses export where export is allowed — zero export via
+  # limits.grid_export_max_w: 0 is respected (nothing is forced out).
+  clipping:
+    enabled: false
+    inverter_ac_limit_w:        # AC output limit of the inverter (W); empty = limits.inverter_ac_cap_w
+    feed_in_limit_w:            # Grid export limit (W); empty = limits.grid_export_max_w
+    reserve_strategy: auto      # off | auto
+    reserve_lead_hours: 6.0     # how many hours before the clipping window to build up reserve
+    reserve_cost_eur_per_kwh: 0.05  # soft weighting of the reserve (not a hard constraint)
+    risk_min_today_wh: 500      # expected daily clipping amount above which "risk" is reported
+  day_after_tomorrow_planning_weight: 0.5
+  pv_nowcast_enabled: true
+  pv_nowcast_horizon_minutes: 120
+  pv_nowcast_initial_weight: 0.7
+  load_nowcast_enabled: true
+  load_nowcast_horizon_minutes: 45
+  load_nowcast_initial_weight: 0.5
+
+price:
+  source_mode: fixed_price
+  provider: generic_http_json
+  epex_url: ""
+  epex_country: ""   # empty = derived from the location; an entry here wins
+  market_fallback_enabled: false
+  provider_price_basis: final_import_price
+  market_fallback_price_basis: market_price_only
+  market_price_multiplier: 1.0
+  market_price_addition_ct_per_kwh: 0.0
+  fixed_price_ct_per_kwh: 30.0
+  time_of_use_default_price_ct_per_kwh: 30.0
+  time_of_use_periods:
+    - name: off_peak
+      start: "22:00"
+      end: "06:00"
+      price_ct_per_kwh: 24.0
+      weekdays: [0, 1, 2, 3, 4, 5, 6]
+    - name: peak
+      start: "06:00"
+      end: "22:00"
+      price_ct_per_kwh: 34.0
+      weekdays: [0, 1, 2, 3, 4]
+  tax_percent: 0   # depends on the country; the setup prefills it from the country you pick
+  current_price_entity: sensor.energy_price_current
+  octopus_product_code: ""
+  octopus_tariff_code: ""
+  octopus_value_scale_to_eur_per_kwh: 0.01
+  awattar_url: https://api.awattar.de/v1/marketdata
+  generic_price_url: ""
+  generic_price_results_path: prices
+  generic_price_start_key: startsAt
+  generic_price_end_key: ""
+  generic_price_value_key: total
+  generic_price_value_unit: ct_per_kwh
+  # Authenticated HTTP adapter for providers with a developer or licence portal
+  # (Ostrom, EEX/EPEX DataSource or other provider feeds, for instance).
+  # Credentials are entered during setup; HEMSight stores them encrypted in
+  # data/secrets.yaml. They are therefore neither here nor in the .env.
+  # provider_http_auth_mode picks the source: the *_direct modes use the values
+  # stored by the setup, the *_env modes the environment variable named below
+  # (legacy). ENTSO-E has no switch — a stored token wins, otherwise the
+  # environment variable applies.
+  provider_http_url: ""
+  provider_http_results_path: prices
+  provider_http_start_key: startsAt
+  provider_http_end_key: ""
+  provider_http_value_key: total
+  provider_http_value_unit: ct_per_kwh
+  provider_http_start_param: ""
+  provider_http_end_param: ""
+  provider_http_time_format: iso_utc
+  provider_http_auth_mode: none
+  provider_http_token_env: ""
+  provider_http_username_env: ""
+  provider_http_password_env: ""
+  provider_http_auth_header: Authorization
+  provider_http_api_key_query_param: api_key
+  entsoe_api_url: https://web-api.tp.entsoe.eu/api
+  entsoe_security_token_env: ENTSOE_SECURITY_TOKEN
+  entsoe_bidding_zone: ""   # empty = derived from the location; an entry here wins
+
+# §14a EnWG — reduced grid fees and dimming of controllable loads (Germany).
+# Off by default: enabled: false → completely inactive, nothing changes for you.
+# No real tariff, grid operator or location data in this template file.
+section_14a:
+  enabled: false
+  # module: none | module_1 | module_2 | module_3
+  # none      → no §14a module active
+  # module_1  → annual flat credit (module_1_annual_credit_eur)
+  # module_2  → percentage grid fee discount during off-peak hours (module_2_percent_off)
+  # module_3  → time-variable grid fees (grid_fee_periods required)
+  module: none
+  module_1_annual_credit_eur: 0.0
+  module_2_percent_off: 0.0
+  grid_fee_default_ct_per_kwh: 0.0
+  # Time windows for module 3 (only relevant with module: module_3).
+  # Example (commented out, for orientation only):
+  # grid_fee_periods:
+  #   - name: HT                     # peak, as your grid operator calls it
+  #     start: "06:00"
+  #     end: "22:00"
+  #     weekdays: [0, 1, 2, 3, 4]
+  #     ct_per_kwh: 7.5
+  #   - name: NT                     # off-peak
+  #     start: "22:00"
+  #     end: "06:00"
+  #     weekdays: [0, 1, 2, 3, 4, 5, 6]
+  #     ct_per_kwh: 3.0
+  grid_fee_periods: []
+  dimming_enabled: false
+  # dimming_signal: source of the dimming command (HA entity or integration).
+  # Only relevant with dimming_enabled: true.
+  # Example with an HA entity:
+  #   dimming_signal:
+  #     source: ha
+  #     entity_map:
+  #       dimming_state: binary_sensor.grid_control_signal
+  # Example with a direct integration:
+  #   dimming_signal:
+  #     source: integration:my_grid_provider
+  dimming_signal: null
+  dimming_active_value: "on"
+  default_dimmed_power_w: 4200.0
+
+storage:
+  backend: sqlite
+  sqlite_path: data/hemsight.sqlite3
+  database_url: ""
+  history_retention_enabled: true
+  plan_history_retention_days: 30
+  live_history_retention_days: 31
+  # Execution and readback history is for troubleshooting, not the 30-day view -> 7 days.
+  execution_history_retention_days: 7
+  # Only read for the 24h accuracy evaluation, no ML training input -> 35 instead of 180.
+  forecast_snapshot_retention_days: 35
+  forecast_snapshot_sample_interval_minutes: 60
+  forecast_snapshot_max_horizon_hours: 24
+  # Price revisions are audit history (the display reads tariff_price_slots_current) -> 14 days.
+  tariff_revision_retention_days: 14
+  # Past slots from tariff_price_slots_current (upserted by slot_start, so old slots
+  # would otherwise stay forever) -> 14 days of past slots.
+  tariff_current_retention_days: 14
+  # Audit log (configuration and control actions); previously unbounded.
+  audit_retention_days: 90
+
+storage_dispatch:
+  mode: priority_order
+  main_storage_key: null
+
+# Storage units are described generically — one device OR a cluster of identical
+# devices per entry. The capability fields apply to every manufacturer; Anker/Solarbank
+# is only an example. Grid charge mode per device:
+#   full_power_only : grid charging is binary, 0 W OR max_charge_w (e.g. Anker Solarbank
+#                     2 AC / SB3 / PowerDock — no partial-power grid charging).
+#   continuous      : freely adjustable grid charge setpoint, 0..max_charge_w.
+#   discrete        : fixed steps only (grid_charge_power_levels_w), e.g. [1000, 2400, 4800].
+# manual_control describes the manual power control of the integration:
+#   setpoint (watt setpoint) | toggle (on/off only) | none (no manual control).
+storage_units:
+  battery_main:
+    name: Battery Main
+    role: battery
+    # Optional generic model tag (free text). Examples: anker_solarbank_2_ac,
+    # anker_sb3, anker_powerdock, generic. Documentation and UI only, no control logic.
+    device_model: generic
+    topology: single          # single | clustered (several identical devices acting as one)
+    manual_control: setpoint  # setpoint | toggle | none
+    source:
+      source: ha
+      entity_map:
+        capacity_wh: sensor.battery_capacity_wh
+        soc_percent: sensor.battery_soc_percent
+        power_signed_w: sensor.battery_power_signed_w
+    coupling: ac
+    enabled: true
+    controllable: false
+    priority: 10
+    ac_cap_w: 4800
+    capacity_wh_entity: sensor.battery_capacity_wh
+    soc_percent_entity: sensor.battery_soc_percent
+    power_signed_w_entity: sensor.battery_power_signed_w
+    max_charge_w: 4800
+    max_discharge_w: 4800
+    min_soc_percent: 5
+    max_soc_percent: 100
+    charge_efficiency: 0.95
+    discharge_efficiency: 0.95
+    grid_charge_enabled: true
+    grid_charge_mode: full_power_only  # full_power_only | continuous | discrete
+    grid_charge_power_levels_w: [4800]
+    battery_to_grid_enabled: false
+    battery_to_grid_max_w: 0
+    control_integration_key: null
+    control_target: {}
+
+# Pure PV inverters WITHOUT their own battery (balcony or microinverters, for example). They
+# add AC power to the wallbox budget; the PV YIELD is already in the PV forecast, so it isn't
+# counted twice. Optionally tied to a storage_units key (storage_unit_key + coupling dc|ac).
+pv_inverters:
+  balcony:
+    name: Balkon-Wechselrichter
+    ac_cap_w: 800                 # maximum AC output (W), must be greater than 0
+    power_w_entity: sensor.balcony_inverter_power_w  # HA sensor for the current AC power (W); empty = counts as 0 W
+    enabled: true
+    kwp: 0.8                      # optional, informational only (NOT part of the forecast)
+    # Is the LIVE power already part of the bound main PV sensor (entities.pv.total_power_w)?
+    # false (default) = separate submeter -> added to the PV total. true = the main sensor
+    # measures the whole system including this inverter -> do NOT add it again (double counting).
+    power_in_pv_total: false
+    storage_unit_key: null        # optional: key from storage_units this inverter is coupled to
+    coupling: null                # dc|ac (only allowed when storage_unit_key is set)
+
+deferrable_loads:
+  dishwasher:
+    name: Dishwasher
+    role: dishwasher
+    type_key: home_connect_dishwasher
+    source:
+      source: ha
+      entity_map:
+        power: sensor.dishwasher_power_w
+        prepared: input_boolean.dishwasher_prepared
+        running: input_boolean.dishwasher_running
+        starting: input_boolean.dishwasher_starting
+        planned_time: input_datetime.dishwasher_planned_time
+        deadline: input_datetime.dishwasher_deadline
+    execution_adapter: home_connect_direct
+    capabilities: [prepared_helper, planned_time_helper, home_connect_direct_start, direct_watchdog]
+    prepared_source: home_connect_direct
+    entity_map:
+      prepared: input_boolean.dishwasher_prepared
+      running: input_boolean.dishwasher_running
+      starting: input_boolean.dishwasher_starting
+      planned_time: input_datetime.dishwasher_planned_time
+      deadline: input_datetime.dishwasher_deadline
+      start_automation: automation.dishwasher_start_from_hemsight
+      start_script: script.dishwasher_start
+    running_detection:
+      source: home_connect_direct
+      power_threshold_w: 5
+      lock_entity: input_boolean.dishwasher_running
+    finish_detection:
+      source: home_connect_direct
+      power_fallback: true
+    power_entity: sensor.dishwasher_power_w
+    prepared_entity: input_boolean.dishwasher_prepared
+    running_entity: input_boolean.dishwasher_running
+    starting_entity: input_boolean.dishwasher_starting
+    planned_time_entity: input_datetime.dishwasher_planned_time
+    deadline_entity: input_datetime.dishwasher_deadline
+    nominal_power_w: 1000
+    energy_wh: 1000
+    min_runtime_minutes: 60
+    max_runtime_minutes: 240
+    fallback_runtime_minutes: 180
+    running_power_threshold_w: 5
+    profile_active_threshold_w: 5
+    allowed_windows: []
+    deadline: "23:59"
+    deadline_after_prepared_hours: 24
+    restart_policy: no_restart_without_manual_reset
+    non_interruptible: true
+  washing_machine:
+    name: Washing Machine
+    role: washing_machine
+    type_key: home_connect_washing_machine
+    source:
+      source: ha
+      entity_map:
+        power: sensor.washing_machine_power_w
+        prepared: input_boolean.washing_machine_prepared
+        running: input_boolean.washing_machine_running
+        starting: input_boolean.washing_machine_starting
+        planned_time: input_datetime.washing_machine_planned_time
+    execution_adapter: home_connect_direct
+    capabilities: [prepared_helper, planned_time_helper, home_connect_direct_start, direct_watchdog]
+    prepared_source: home_connect_direct
+    entity_map:
+      prepared: input_boolean.washing_machine_prepared
+      running: input_boolean.washing_machine_running
+      starting: input_boolean.washing_machine_starting
+      planned_time: input_datetime.washing_machine_planned_time
+      start_automation: automation.washing_machine_start_from_hemsight
+    running_detection:
+      source: home_connect_direct
+      power_threshold_w: 10
+      lock_entity: input_boolean.washing_machine_running
+    finish_detection:
+      source: home_connect_direct
+      power_fallback: true
+    power_entity: sensor.washing_machine_power_w
+    prepared_entity: input_boolean.washing_machine_prepared
+    running_entity: input_boolean.washing_machine_running
+    starting_entity: input_boolean.washing_machine_starting
+    planned_time_entity: input_datetime.washing_machine_planned_time
+    nominal_power_w: 1000
+    energy_wh: 1000
+    min_runtime_minutes: 60
+    max_runtime_minutes: 240
+    fallback_runtime_minutes: 180
+    running_power_threshold_w: 10
+    profile_active_threshold_w: 10
+    allowed_windows:
+      - start: "08:00"
+        end: "20:00"
+    deadline: "20:00"
+    restart_policy: no_restart_without_manual_reset
+    non_interruptible: true
+  dhw:
+    name: Domestic Hot Water
+    role: dhw
+    type_key: domestic_hot_water
+    source:
+      source: ha
+      entity_map:
+        power: sensor.dhw_power_w
+        switch: switch.dhw
+        prepared: input_boolean.dhw_prepared
+        running: input_boolean.dhw_running
+        done_today: input_boolean.dhw_done_today
+    execution_adapter: shelly_rpc_switch
+    capabilities: [switch_control, daily_must_run, ha_done_lock]
+    prepared_source: daily_required_or_ha_helper
+    entity_map:
+      switch: switch.dhw
+      prepared: input_boolean.dhw_prepared
+      running: input_boolean.dhw_running
+      done_today: input_boolean.dhw_done_today
+      real_start: input_datetime.dhw_real_start
+    running_detection:
+      source: power_and_ha_lock
+      power_threshold_w: 5
+    finish_detection:
+      source: ha_done_lock_and_power
+    power_entity: sensor.dhw_power_w
+    switch_entity: switch.dhw
+    prepared_entity: input_boolean.dhw_prepared
+    running_entity: input_boolean.dhw_running
+    real_start_entity: input_datetime.dhw_real_start
+    done_entity: input_boolean.dhw_done_today
+    nominal_power_w: 1500
+    energy_wh: 1500
+    min_runtime_minutes: 60
+    max_runtime_minutes: 240
+    fallback_runtime_minutes: 120
+    running_power_threshold_w: 5
+    profile_active_threshold_w: 5
+    allowed_windows:
+      - start: "01:00"
+        end: "23:00"
+    deadline: "23:00"
+    must_run_daily: true
+    restart_policy: no_restart_without_manual_reset
+    non_interruptible: true
+  # Example for the runtime, availability and weather rules.
+  # Unlike a dishwasher or a washing machine, a pool pump is not a program device:
+  # it doesn't run a fixed program through, it needs to reach a runtime per day --
+  # spread over several blocks, each in the cheapest window available.
+  pool_pump:
+    name: Pool Pump
+    role: flexible_load
+    type_key: pool_pump
+    switch_entity: switch.pool_pump
+    power_entity: sensor.pool_pump_power_w
+    nominal_power_w: 800
+    # Energy of a single block (800 W * 4.5 h), not of the whole day.
+    energy_wh: 3600
+    min_runtime_minutes: 60
+    max_runtime_minutes: 300
+    fallback_runtime_minutes: 270
+    running_power_threshold_w: 20
+    # false = the load is skipped entirely (plan, live control, UI).
+    enabled: true
+    schedule:
+      # single         = one run per day (default)
+      # fixed_blocks   = runs_per_day blocks of block_minutes each
+      # daily_budget   = daily_runtime_minutes spread freely over up to runs_per_day blocks
+      # per_window     = one run per time window, using that window's runtime_minutes
+      mode: fixed_blocks
+      runs_per_day: 2
+      block_minutes: 270
+      # Minimum pause between two blocks -- keeps the solver from merging them into
+      # one long run.
+      min_gap_minutes: 120
+    availability:
+      # Season as "MM-DD"; may cross the turn of the year (e.g. 11-01 to 03-31).
+      # Outside the season HEMSight doesn't schedule the load at all.
+      season_start: "04-01"
+      season_end: "09-30"
+      # 0 = Monday ... 6 = Sunday
+      weekdays: [0, 1, 2, 3, 4, 5, 6]
+    # Weather rules use the forecast (for the plan) and live readings (for control).
+    # effect: block = the run is dropped | scale_runtime = runtime is multiplied by factor
+    weather_rules:
+      - metric: precipitation_mm
+        op: ">="
+        value: 2.0
+        effect: block
+      - metric: temperature_c
+        op: "<"
+        value: 15.0
+        effect: scale_runtime
+        factor: 0.5
+    allowed_windows:
+      - start: "06:00"
+        end: "22:00"
+    restart_policy: allow_restart
+    non_interruptible: false
+
+negative_price_opportunity_loads: {}
+
+# Thermal layer (heat pump, hot water, or a radiator/TRV thermostat head).
+# The example is disabled (enabled: false) -> template only. control_mode:
+#   monitor_only = observe and plan only (default, no climate writes)
+#   setpoint     = absolute target temperature via climate.set_temperature
+#   trv          = radiator/TRV via TPI boost (setpoint = target + duty * boost_c)
+# Live writes additionally need an explicit actor release plus readback.
+thermal_loads:
+  living_room_trv:
+    name: Wohnzimmer Heizkoerper
+    # A TRV/radiator thermostat is NOT a heat pump -> role "thermostat" (no watts involved).
+    role: thermostat
+    enabled: false
+    control_mode: trv
+    sense: heat
+    indoor_temperature_entity: sensor.living_room_temperature
+    outdoor_temperature_entity: sensor.outdoor_temperature
+    climate_entity: climate.living_room_trv
+    power_entity: sensor.living_room_heating_power
+    presence_entity: binary_sensor.living_room_presence
+    nominal_power_w: 1200
+    max_power_w: 1500
+    comfort_min_c: 19.0
+    comfort_max_c: 23.0
+    target_c: 21.0
+    preferred_min_c: 20.0
+    preferred_max_c: 21.5
+    heating_rate_c_per_hour: 0.6
+    cooling_constant_per_hour_per_c: 0.04
+    cop_model: fixed
+    cop_nominal: 1.0
+    temperature_tolerance_c: 0.3
+    # Phase A: TRV/TPI boost. setpoint = target_c + duty * trv_setpoint_boost_c,
+    # clamped to [comfort_min_c, comfort_max_c + boost], rounded to trv_setpoint_step_c.
+    trv_setpoint_boost_c: 8.0
+    trv_setpoint_step_c: 0.5
+    # Phase C: solar gain (0 = off) and presence setback (0 = off).
+    solar_gain_max_c_per_hour: 0.0
+    presence_setback_c: 0.0
+    # Phase B: building parameters learned from HA history (off by default).
+    learning:
+      enabled: false
+      apply_to_solver: false
+      history_days: 14
+      refresh_hours: 6.0
+      min_cycles_for_estimate: 5
+      min_cycles_for_learned: 50
+      ema_alpha: 0.2
+      heating_power_threshold_w: 50.0
+
+  # Air-to-air heat pump or air conditioner (heats and cools), role="climate". Kept separate from
+  # classic heating, because there is no hydronic flow. Two equivalent control paths: through a
+  # climate.* entity in Home Assistant (shown here) or through the manufacturer's own adapter
+  # (control_kind: integration + control_integration_key).
+  bedroom_ac:
+    name: Schlafzimmer Klima
+    role: climate
+    enabled: false
+    control_mode: setpoint          # setpoint = set target temperature and mode; monitor_only = observe only
+    control_kind: ha                # ha | integration (native brand adapter)
+    control_integration_key: null   # with control_kind: integration e.g. daikin_airair / lg_thinq_airair / midea_airair
+    sense: heat                     # Starting mode; with climate_mode_control: auto it is resolved automatically
+    climate_entity: climate.bedroom_ac
+    indoor_temperature_entity: sensor.bedroom_temperature
+    outdoor_temperature_entity: sensor.outdoor_temperature
+    weather_entity: weather.home
+    power_entity: sensor.bedroom_ac_power
+    nominal_power_w: 2000
+    max_power_w: 3500
+    # Separate comfort bands for heating and cooling. The band is never left.
+    comfort_min_c: 19.0
+    comfort_max_c: 23.0
+    target_c: 21.0
+    comfort_min_cool_c: 23.0
+    comfort_max_cool_c: 27.0
+    target_cool_c: 24.0
+    # Hybrid mode switching: auto = by heating limit temperature against the outdoor forecast,
+    # with hysteresis and a minimum hold time; manual = you or HA switch heating and cooling.
+    climate_mode_control: auto      # auto | manual
+    climate_mode_balance_point_c: 18.0
+    climate_mode_hysteresis_c: 1.5
+    climate_mode_min_hold_hours: 12.0
+    # Temperature-dependent efficiency (cooling is not heating): Carnot with the cooling target as
+    # the cold side; carnot_efficiency_cool is lower than heating (real air-to-air cooling ~15-25 %).
+    cop_model: carnot
+    cop_nominal: 3.5
+    cop_nominal_cool: 3.0
+    carnot_efficiency: 0.40
+    carnot_efficiency_cool: 0.20
+    min_cycle_minutes: 5
+
+solver:
+  enabled: true
+  # The only solver (OR-Tools MPSolver/SCIP). Old values (hybrid, ortools_cpsat) are
+  # silently mapped onto this one while loading.
+  backend: ortools_mpsolver
+  time_limit_seconds: 180
+  num_threads: 0
+  solver_log_search_progress: false
+  random_seed: 42
+  quality_max_relative_gap: 0.02
+  quality_degrade_on_time_limit: false
+  allow_grid_charging: true
+  grid_charge_mode: full_power_only  # full_power_only | continuous | discrete
+  grid_charge_power_levels_w: [4800]
+  min_grid_charge_price_advantage_eur_per_kwh: 0.08
+  positive_grid_charge_price_horizon_hours: 48.0
+  positive_grid_charge_price_horizon_days: 2
+  positive_grid_arbitrage_max_price_quantile: 0.35
+  negative_price_predischarge_enabled: true
+  negative_price_horizon_hours: 24.0
+  negative_price_threshold_eur_per_kwh: 0.0
+  negative_price_min_window_minutes: 15
+  negative_price_predischarge_reserve_soc_percent: 5
+  negative_price_predischarge_shortfall_cost_eur_per_kwh: 1.0
+  negative_price_opportunity_loads_enabled: true
+  battery_to_grid_enabled: false
+  battery_to_grid_max_w: 0
+  battery_to_grid_modes: []
+  battery_to_grid_export_penalty_eur_per_kwh: 0.20
+  battery_cycle_cost_eur_per_kwh: 0.03
+  action_change_cost_eur_per_kw: 0.002
+  import_peak_cost_eur_per_kw: 0.01
+  feed_in_tariff_eur_per_kwh: 0.0786
+  inverter_stress_cost_eur_per_kwh: 0.01
+  defload_comfort_cost_eur_per_hour: 0.01
+  defload_deadline_cost_eur_per_hour: 0.03
+  defload_plan_stability_eur_per_kwh: 0.02
+  ev_deadline_cost_eur_per_kwh: 0.5
+  reserve_soc_percent: 5
+  reserve_shortfall_cost_eur_per_kwh: 1.0
+  forecast_risk_cost_eur_per_kwh: 0.02
+  pv_curtailment_cost_eur_per_kwh: 0.02
+  future_pv_grid_charge_penalty_eur_per_kwh: 0.05
+  # Prefer to place flexible loads in slots where PV would otherwise be curtailed by the
+  # export limit ("give away as little as possible"). Always active, 0 = off.
+  pv_curtail_load_shift_bonus_eur_per_kwh: 0.10
+  # PV self-consumption bonus: pulls flexible loads into slots with real PV surplus
+  # (direct PV before battery or grid), so a sticky previous plan doesn't keep them at night.
+  # An active clipping reserve takes precedence. 0 = off, default 0.05.
+  pv_self_consumption_bonus_eur_per_kwh: 0.05
+  thermal_comfort_violation_cost_eur_per_c_hour: 10.0
+  thermal_preferred_deviation_cost_eur_per_c_hour: 0.08
+  thermal_cycle_cost_eur_per_start: 0.02
+  full_soc_threshold_factor: 0.0002
+  pv_export_penalty_margin_eur_per_kwh: 0.01
+  ev_min_soc_penalty_factor: 5.0
+  ev_overfill_penalty_factor: 2.0
+  time_limit_min_seconds: 45
+  time_limit_max_seconds: 180
+  time_limit_per_defload_seconds: 5
+  time_limit_ev_active_seconds: 15
+  scip_parameters: ""
+
+load_ml:
+  enabled: true
+  minimum_history_days: 14
+  history_days: 90
+  training_window_candidates_days: [14, 21, 28, 45, 60, 90]
+  recency_decay_alpha: 4.5
+  structure_break_detection_enabled: true
+  structure_break_recent_days: 7
+  structure_break_reference_days: 45
+  structure_break_min_delta_w: 120
+  structure_break_min_ratio: 0.10
+  structure_break_old_weight_factor: 0.25
+  bias_calibration_days: 7
+  model_candidates: [sklearn_hgb, lightgbm, catboost, xgboost]
+  model_switch_min_mae_improvement_ratio: 0.05
+  model_switch_min_p90_improvement_ratio: 0.05
+  quantiles_enabled: true
+  weather_forecast_enabled: true
+  # Shared weather and outdoor temperature source, for load forecasting AND the thermal model.
+  #   ha              -> Home Assistant weather.* entity (weather_entities).
+  #   hemsight_native -> HEMSight's own Open-Meteo forecast (no HA needed). Also used as the
+  #                      automatic fallback when the HA source delivers nothing.
+  weather_forecast_source: ha
+  weather_entities: [weather.forecast_home]
+  weather_forecast_type: hourly
+  # Cap the native weather forecast to the planning horizon (1..16 days).
+  weather_forecast_max_days: 3
+  base_load_entity: sensor.home_base_load_power_w
+  retrain_interval_hours: 24
+  model_artifact_path: data/models/load_ml_latest.json
+  auto_decomposition_enabled: true
+  subtract_ev_loads: true
+  subtract_deferrable_loads: true
+  subtract_monitored_loads: true
+  defload_model_min_sessions: 3
+  drift_detection_enabled: true
+  drift_min_samples: 48
+  drift_reference_window_samples: 96
+  drift_recent_window_samples: 24
+  drift_min_delta_w: 250
+  model_version_retention: 5
+  calendar_events_enabled: false
+  # Schedulable MEASURED loads. Any roughly plannable load (PC, server, workshop machine, an
+  # oven running at a fixed time) is one scheduled_loads entry.
+  # The WATTS are LEARNED from your own measurement (measured_load_key) per (class, hour); the
+  # CLASS comes from an optional calendar (shift names) or from internal windows. Old pc_*
+  # configurations are migrated into a "pc" entry automatically on boot. Examples:
+  #   scheduled_loads:
+  #     pc:                              # PC following a shift calendar
+  #       name: PC
+  #       measured_load_key: monitored_pc_w
+  #       subtract_from_base: true       # subtract from the ML baseline, add back via the profile
+  #       calendar_entity: calendar.family
+  #       shift_day_summaries: [Day shift]
+  #       shift_night_summaries: [Night shift]
+  #     workshop:                        # workshop machine, recurring window Mon-Fri 8-16
+  #       name: Workshop
+  #       measured_load_key: monitored_workshop_w
+  #       subtract_from_base: true
+  #       windows:
+  #         - weekdays: [0,1,2,3,4]
+  #           start: "08:00"
+  #           end: "16:00"
+  scheduled_loads: {}
+  minor_fallback_ratio_ok: 0.05
+  temperature:
+    enabled: true
+    primary_entity: sensor.outdoor_temperature
+    fallback_entity: sensor.outdoor_temperature_fallback
+    max_age_seconds: 1800
+
+ev_context:
+  enabled: true
+  wallbox_name: Wallbox
+  car_connected_entity: binary_sensor.wallbox_car_connected
+  ampere_entity: number.wallbox_ampere
+  phase_mode_entity: select.wallbox_phase_mode
+  force_state_entity: select.wallbox_force_state
+
+ev_planning:
+  enabled: true
+  read_only: true
+  default_vehicle_key: vehicle_1
+  unknown_vehicle_capacity_wh: 75000
+  unknown_vehicle_target_soc_percent: 80
+  price_charging_enabled: false
+  max_price_eur_per_kwh: 0.30
+  departure_pressure_hours: 8
+  preisladen_departure_fill_hours: 72
+  solver_horizon_hours: 72
+  far_departure_extreme_price_eur_per_kwh: 0.10
+  battery_min_soc_for_pv_percent: 70
+  battery_min_soc_for_price_percent: 30
+  cap_enabled: true
+  cap_soc_hi_percent: 85
+  cap_soc_lo_percent: 70
+  cap_soc_entity: input_boolean.battery_pv_cap_enabled
+  nightshift_enabled: false
+  nightshift_auto: false
+  nightshift_window_start_h: 22
+  nightshift_window_end_h: 5
+  nightshift_pv_kwh_threshold: 20.0
+  nightshift_min_batt_soc: 85.0
+  prevent_battery_discharge_for_price: true
+  pv_buffer_w: 250
+  grid_import_limit_w: 11000
+  manual_hold_entity: input_boolean.wallbox_manual_hold
+  force_price_entity: input_boolean.wallbox_force_price
+  pv_enabled_entity: input_boolean.wallbox_pv_enabled
+  mode_entity: input_select.wallbox_mode
+  planner_entity: input_select.ev_charge_planner
+  session_done_entity: input_boolean.wallbox_session_done
+  chargepoint:
+    name: Wallbox
+    min_ampere: 6
+    max_ampere: 16
+    price_ampere: 16
+    pv_min_ampere: 6
+    pv_max_ampere: 16
+    watt_per_ampere_1p: 230
+    watt_per_ampere_3p: 690
+    min_hold_minutes: 15
+    # Live phase hold (1p<->3p lock) in seconds; a backstop next to the PV budget smoothing.
+    phase_switch_hold_seconds: 90
+    # Coarse phase hold for the 15-minute plan solver (live uses phase_switch_hold_seconds).
+    phase_switch_hold_minutes: 15
+    pv_control_loop_seconds: 30
+    enable_delay_minutes: 1
+    disable_delay_minutes: 30
+  meter:
+    name: Wallbox Meter
+    power_w_entity: sensor.wallbox_power_w
+    grid_import_w_strategy: min_wallbox_power_grid_import
+  vehicles:
+    vehicle_1:
+      name: Vehicle 1
+      image_url: ""
+      role: vehicle
+      source:
+        source: ha
+        entity_map:
+          soc_percent: sensor.vehicle_soc_percent
+          charging_power_w: sensor.vehicle_charging_power_w
+          charging_active: binary_sensor.vehicle_charging
+      telemetry_group: vehicle_1
+      adapter: ha_entities
+      capabilities: [soc, charging_power, charging_active]
+      enabled: true
+      priority: 10
+      soc_percent_entity: sensor.vehicle_soc_percent
+      charging_power_w_entity: sensor.vehicle_charging_power_w
+      charging_active_entity: binary_sensor.vehicle_charging
+      capacity_wh: 75000
+      min_soc_percent: 40
+      target_soc_percent: 80
+      departure_enabled: false
+      departure_time: "07:00"
+
+live_optimizer:
+  enabled: true
+  interval_seconds: 30
+  horizon_minutes: 120
+  min_hold_minutes: 5
+  min_hold_seconds: 10
+  hysteresis_w: 0
+  # History row only on a state change (including actor status) or every Nth iteration (1 = every).
+  history_every_n_runs: 4
+
+control:
+  enabled: true
+  dispatcher_interval_seconds: 60
+  ha_export_payloads_enabled: false
+  ha_adapter_enabled: true
+  write_adapters_enabled: false
+  max_plan_age_seconds: 1200
+  default_min_hold_seconds: 300
+  default_hysteresis_w: 0
+  # Circuit breaker: isolates a repeatedly failing device instead of writing to it
+  # blindly. Thresholds per error class; the reset is deliberately manual. These are
+  # generic defaults and visible in the UI, on the autonomy tab.
+  quarantine:
+    enabled: true
+    readback_mismatch_threshold: 3
+    write_error_threshold: 3
+    ownership_drift_threshold: 2
+    api_backoff_threshold: 5
+    stale_actor_data_threshold: 4
+    retry_policy: manual_reset
+  actors:
+    wallbox_main:
+      role: wallbox
+      source:
+        source: ha
+        entity_map:
+          meter_power_w: sensor.wallbox_power_w
+          ampere: number.wallbox_ampere
+          phase_mode: select.wallbox_phase_mode
+          force_state: select.wallbox_force_state
+          car_connected: binary_sensor.wallbox_car_connected
+      type_key: ev_chargepoint
+      adapter: ha_service
+      capabilities: [ampere_control, phase_mode, force_state]
+      entity_map:
+        meter_power_w: sensor.wallbox_power_w
+        ampere: number.wallbox_ampere
+        phase_mode: select.wallbox_phase_mode
+        force_state: select.wallbox_force_state
+        car_connected: binary_sensor.wallbox_car_connected
+      live_released: false
+      write_adapter_enabled: false
+      control_interval_seconds: 30
+    battery_dispatch:
+      role: battery
+      source:
+        source: integration:anker_solix
+        entity_map:
+          power_signed_w: anker_solix.battery_power_signed_w
+          soc_percent: anker_solix.battery_soc_percent
+      type_key: storage_dispatch
+      adapter: anker_solix
+      capabilities: [battery_target, readback, direct_write]
+      live_released: false
+      write_adapter_enabled: false
+      control_interval_seconds: 30
+    deferrable_load:dishwasher:
+      role: dishwasher
+      source:
+        source: ha
+        entity_map:
+          prepared: input_boolean.dishwasher_prepared
+          running: input_boolean.dishwasher_running
+          starting: input_boolean.dishwasher_starting
+      type_key: deferrable_load
+      adapter: home_connect_direct
+      capabilities: [home_connect_direct_start, direct_status, direct_watchdog]
+      entity_map:
+        prepared: input_boolean.dishwasher_prepared
+        running: input_boolean.dishwasher_running
+        starting: input_boolean.dishwasher_starting
+        start_automation: automation.dishwasher_start_from_hemsight
+        start_script: script.dishwasher_start
+      live_released: false
+      write_adapter_enabled: false
+      control_interval_seconds: 30
+    deferrable_load:washing_machine:
+      role: washing_machine
+      source:
+        source: ha
+        entity_map:
+          prepared: input_boolean.washing_machine_prepared
+          running: input_boolean.washing_machine_running
+          starting: input_boolean.washing_machine_starting
+      type_key: deferrable_load
+      adapter: home_connect_direct
+      capabilities: [home_connect_direct_start, direct_status, direct_watchdog]
+      entity_map:
+        prepared: input_boolean.washing_machine_prepared
+        running: input_boolean.washing_machine_running
+        starting: input_boolean.washing_machine_starting
+        start_automation: automation.washing_machine_start_from_hemsight
+      live_released: false
+      write_adapter_enabled: false
+      control_interval_seconds: 30
+    deferrable_load:dhw:
+      role: dhw
+      source:
+        source: ha
+        entity_map:
+          switch: switch.dhw
+          prepared: input_boolean.dhw_prepared
+          running: input_boolean.dhw_running
+          done_today: input_boolean.dhw_done_today
+      type_key: deferrable_load
+      adapter: shelly_rpc_switch
+      capabilities: [switch_control, rollback]
+      entity_map:
+        switch: switch.dhw
+        prepared: input_boolean.dhw_prepared
+        running: input_boolean.dhw_running
+        done_today: input_boolean.dhw_done_today
+        real_start: input_datetime.dhw_real_start
+      live_released: false
+      write_adapter_enabled: false
+      control_interval_seconds: 30
+
+ha_export:
+  enabled: false
+  interval_seconds: 60
+
+event_replan:
+  enabled: true
+  interval_seconds: 60
+  min_replan_interval_seconds: 60
+  pv_forecast_check_interval_seconds: 3600
+  pv_forecast_signature_round_w: 10
+  load_deviation_w: 1200
+  load_deviation_ratio: 0.35
+
+# Time series database. Default: the embedded SQLite store — no external server needed.
+# Values for backend: embedded_sqlite (default) | influxdb (for existing InfluxDB users).
+influx:
+  backend: embedded_sqlite
+  sqlite_path: data/hemsight_timeseries.sqlite3
+  retention_days: 120
+  enabled: true
+  # With backend: influxdb connection details are added. You enter them in the app under
+  # settings, and the password ends up encrypted in the secrets.yaml:
+  # backend: influxdb
+  # url: http://influxdb.local:8181
+  # database: hemsight
+  # username: ""
+  # password: ""
+
+entities:
+  pv:
+    total_power_w:
+      entity_id: sensor.pv_total_power_w
+      expected_unit: W
+      internal_unit: W
+    forecast_remaining_today_kwh:
+      entity_id: sensor.pv_forecast_remaining_today_kwh
+      expected_unit: kWh
+      internal_unit: kWh
+      required: false
+    day_energy_kwh:
+      entity_id: sensor.pv_day_energy_kwh
+      expected_unit: kWh
+      internal_unit: kWh
+      required: false
+    aux_pv_inverter_power_w:      # second inverter or microinverter
+      entity_id: sensor.pv_microinverter_power_w
+      expected_unit: W
+      internal_unit: W
+      required: false
+  battery:
+    power_signed_w:
+      entity_id: sensor.battery_power_signed_w
+      expected_unit: W
+      internal_unit: W
+      max_age_seconds: 300
+    soc_percent:
+      entity_id: sensor.battery_soc_percent
+      expected_unit: "%"
+      internal_unit: "%"
+    capacity_wh:
+      entity_id: sensor.battery_capacity_wh
+      expected_unit: Wh
+      internal_unit: Wh
+      required: false
+  grid:
+    power_signed_w:
+      entity_id: sensor.grid_power_signed_w
+      expected_unit: W
+      internal_unit: W
+      max_age_seconds: 300
+    import_day_kwh:
+      entity_id: sensor.grid_import_day_kwh
+      expected_unit: kWh
+      internal_unit: kWh
+      required: false
+    export_day_kwh:
+      entity_id: sensor.grid_export_day_kwh
+      expected_unit: kWh
+      internal_unit: kWh
+      required: false
+  home:
+    consumption_power_w:
+      entity_id: sensor.home_consumption_power_w
+      expected_unit: W
+      internal_unit: W
+      max_age_seconds: 300
+    consumption_wo_ev_power_w:
+      entity_id: sensor.home_consumption_wo_ev_power_w
+      expected_unit: W
+      internal_unit: W
+      max_age_seconds: 300
+      required: false
+    base_load_no_var_power_w:
+      entity_id: sensor.home_base_load_power_w
+      expected_unit: W
+      internal_unit: W
+      max_age_seconds: 300
+      required: false
+  price:
+    current_price_eur_kwh:
+      entity_id: sensor.energy_price_current
+      expected_unit: EUR/kWh
+      internal_unit: EUR/kWh
+  wallbox:
+    power_w:
+      entity_id: sensor.wallbox_power_w
+      expected_unit: W
+      internal_unit: W
+    ampere:
+      entity_id: number.wallbox_ampere
+      internal_unit: A
+      required: false
+    phase_mode:
+      entity_id: select.wallbox_phase_mode
+      value_type: text
+      required: false
+    force_state:
+      entity_id: select.wallbox_force_state
+      value_type: text
+      required: false
+    car_connected:
+      entity_id: binary_sensor.wallbox_car_connected
+      value_type: binary
+      required: false
+  vehicle_1:
+    soc_percent:
+      entity_id: sensor.vehicle_soc_percent
+      expected_unit: "%"
+      internal_unit: "%"
+      required: false
+    charging_power_w:
+      entity_id: sensor.vehicle_charging_power_w
+      expected_unit: W
+      internal_unit: W
+      required: false
+    charging_active:
+      entity_id: binary_sensor.vehicle_charging
+      value_type: binary
+      required: false
+  weather:
+    outdoor_temperature_c:
+      entity_id: sensor.outdoor_temperature
+      expected_unit: "degC"
+      internal_unit: "degC"
+      max_age_seconds: 1800
+      required: false
+    outdoor_temperature_fallback_c:
+      entity_id: sensor.outdoor_temperature_fallback
+      expected_unit: "degC"
+      internal_unit: "degC"
+      max_age_seconds: 1800
+      required: false
+  sky:
+    sun_elevation_deg:
+      entity_id: sun.sun
+      attribute: elevation
+      value_type: number
+      max_age_seconds: 300
+      required: false
+    sun_next_rising:
+      entity_id: sun.sun
+      attribute: next_rising
+      value_type: text
+      max_age_seconds: 300
+      required: false
+    sun_next_setting:
+      entity_id: sun.sun
+      attribute: next_setting
+      value_type: text
+      max_age_seconds: 300
+      required: false
+  ev_controls:
+    manual_hold:
+      entity_id: input_boolean.wallbox_manual_hold
+      value_type: binary
+      required: false
+    force_price:
+      entity_id: input_boolean.wallbox_force_price
+      value_type: binary
+      required: false
+    pv_enabled:
+      entity_id: input_boolean.wallbox_pv_enabled
+      value_type: binary
+      required: false
+    mode:
+      entity_id: input_select.wallbox_mode
+      value_type: text
+      required: false
+    planner:
+      entity_id: input_select.ev_charge_planner
+      value_type: text
+      required: false
+    session_done:
+      entity_id: input_boolean.wallbox_session_done
+      value_type: binary
+      required: false
+  ev_accounting:
+    price_charging_active:
+      entity_id: binary_sensor.ev_price_charging_active
+      value_type: binary
+      required: false
+    total_kwh:
+      entity_id: sensor.ev_charge_total_kwh
+      expected_unit: kWh
+      internal_unit: kWh
+      required: false
+    total_eur:
+      entity_id: sensor.ev_charge_total_eur
+      expected_unit: EUR
+      internal_unit: EUR
+      required: false
+    session_vehicle:            # which vehicle the running charging session belongs to
+      entity_id: input_select.ev_price_session_vehicle
+      value_type: text
+      required: false
+  safety:
+    manual_lock:
+      entity_id: input_boolean.hemsight_manual_lock
+      value_type: binary
+      required: false
+    emergency_stop:
+      entity_id: input_boolean.hemsight_emergency_stop
+      value_type: binary
+      required: false
+  powerdock:
+    mode:
+      entity_id: select.battery_mode
+      value_type: text
+      required: false
+    manual_setpoint_w:
+      entity_id: sensor.battery_manual_setpoint_w
+      expected_unit: W
+      internal_unit: W
+      required: false
+  monitored_loads:
+    washing_machine_power_w:
+      entity_id: sensor.washing_machine_power_w
+      expected_unit: W
+      internal_unit: W
+      required: false
+    dishwasher_power_w:
+      entity_id: sensor.dishwasher_power_w
+      expected_unit: W
+      internal_unit: W
+      required: false
+    dhw_power_w:
+      entity_id: sensor.dhw_power_w
+      expected_unit: W
+      internal_unit: W
+      required: false
+    auxiliary_load_power_w:
+      entity_id: sensor.auxiliary_load_power_w
+      expected_unit: W
+      internal_unit: W
+      required: false
+  deferrable_controls:
+    dishwasher_prepared:
+      entity_id: input_boolean.dishwasher_prepared
+      value_type: binary
+      required: false
+    washing_machine_prepared:
+      entity_id: input_boolean.washing_machine_prepared
+      value_type: binary
+      required: false
+    dhw_prepared:
+      entity_id: input_boolean.dhw_prepared
+      value_type: binary
+      required: false
+    dishwasher_deadline:
+      entity_id: input_datetime.dishwasher_deadline
+      value_type: text
+      required: false
+    dhw_done_today:
+      entity_id: input_boolean.dhw_done_today
+      value_type: binary
+      required: false
+    pc_forecast_w:
+      entity_id: input_number.pc_forecast_power_w
+      expected_unit: W
+      internal_unit: W
+      required: false
+
+# ---------------------------------------------------------------------------
+# The single runtime configuration
+# ---------------------------------------------------------------------------
+# At runtime there is EXACTLY ONE configuration source: data/config.yaml (in the Home
+# Assistant app /data/config.yaml). It is created by the one-off boot migration or by
+# the setup wizard, and in addition to the sections above it holds the blocks that used
+# to live in the database. Secrets are NEVER in the config.yaml — they sit Fernet-
+# encrypted in data/secrets.yaml (key: the HEMSIGHT_SECRET_KEY environment variable, or
+# data/.secret.key).
+#
+# integrations:                      # direct and cloud integrations (without secrets)
+#   shelly_direct:
+#     enabled: false
+#     devices_json: "[]"             # device list as a JSON string
+# auth:                              # UI login (PBKDF2 hash material, not reversible)
+#   ui_basic_auth_enabled: true
+#   ui_basic_auth_user: admin
+#   ui_basic_auth_password_hash: "<hash>"
+#   ui_basic_auth_password_salt: "<salt>"
+#   ui_basic_auth_password_iterations: 600000
+# connection:                        # Home Assistant connection (token -> secrets.yaml!)
+#   ha_url: "http://homeassistant.local:8123"
+# intent:                            # user intent profile (cost | self_consumption | profit)
+#   profile: cost
+# notifications:                     # notifications (webhook.url/apprise.urls -> secrets.yaml)
+#   enabled: false
+#   min_severity: warning

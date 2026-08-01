@@ -1,0 +1,65 @@
+HEMSight – Nutzungsbedingungen
+
+Copyright (c) 2026 Markus Stöhr. Alle Rechte vorbehalten.
+
+HEMSight ist keine Open-Source-Software. Dieses Repository enthält die Dateien, die
+zur Installation nötig sind – Compose-Datei, Home-Assistant-Manifeste und Vorlagen.
+Der Programmcode selbst wird ausschließlich als fertiges Container-Abbild verteilt und
+in diesem Repository nicht veröffentlicht.
+
+Erlaubt ist:
+  - die veröffentlichten Abbilder herunterzuladen und für eigene Zwecke zu betreiben,
+    privat wie gewerblich, ohne Mengenbegrenzung;
+  - die Dateien dieses Repositories für die eigene Installation anzupassen.
+
+Nicht erlaubt ist:
+  - die Abbilder oder Teile davon weiterzugeben, weiterzuverkaufen, zu vermieten oder
+    als eigenen oder fremden Dienst anzubieten;
+  - Urheber- oder Herkunftsangaben zu entfernen oder zu verändern;
+  - den enthaltenen Programmcode zurückzuentwickeln, zu dekompilieren oder zu
+    disassemblieren, soweit nicht zwingendes Recht dies gestattet – insbesondere
+    bleiben die gesetzlichen Befugnisse zur Herstellung von Interoperabilität
+    (§ 69e UrhG, Art. 6 Richtlinie 2009/24/EG) unberührt.
+
+Gewährleistung und Haftung:
+HEMSight wird ohne jede Gewährleistung überlassen. Die Software steuert Geräte im
+Haushalt und befindet sich in einer frühen Erprobungsphase; der Betrieb erfolgt auf
+eigene Verantwortung. Eine Haftung für Schäden, entgangenen Gewinn oder Datenverlust
+ist ausgeschlossen, soweit gesetzlich zulässig. Unberührt bleibt die Haftung für
+Vorsatz, grobe Fahrlässigkeit sowie für Schäden aus der Verletzung des Lebens, des
+Körpers oder der Gesundheit.
+
+Maßgeblich ist die deutsche Fassung. Es gilt deutsches Recht.
+
+Kontakt: Markus Stöhr <Markusstoehr0@gmail.com> · https://hemsight.de
+
+--------------------------------------------------------------------------------
+
+HEMSight – Terms of Use (English translation, for information only)
+
+Copyright (c) 2026 Markus Stöhr. All rights reserved.
+
+HEMSight is not open-source software. This repository contains the files needed to
+install it – the Compose file, Home Assistant manifests and templates. The program
+code itself is distributed solely as a prebuilt container image and is not published
+in this repository.
+
+You may:
+  - download the published images and run them for your own purposes, private or
+    commercial, without a limit on the number of installations;
+  - adapt the files in this repository for your own installation.
+
+You may not:
+  - redistribute, resell, rent out or offer the images or parts of them as a service;
+  - remove or alter copyright or attribution notices;
+  - reverse engineer, decompile or disassemble the contained program code, except
+    where mandatory law permits – in particular, statutory rights to achieve
+    interoperability remain unaffected.
+
+Warranty and liability:
+HEMSight is provided without any warranty. It controls devices in your home and is at
+an early stage of testing; you run it at your own risk. Liability for damages, lost
+profits or data loss is excluded to the extent permitted by law. Liability for intent,
+gross negligence and for injury to life, body or health remains unaffected.
+
+The German version prevails. German law applies.

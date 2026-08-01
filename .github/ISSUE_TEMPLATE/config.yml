@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Handbuch / Manual
+    url: https://hemsight.de
+    about: Jede Einstellung erklärt, mit Bildern.
+  - name: Fehler mit Diagnose melden / Report with diagnostics
+    url: https://hemsight.de
+    about: Läuft HEMSight schon? Dann über Bug / Feedback in der App – die Diagnose gehört nicht in ein öffentliches Issue.
+  - name: Fragen und Austausch / Questions
+    url: https://github.com/Markus660/hemsight/discussions
+    about: Alles, was keine Fehlermeldung ist.
+  - name: Sicherheitslücke melden / Report a vulnerability
+    url: https://github.com/Markus660/hemsight/security/advisories/new
+    about: Privater Weg, bitte nicht als Issue.

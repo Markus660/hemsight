@@ -1,0 +1,77 @@
+# HEMSight – installation via Docker Compose.
+#
+# The images come prebuilt from the GitHub container registry. Nothing is compiled here;
+# which version runs is set in the .env.
+#
+# Three things are best left alone unless you have a good reason:
+#   - The service has to be called "backend". The web interface talks to it under exactly
+#     that name.
+#   - ./data is the only place your setup lives in. Without that line it is gone after the
+#     next "docker compose down".
+#   - /app/config is deliberately not mounted. The templates are inside the image; a
+#     mounted directory hides them and HEMSight then starts without factory settings.
+
+services:
+  backend:
+    image: ghcr.io/markus660/hemsight-backend:${HEMSIGHT_VERSION:-0.0.2-alpha}
+    container_name: ${HEMSIGHT_STACK_PREFIX:-hemsight}-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    ports:
+      - "127.0.0.1:${HEMSIGHT_BACKEND_PORT:-18080}:8000"
+      # For wallboxes connecting over OCPP. Unlike the service above it, this port is
+      # reachable from your network. Without an OCPP wallbox the line can go.
+      - "${HEMSIGHT_OCPP_PORT:-9000}:9000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/healthz', timeout=5).read()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      # The first start sets up the data store and takes longer than the ones after it.
+      start_period: 180s
+
+  # EEBus counterpart for devices speaking SHIP/SPINE – heat pumps and wallboxes with
+  # EEBus support, for instance. Only starts when you ask for it:
+  #   docker compose --profile eebus up -d
+  # The certificate in ./data/eebus has to survive. Lose it and HEMSight introduces itself
+  # as a stranger to every paired device, so each one has to trust it again.
+  eebus:
+    image: ghcr.io/markus660/hemsight-eebus:${HEMSIGHT_VERSION:-0.0.2-alpha}
+    container_name: ${HEMSIGHT_STACK_PREFIX:-hemsight}-eebus
+    restart: unless-stopped
+    profiles: ["eebus"]
+    volumes:
+      - ./data/eebus:/data
+    ports:
+      - "${HEMSIGHT_EEBUS_PORT:-4712}:4712"
+    # If HEMSight doesn't find your EEBus devices, this is usually why: they announce
+    # themselves over mDNS, which often doesn't cross the Docker bridge network. Moving
+    # this service onto the host network fixes it – ports and network_mode have to be
+    # swapped, Compose rejects both together, and the backend can then no longer reach the
+    # service by name:
+    #   1. remove  ports:  above and set  network_mode: host  instead
+    #   2. add to the backend service:
+    #        environment:
+    #          EEBUS_SIDECAR_URL: http://host.docker.internal:4715
+    #        extra_hosts:
+    #          - "host.docker.internal:host-gateway"
+    # Untested, because there is no EEBus device here – reports are welcome.
+
+  frontend:
+    image: ghcr.io/markus660/hemsight-frontend:${HEMSIGHT_VERSION:-0.0.2-alpha}
+    container_name: ${HEMSIGHT_STACK_PREFIX:-hemsight}-frontend
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "${HEMSIGHT_FRONTEND_PORT:-18081}:80"
+
+networks:
+  default:
+    name: ${HEMSIGHT_STACK_PREFIX:-hemsight}

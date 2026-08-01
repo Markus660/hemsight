@@ -1,1 +1,117 @@
-# hemsight
+<h1 align="center">HEMSight</h1>
+
+<p align="center">
+  <strong>Energiemanager für zu Hause – plant deinen Strom und schaltet deine Geräte</strong>
+</p>
+
+<p align="center"><img src="https://img.shields.io/badge/version-0.0.2--alpha-blue.svg" alt="Version"> <img src="https://img.shields.io/badge/status-fr%C3%BChe%20Beta-orange.svg" alt="Status"> <a href="LICENSE"><img src="https://img.shields.io/badge/lizenz-propriet%C3%A4r-green.svg" alt="Lizenz"></a> <img src="https://img.shields.io/badge/l%C3%A4uft%20auf-Docker%20%7C%20Home%20Assistant-lightgrey.svg" alt="Läuft auf"></p>
+
+<p align="center"><strong><a href="https://hemsight.de">hemsight.de</a></strong> – alle Funktionen im Überblick und das komplette Handbuch</p>
+
+<p align="center">Deutsch · <a href="README.en.md">English</a></p>
+
+> **Frühe Beta.** Tester gesucht!
+
+Nachts um drei ist Strom manchmal halb so teuer wie abends um sieben. Und wenn die Sonne
+richtig aufs Dach knallt, ist meistens keiner da, der die Waschmaschine anstellt.
+
+Genau dafür ist HEMSight da. Es rechnet für die nächsten Tage durch, wann sich was lohnt,
+und schaltet deine Geräte dann auch selbst. Alles läuft bei dir zu Hause, ohne Cloud und
+ohne Abo.
+
+**Wenn dir das Projekt gefällt und du mich unterstützen möchtest:**
+
+<a href="https://ko-fi.com/hemsight"><img height="36" src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Kaffee spendieren auf Ko-fi"></a> <a href="https://github.com/sponsors/Markus660"><img height="36" src="https://img.shields.io/badge/Sponsor-ea4aaa?logo=githubsponsors&logoColor=white&style=for-the-badge&labelColor=ea4aaa" alt="GitHub Sponsor"></a>
+
+---
+
+<p align="center">
+  <img src="bilder/uebersicht.png" width="900" alt="Die Übersichtsseite mit dem aktuellen Energiefluss">
+</p>
+
+## Was HEMSight für dich macht
+
+Dein Auto fängt nicht mehr sofort an zu laden, nur weil das Kabel dran ist. Es wartet auf
+die billigen Stunden und ist morgens trotzdem voll.
+
+Der PV-Überschuss geht ins Warmwasser, in den Speicher oder ins Auto, statt für ein paar
+Cent ins Netz zu wandern.
+
+Waschmaschine und Spülmaschine starten, wenn die Sonne da ist oder der Strom gerade nichts
+kostet. Du räumst nur noch ein.
+
+Der Speicher füllt sich vor den teuren Stunden. Kommt morgen früh sowieso Sonne, bleibt er
+leer.
+
+Heizung und Klimageräte halten deine Temperatur, arbeiten aber lieber dann, wenn Strom
+billig ist.
+
+Und wenn dir mal eine Schaltung komisch vorkommt: zu jeder steht da, warum sie passiert
+ist. Oben rechts sitzt ein Not-Aus, der alles sofort anhält.
+
+<p align="center">
+  <img src="bilder/plan.png" width="900" alt="Die Plantabelle mit 288 Viertelstunden">
+</p>
+
+Der Plan ist das Herz davon: 15-Minuten-Schritte über die nächsten zwei bis drei Tage, mit
+allem, was in der Zeit passieren soll. Er wird laufend neu gerechnet, wenn sich Wetter,
+Preise oder dein Verbrauch ändern.
+
+## Was du brauchst
+
+Das, was du schon hast. PV, Speicher, Wallbox, Wärmepumpe, ein dynamischer Stromtarif –
+das nimmt HEMSight alles mit, aber nichts davon ist Pflicht. Nur mit PV und Tarif lohnt es
+sich auch schon.
+
+Home Assistant ist kein Muss. Hast du es, sparst du dir viel Einrichterei, weil deine
+Geräte da schon hängen.
+
+## Versionen
+
+Noch nichts veröffentlicht. Sobald es losgeht, steht hier, was sich in der jeweils letzten
+Version geändert hat.
+
+## Installation
+
+Zwei Wege, beide holen dasselbe fertige Programm aus der GitHub-Container-Registry.
+
+### In Home Assistant
+
+1. Einstellungen → Apps → App installieren
+2. Oben rechts das Dreipunkt-Menü → Repositories
+3. `https://github.com/Markus660/hemsight` eintragen und hinzufügen
+4. HEMSight taucht als neue Karte auf. Installieren, starten, fertig.
+
+Danach liegt es in deiner Home-Assistant-Oberfläche hinter deinem HA-Login. Kein eigener
+Port, kein zweites Passwort.
+
+### Mit Docker
+
+```bash
+git clone https://github.com/Markus660/hemsight.git
+cd hemsight
+cp .env.example .env
+docker compose up -d
+```
+
+Dann im Browser auf `http://<deine-adresse>:18081`. An die `.env` musst du nicht ran. Den
+Rest macht der Assistent beim ersten Aufruf, dort vergibst du auch dein Passwort.
+
+Auf einem Linux-Server, im LXC-Container oder in einer VM läuft genau derselbe Weg. Für
+EEBus-Geräte kommt noch `docker compose --profile eebus up -d` dazu.
+
+Deine Einstellungen landen in `data/` neben der `compose.yaml`, bei der Home-Assistant-App
+unter `/data`. Das Verzeichnis gehört in deine Sicherung.
+
+Eine Versionsnummer behält für immer ihren Stand, Korrekturen bekommen eine neue. Zum
+Aktualisieren die Nummer in der `.env` ändern und `docker compose pull && docker compose
+up -d` laufen lassen.
+
+## Tester gesucht!
+
+Das Handbuch mit allem, was man einstellen kann, steht auf **https://hemsight.de**.
+
+Schick mir bitte jede Rückmeldung direkt in der App über den Reiter *Bug / Feedback* – ob
+etwas läuft und vor allem, wenn etwas nicht läuft. Da hängt eine Diagnose dran, mit der ich
+meistens sehe, woran es liegt. Kommst du gar nicht so weit, mach hier ein
+[Issue](https://github.com/Markus660/hemsight/issues/new/choose) auf.

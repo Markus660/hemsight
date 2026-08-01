@@ -1,0 +1,50 @@
+name: Fehler melden / Report a bug
+description: Etwas geht nicht – Installation, Anleitung, Verhalten. / Something isn't working.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Läuft HEMSight bei dir schon? Dann nimm **Bug / Feedback** in der App – da hängt
+        eine Diagnose dran, die hier nicht hineingehört. Dieses Formular ist für alles,
+        was ohne sie geht.
+
+        *If HEMSight already runs, prefer **Bug / Feedback** inside the app.*
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Steht in der App unter dem Namen in der Seitenleiste.
+      placeholder: "0.0.2-alpha"
+    validations:
+      required: true
+  - type: dropdown
+    id: installation
+    attributes:
+      label: Installiert als / Installed as
+      options:
+        - Home-Assistant-App
+        - Docker
+        - anderes / other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: Was passiert? / What happens?
+      description: Was du gemacht hast, was danach passiert ist, was du erwartet hättest.
+    validations:
+      required: true
+  - type: textarea
+    id: messages
+    attributes:
+      label: Fehlermeldung oder Log / Error or log
+      description: Falls vorhanden. Bitte vorher überfliegen, ob nichts Privates drinsteht.
+      render: text
+  - type: checkboxes
+    id: no-secrets
+    attributes:
+      label: Kurz bestätigen / Quick confirmation
+      options:
+        - label: Keine Zugangsdaten, keine Token, kein vollständiges Diagnosepaket im Text.
+          required: true
