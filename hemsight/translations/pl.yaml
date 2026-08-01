@@ -1,0 +1,7 @@
+configuration:
+  log_level:
+    name: Poziom rejestrowania
+    description: Określa szczegółowość informacji zapisywanych przez HEMSight w dzienniku aplikacji.
+  access_log:
+    name: Dziennik dostępu HTTP
+    description: Rejestruje każde żądanie HTTP do celów diagnostycznych.

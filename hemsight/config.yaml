@@ -22,5 +22,9 @@ image: ghcr.io/markus660/hemsight-addon
 ingress: true
 ingress_port: 8099
 panel_icon: mdi:home-lightning-bolt
-options: {}
-schema: {}
+options:
+  log_level: info
+  access_log: true
+schema:
+  log_level: "list(critical|error|warning|info|debug)"
+  access_log: bool

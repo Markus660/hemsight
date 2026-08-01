@@ -1,0 +1,7 @@
+configuration:
+  log_level:
+    name: Log level
+    description: Controls how much detail HEMSight writes to the app log.
+  access_log:
+    name: HTTP access log
+    description: Logs every HTTP request for diagnostic purposes.

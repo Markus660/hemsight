@@ -1,0 +1,7 @@
+configuration:
+  log_level:
+    name: Protokollstufe
+    description: Legt fest, wie ausführlich HEMSight in das App-Protokoll schreibt.
+  access_log:
+    name: HTTP-Zugriffsprotokoll
+    description: Protokolliert jede HTTP-Anfrage für Diagnosezwecke.

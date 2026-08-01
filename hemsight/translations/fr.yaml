@@ -1,0 +1,7 @@
+configuration:
+  log_level:
+    name: Niveau de journalisation
+    description: Définit le niveau de détail écrit par HEMSight dans le journal de l’application.
+  access_log:
+    name: Journal des accès HTTP
+    description: Enregistre chaque requête HTTP à des fins de diagnostic.
