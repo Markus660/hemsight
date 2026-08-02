@@ -10,6 +10,7 @@
 - Beispielwerte, PV-Dachflächen, EV-Schwellen und Auswahlkarten sind verständlicher und eindeutig dargestellt.
 - Die automatische Akku-Vorzeichenerkennung nutzt die gemessene Energiebilanz.
 - Der Werksreset ist als eigener Bereich in den HEMSight-Einstellungen erreichbar.
+- Die Demo zeigt Gerätenamen und Batteriegründe vollständig in der gewählten Sprache statt als englische Namen oder technische Codes.
 
 ## 0.0.4-alpha
 
