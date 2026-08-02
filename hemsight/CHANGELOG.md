@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.0.3-alpha
+## 0.0.4-alpha
 
 - Der Einrichtungsassistent funktioniert nun vollständig über den Home-Assistant-Ingress.
 - Die Standortauswahl verwendet eine eindeutige Länderliste und übernimmt das in Home Assistant eingestellte Land.
