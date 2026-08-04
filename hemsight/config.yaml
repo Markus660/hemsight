@@ -21,6 +21,9 @@ image: ghcr.io/markus660/hemsight-addon
 # port, no second password: HA signs you in and proxies to the app internally.
 ingress: true
 ingress_port: 8099
+# Without this there is no HEMSight entry in the sidebar and you have to open the add-on page
+# every time.
+ingress_panel: true
 panel_icon: mdi:home-lightning-bolt
 options:
   log_level: info
