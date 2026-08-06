@@ -13,7 +13,7 @@
 
 services:
   backend:
-    image: ghcr.io/markus660/hemsight-backend:${HEMSIGHT_VERSION:-0.0.5-alpha}
+    image: ghcr.io/markus660/hemsight-backend:${HEMSIGHT_VERSION:-0.0.6-alpha}
     container_name: ${HEMSIGHT_STACK_PREFIX:-hemsight}-backend
     restart: unless-stopped
     env_file:
@@ -39,7 +39,7 @@ services:
   # The certificate in ./data/eebus has to survive. Lose it and HEMSight introduces itself
   # as a stranger to every paired device, so each one has to trust it again.
   eebus:
-    image: ghcr.io/markus660/hemsight-eebus:${HEMSIGHT_VERSION:-0.0.5-alpha}
+    image: ghcr.io/markus660/hemsight-eebus:${HEMSIGHT_VERSION:-0.0.6-alpha}
     container_name: ${HEMSIGHT_STACK_PREFIX:-hemsight}-eebus
     restart: unless-stopped
     profiles: ["eebus"]
@@ -61,7 +61,7 @@ services:
     # Untested, because there is no EEBus device here – reports are welcome.
 
   frontend:
-    image: ghcr.io/markus660/hemsight-frontend:${HEMSIGHT_VERSION:-0.0.5-alpha}
+    image: ghcr.io/markus660/hemsight-frontend:${HEMSIGHT_VERSION:-0.0.6-alpha}
     container_name: ${HEMSIGHT_STACK_PREFIX:-hemsight}-frontend
     restart: unless-stopped
     env_file:
