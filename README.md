@@ -4,7 +4,7 @@
   <strong>Energiemanager für zu Hause – plant deinen Strom und schaltet deine Geräte</strong>
 </p>
 
-<p align="center"><img src="https://img.shields.io/badge/version-0.0.2--alpha-blue.svg" alt="Version"> <img src="https://img.shields.io/badge/status-fr%C3%BChe%20Beta-orange.svg" alt="Status"> <a href="LICENSE"><img src="https://img.shields.io/badge/lizenz-propriet%C3%A4r-green.svg" alt="Lizenz"></a> <img src="https://img.shields.io/badge/l%C3%A4uft%20auf-Docker%20%7C%20Home%20Assistant-lightgrey.svg" alt="Läuft auf"></p>
+<p align="center"><img src="https://img.shields.io/badge/version-0.0.1--beta-blue.svg" alt="Version"> <img src="https://img.shields.io/badge/status-fr%C3%BChe%20Beta-orange.svg" alt="Status"> <a href="LICENSE"><img src="https://img.shields.io/badge/lizenz-propriet%C3%A4r-green.svg" alt="Lizenz"></a> <img src="https://img.shields.io/badge/l%C3%A4uft%20auf-Docker%20%7C%20Home%20Assistant-lightgrey.svg" alt="Läuft auf"></p>
 
 <p align="center"><strong><a href="https://hemsight.de">hemsight.de</a></strong> – alle Funktionen im Überblick und das komplette Handbuch</p>
 
