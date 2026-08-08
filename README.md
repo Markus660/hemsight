@@ -68,8 +68,7 @@ Geräte da schon hängen.
 
 ## Versionen
 
-Noch nichts veröffentlicht. Sobald es losgeht, steht hier, was sich in der jeweils letzten
-Version geändert hat.
+Beta-Start.
 
 ## Installation
 

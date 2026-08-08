@@ -69,8 +69,7 @@ devices are already there.
 
 ## Versions
 
-Nothing published yet. Once it starts, this is where you'll find what changed in the
-latest version.
+Beta start.
 
 ## Installation
 
