@@ -87,15 +87,27 @@ Port, kein zweites Passwort.
 ### Mit Docker
 
 ```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Markus660/hemsight/main/install.sh)"
+```
+
+Ein Befehl. Er prüft, ob Docker bereit ist, legt den Ordner `hemsight` an, holt die
+Compose-Datei, zieht die Abbilder und startet. Am Ende steht die fertige Adresse da. Ist der
+übliche Port schon belegt, weicht er auf den nächsten freien aus und sagt es dir.
+
+Läuft schon eine Installation im Ordner, aktualisiert derselbe Befehl sie – dein `data/`
+bleibt unangetastet. Zum Aktualisieren also einfach noch einmal ausführen.
+
+Wer lieber sieht, was passiert, macht es von Hand; das
+[Skript](install.sh) tut nichts anderes:
+
+```bash
 mkdir hemsight && cd hemsight
 curl -fsSLO https://raw.githubusercontent.com/Markus660/hemsight/main/compose.yaml
-curl -fsSL https://raw.githubusercontent.com/Markus660/hemsight/main/.env.example -o .env
 docker compose up -d
 ```
 
-Zwei Dateien, kein `git` nötig. Dann im Browser auf `http://<deine-adresse>:18081`. An die
-`.env` musst du nicht ran. Den Rest macht der Assistent beim ersten Aufruf, dort vergibst du
-auch dein Passwort.
+Dann im Browser auf `http://<deine-adresse>:18081`. Den Rest macht der Assistent beim ersten
+Aufruf, dort vergibst du auch dein Passwort.
 
 Auf einem Linux-Server, im LXC-Container oder in einer VM läuft genau derselbe Weg. Für
 EEBus-Geräte kommt noch `docker compose --profile eebus up -d` dazu.
@@ -104,8 +116,12 @@ Deine Einstellungen landen in `data/` neben der `compose.yaml`, bei der Home-Ass
 unter `/data`. Das Verzeichnis gehört in deine Sicherung.
 
 Eine Versionsnummer behält für immer ihren Stand, Korrekturen bekommen eine neue. Zum
-Aktualisieren die Nummer in der `.env` ändern und `docker compose pull && docker compose
-up -d` laufen lassen.
+Aktualisieren die Compose-Datei noch einmal herunterladen – darin steht die neue Nummer –
+und `docker compose pull && docker compose up -d` laufen lassen.
+
+Wer die Version selbst festhalten oder den Schlüssel für die verschlüsselten Zugangsdaten
+selbst vergeben will, legt daneben eine `.env` an; die Vorlage mit allen Erklärungen liegt
+[hier](.env.example). Nötig ist sie nicht.
 
 ## Tester gesucht!
 

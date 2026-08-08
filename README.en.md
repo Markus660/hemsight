@@ -88,15 +88,26 @@ no second password.
 ### With Docker
 
 ```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Markus660/hemsight/main/install.sh)"
+```
+
+One command. It checks that Docker is ready, creates the `hemsight` directory, fetches the
+Compose file, pulls the images and starts them. The finished address is printed at the end.
+If the usual port is already taken it moves to the next free one and tells you.
+
+If an installation is already there, the same command updates it – your `data/` is left
+alone. So updating later means running it once more.
+
+If you'd rather see what happens, do it by hand; the [script](install.sh) does nothing else:
+
+```bash
 mkdir hemsight && cd hemsight
 curl -fsSLO https://raw.githubusercontent.com/Markus660/hemsight/main/compose.yaml
-curl -fsSL https://raw.githubusercontent.com/Markus660/hemsight/main/.env.example -o .env
 docker compose up -d
 ```
 
-Two files, no `git` needed. Then open `http://<your-address>:18081` in the browser. You
-don't need to touch the `.env`. The setup assistant takes care of the rest on first start,
-including your password.
+Then open `http://<your-address>:18081` in the browser. The setup assistant takes care of the
+rest on first start, including your password.
 
 On a Linux server, in an LXC container or in a VM it's exactly the same way. For EEBus
 devices, add `docker compose --profile eebus up -d`.
@@ -104,8 +115,13 @@ devices, add `docker compose --profile eebus up -d`.
 Your settings end up in `data/` next to the `compose.yaml`, or under `/data` with the Home
 Assistant app. That directory belongs in your backup.
 
-A version number keeps its content forever, corrections get a new one. To update, change
-the number in the `.env` and run `docker compose pull && docker compose up -d`.
+A version number keeps its content forever, corrections get a new one. To update, download
+the Compose file again – it carries the new number – and run `docker compose pull && docker
+compose up -d`.
+
+If you'd rather pin the version yourself, or set the key that encrypts your credentials,
+put a `.env` next to it; the template with all the explanations is [here](.env.example).
+It isn't required.
 
 ## Testers wanted!
 
