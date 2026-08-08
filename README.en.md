@@ -88,15 +88,15 @@ no second password.
 ### With Docker
 
 ```bash
-git clone https://github.com/Markus660/hemsight.git
-cd hemsight
-cp .env.example .env
+mkdir hemsight && cd hemsight
+curl -fsSLO https://raw.githubusercontent.com/Markus660/hemsight/main/compose.yaml
+curl -fsSL https://raw.githubusercontent.com/Markus660/hemsight/main/.env.example -o .env
 docker compose up -d
 ```
 
-Then open `http://<your-address>:18081` in the browser. You don't need to touch the
-`.env`. The setup assistant takes care of the rest on first start, including your
-password.
+Two files, no `git` needed. Then open `http://<your-address>:18081` in the browser. You
+don't need to touch the `.env`. The setup assistant takes care of the rest on first start,
+including your password.
 
 On a Linux server, in an LXC container or in a VM it's exactly the same way. For EEBus
 devices, add `docker compose --profile eebus up -d`.

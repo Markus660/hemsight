@@ -87,14 +87,15 @@ Port, kein zweites Passwort.
 ### Mit Docker
 
 ```bash
-git clone https://github.com/Markus660/hemsight.git
-cd hemsight
-cp .env.example .env
+mkdir hemsight && cd hemsight
+curl -fsSLO https://raw.githubusercontent.com/Markus660/hemsight/main/compose.yaml
+curl -fsSL https://raw.githubusercontent.com/Markus660/hemsight/main/.env.example -o .env
 docker compose up -d
 ```
 
-Dann im Browser auf `http://<deine-adresse>:18081`. An die `.env` musst du nicht ran. Den
-Rest macht der Assistent beim ersten Aufruf, dort vergibst du auch dein Passwort.
+Zwei Dateien, kein `git` nötig. Dann im Browser auf `http://<deine-adresse>:18081`. An die
+`.env` musst du nicht ran. Den Rest macht der Assistent beim ersten Aufruf, dort vergibst du
+auch dein Passwort.
 
 Auf einem Linux-Server, im LXC-Container oder in einer VM läuft genau derselbe Weg. Für
 EEBus-Geräte kommt noch `docker compose --profile eebus up -d` dazu.

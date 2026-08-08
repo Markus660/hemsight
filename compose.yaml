@@ -16,8 +16,12 @@ services:
     image: ghcr.io/markus660/hemsight-backend:${HEMSIGHT_VERSION:-0.0.6-alpha}
     container_name: ${HEMSIGHT_STACK_PREFIX:-hemsight}-backend
     restart: unless-stopped
+    # Ohne .env startet HEMSight trotzdem: jeder Wert hier hat einen Standard, und der
+    # Schluessel darf leer bleiben. Ein vergessenes cp soll keinen Abbruch geben, den
+    # niemand deuten kann. Braucht Compose 2.24 oder neuer.
     env_file:
-      - .env
+      - path: .env
+        required: false
     volumes:
       - ./data:/app/data
     ports:
@@ -65,7 +69,8 @@ services:
     container_name: ${HEMSIGHT_STACK_PREFIX:-hemsight}-frontend
     restart: unless-stopped
     env_file:
-      - .env
+      - path: .env
+        required: false
     depends_on:
       backend:
         condition: service_healthy
