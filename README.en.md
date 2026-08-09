@@ -69,7 +69,18 @@ devices are already there.
 
 ## Versions
 
-Beta start.
+### 0.0.2-beta
+
+- Fronius Wattpilot is now available as a direct integration.
+- Vehicles connected through Home Assistant can now also provide charging status, plug status and actual charging current, for example through TeslaMate MQTT sensors.
+- Wallbox setpoint, actual current and maximum current are handled separately.
+- A wallbox command is only considered confirmed after the device has reported it back.
+- Solar-surplus charging for electric vehicles uses rising surplus directly and reacts correctly when other devices need power.
+- The notification daily summary now covers the completed previous day.
+- Planning with multiple batteries no longer stops when grid charging is disabled (`SolverConfig object has no field "grid_charge_enabled"`).
+- Non-critical notifications are no longer sent for every single short-lived problem.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
 
 ## Installation
 
