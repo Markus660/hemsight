@@ -69,6 +69,18 @@ devices are already there.
 
 ## Versions
 
+### 0.0.3-beta
+
+- Grid import can be capped, and the plan respects the cap.
+- New sensors are backfilled with the last 14 days from Home Assistant – the load forecast no longer starts from scratch.
+- Batteries with separate charge and discharge inputs can now be controlled fully.
+- The overview shows measured values for the current day instead of totals across the planning horizon.
+- HEMSight keeps a record of what it predicted and when, making forecast accuracy verifiable.
+- Hot water limits are enforced in the plan and in live control alike.
+- Plus around fifty fixes across planning, battery control, integrations and setup.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.2-beta
 
 - Fronius Wattpilot is now available as a direct integration.

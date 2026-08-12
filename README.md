@@ -68,6 +68,18 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.3-beta
+
+- Der Netzbezug lässt sich hart begrenzen, und der Plan hält die Grenze ein.
+- Neue Sensoren bekommen beim Einrichten die letzten 14 Tage aus Home Assistant – die Lastprognose fängt nicht mehr bei null an.
+- Speicher mit getrennten Lade- und Entlade-Eingängen lassen sich vollständig steuern.
+- Die Übersicht zeigt gemessene Tageswerte statt Summen über den Planungszeitraum.
+- HEMSight hält fest, was es wann vorhergesagt hat, und macht die Treffgenauigkeit nachvollziehbar.
+- Warmwasser-Grenzwerte greifen im Plan und in der Live-Steuerung gleichermaßen.
+- Dazu rund fünfzig behobene Fehler in Planung, Speicher-Steuerung, Integrationen und Einrichtung.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.2-beta
 
 - Fronius Wattpilot ist jetzt als direkte Integration verfügbar.
