@@ -4,7 +4,7 @@
   <strong>Home energy manager – plans your electricity and switches your devices</strong>
 </p>
 
-<p align="center"><img src="https://img.shields.io/badge/version-0.0.3--beta-blue.svg" alt="Version"> <img src="https://img.shields.io/badge/status-early%20beta-orange.svg" alt="Status"> <a href="LICENSE"><img src="https://img.shields.io/badge/license-proprietary-green.svg" alt="License"></a> <img src="https://img.shields.io/badge/runs%20on-Docker%20%7C%20Home%20Assistant-lightgrey.svg" alt="Runs on"></p>
+<p align="center"><img src="https://img.shields.io/badge/version-0.0.4--beta-blue.svg" alt="Version"> <img src="https://img.shields.io/badge/status-early%20beta-orange.svg" alt="Status"> <a href="LICENSE"><img src="https://img.shields.io/badge/license-proprietary-green.svg" alt="License"></a> <img src="https://img.shields.io/badge/runs%20on-Docker%20%7C%20Home%20Assistant-lightgrey.svg" alt="Runs on"></p>
 
 <p align="center"><strong><a href="https://hemsight.de">hemsight.de</a></strong> – all features at a glance and the full manual</p>
 
