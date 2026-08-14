@@ -138,13 +138,13 @@ devices, add `docker compose --profile eebus up -d`.
 Your settings end up in `data/` next to the `compose.yaml`, or under `/data` with the Home
 Assistant app. That directory belongs in your backup.
 
-A version number keeps its content forever, corrections get a new one. To update, download
-the Compose file again – it carries the new number – and run `docker compose pull && docker
-compose up -d`.
+To update, `docker compose pull && docker compose up -d` is enough – the Compose file picks
+up the newest release on its own, there is no need to download it again.
 
-If you'd rather pin the version yourself, or set the key that encrypts your credentials,
-put a `.env` next to it; the template with all the explanations is [here](.env.example).
-It isn't required.
+If you'd rather stay on one release, or set the key that encrypts your credentials, put a
+`.env` next to it; the template with all the explanations is [here](.env.example). It isn't
+required. If a version number from an earlier install is still in there, you stay on it
+until you change or remove that line.
 
 ## Testers wanted!
 

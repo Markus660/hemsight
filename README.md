@@ -138,13 +138,15 @@ EEBus-Geräte kommt noch `docker compose --profile eebus up -d` dazu.
 Deine Einstellungen landen in `data/` neben der `compose.yaml`, bei der Home-Assistant-App
 unter `/data`. Das Verzeichnis gehört in deine Sicherung.
 
-Eine Versionsnummer behält für immer ihren Stand, Korrekturen bekommen eine neue. Zum
-Aktualisieren die Compose-Datei noch einmal herunterladen – darin steht die neue Nummer –
-und `docker compose pull && docker compose up -d` laufen lassen.
+Zum Aktualisieren genügt `docker compose pull && docker compose up -d` – die Compose-Datei
+holt von sich aus die neueste Ausgabe, die Datei selbst musst du nicht noch einmal
+herunterladen.
 
-Wer die Version selbst festhalten oder den Schlüssel für die verschlüsselten Zugangsdaten
-selbst vergeben will, legt daneben eine `.env` an; die Vorlage mit allen Erklärungen liegt
-[hier](.env.example). Nötig ist sie nicht.
+Wer auf einer bestimmten Ausgabe bleiben will oder den Schlüssel für die verschlüsselten
+Zugangsdaten selbst vergeben möchte, legt daneben eine `.env` an; die Vorlage mit allen
+Erklärungen liegt [hier](.env.example). Nötig ist sie nicht. Steht dort schon eine
+Versionsnummer aus einer früheren Installation, bleibst du darauf stehen, bis du die Zeile
+änderst oder entfernst.
 
 ## Tester gesucht!
 

@@ -1,7 +1,8 @@
 # HEMSight – installation via Docker Compose.
 #
-# The images come prebuilt from the GitHub container registry. Nothing is compiled here;
-# which version runs is set in the .env.
+# The images come prebuilt from the GitHub container registry. Nothing is compiled here.
+# By default you get the newest release, so "docker compose pull && docker compose up -d"
+# is all an update takes. To stay on one version, pin it in the .env.
 #
 # Three things are best left alone unless you have a good reason:
 #   - The service has to be called "backend". The web interface talks to it under exactly
@@ -13,7 +14,7 @@
 
 services:
   backend:
-    image: ghcr.io/markus660/hemsight-backend:${HEMSIGHT_VERSION:-0.0.4-beta}
+    image: ghcr.io/markus660/hemsight-backend:${HEMSIGHT_VERSION:-latest}
     container_name: ${HEMSIGHT_STACK_PREFIX:-hemsight}-backend
     restart: unless-stopped
     # Ohne .env startet HEMSight trotzdem: jeder Wert hier hat einen Standard, und der
@@ -43,7 +44,7 @@ services:
   # The certificate in ./data/eebus has to survive. Lose it and HEMSight introduces itself
   # as a stranger to every paired device, so each one has to trust it again.
   eebus:
-    image: ghcr.io/markus660/hemsight-eebus:${HEMSIGHT_VERSION:-0.0.4-beta}
+    image: ghcr.io/markus660/hemsight-eebus:${HEMSIGHT_VERSION:-latest}
     container_name: ${HEMSIGHT_STACK_PREFIX:-hemsight}-eebus
     restart: unless-stopped
     profiles: ["eebus"]
@@ -65,7 +66,7 @@ services:
     # Untested, because there is no EEBus device here – reports are welcome.
 
   frontend:
-    image: ghcr.io/markus660/hemsight-frontend:${HEMSIGHT_VERSION:-0.0.4-beta}
+    image: ghcr.io/markus660/hemsight-frontend:${HEMSIGHT_VERSION:-latest}
     container_name: ${HEMSIGHT_STACK_PREFIX:-hemsight}-frontend
     restart: unless-stopped
     env_file:
