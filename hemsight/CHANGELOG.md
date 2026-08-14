@@ -1,5 +1,63 @@
 # Changelog
 
+## 0.0.4-beta
+
+### Neu
+
+- Speicherpläne bleiben auch bei konfigurierten Ladeprofilen sauber steuerbar – Überschuss wird korrekt exportiert oder abgeregelt, Netzbezug neu berechnet.
+
+- Probleme mit der Datenlage (abgelehnte Zugangsdaten, tote Quelle, fehlender Sensor) melden sich jetzt als eigene Benachrichtigung statt im Log unterzugehen.
+
+- Flexible Verbraucher lassen sich direkt auf der Betriebsseite an- und ausschalten.
+
+### Verbessert
+
+- Das Betriebslog zeigt jeden Hinweis einzeln, übersetzt und nach Dringlichkeit sortiert.
+
+- Die Preisseite zeigt jetzt den wirklich hinterlegten Zugang, statt fälschlich „kein Token" zu melden.
+
+- Ausgefallene Temperatur- oder Wetterdaten der Verbrauchsprognose werden jetzt angezeigt statt versteckt.
+
+### Behoben
+
+- Ein abgelehntes Speichern im Assistenten nennt jetzt überall den Grund und das betroffene Feld.
+
+- Ein leer gelassenes Zahlenfeld wird nicht mehr als 0 gespeichert.
+
+- Der Preisschritt zeigt nach einem Moduswechsel wieder den eigenen gespeicherten Preis.
+
+- Kurze Datenaussetzer lösen erst beim zweiten Mal eine Meldung aus, nicht mehr sofort nachts.
+
+- Kia UVO / Hyundai Bluelink klopft nach abgelehnter Anmeldung nicht mehr alle fünf Minuten an.
+
+- Spülmaschine und Waschmaschine melden bei langen Programmen wieder „fertig" statt „Laufzeit überschritten".
+
+- Eine wiederholte Meldung blockiert nicht mehr das ganze Stundenkontingent.
+
+- Ein Zugangsbefund erscheint jetzt am Schritt im Assistenten, der ihn beheben kann.
+
+- Ein fertiges Gerät meldet sich nur noch einmal.
+
+- Ein einzelner überschriebener Zugang wirft eine eingerichtete Anlage nicht mehr in die Einrichtung zurück.
+
+- Ein überschriebener Zugang wird benannt und kann nicht mehr versehentlich entstehen.
+
+- Ein einzelner überschriebener Zugang blockiert nicht mehr die gesamte Zugangsdaten-Umstellung beim Start.
+
+- Fällt Home Assistant beim Standort-Abruf aus, wird das jetzt gemeldet.
+
+- Bestätigte Geräteabschlüsse werden zuverlässig einmal gemeldet.
+
+- Die Übersicht zeigt die gemessene Hauslast und aktualisiert Tageswerte ohne Planlauf.
+
+- Der Assistent behält Einstellungen jetzt auch bei wiederholten Durchläufen.
+
+- Ein beschädigter Plan-Lauf legt die Instanz nicht mehr komplett lahm.
+
+- Fehler aus Home Assistant erscheinen übersetzt statt als englischer Rohtext.
+
+- Ein nicht lesbarer Kalender einer planbaren Last wird jetzt auch auf dem lernenden Weg richtig gemeldet.
+
 ## 0.0.3-beta
 
 ### Neu
