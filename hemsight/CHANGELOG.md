@@ -1,5 +1,45 @@
 # Changelog
 
+## 0.0.5-beta
+
+### Neu
+
+- PV-Ertrag hinter einem DC-gekoppelten Speicher wird jetzt automatisch erkannt und korrekt auf PV-Erzeugung und Hausverbrauch verteilt.
+
+### Verbessert
+
+- Löschen ist jetzt sowohl direkt an der jeweiligen Gerätekarte als auch in der aufklappbaren Verwaltung möglich.
+
+- Jede In-App-Feedbackart (Fehler, Wunsch, Idee, Sonstiges) enthält jetzt dasselbe anonymisierte Diagnosepaket (zur besseren Analyse).
+
+- Bei der Docker-Installation reicht zum Aktualisieren jetzt `docker compose pull && docker compose up -d` – die Compose-Datei holt sich selbst die neueste Version, eine feste Versionsnummer muss nicht mehr von Hand nachgezogen werden.
+
+### Behoben
+
+- Die PV-Prognose läuft der Sonne nicht mehr eine Viertelstunde hinterher.
+
+- Die Windgeschwindigkeit der Wetterprognose wird jetzt in der richtigen Einheit gerechnet.
+
+- Tageswerte bleiben beim laufenden Viertelstundenintervall stabil.
+
+- Batterierichtung und abgeleitete Hauslast werden zuverlässig angezeigt.
+
+- PV- und Speicherzuordnungen bleiben beim Öffnen und Speichern vollständig erhalten.
+
+- Laufende Warmwasserblöcke überleben eine Neuplanung.
+
+- Ergebnislose Solverläufe übernehmen nicht mehr die Steuerung.
+
+- Ein zufälliges 30-Sekunden-Solverergebnis blockiert das Speichern der Konfiguration nicht mehr.
+
+- Ein bereits überschrittener Maximal- oder Zielwert blockiert den Betrieb nicht mehr pauschal.
+
+- Der PV-Assistent löscht vorhandene Dachflächen nicht mehr still.
+
+- Nacht-Ladegrenze und PV-Ladeschwelle des Fahrzeugs gelten jetzt zuverlässig für den angezeigten Plan.
+
+- Der zuletzt geöffnete Bereich bleibt im Home-Assistant-Add-on erhalten.
+
 ## 0.0.4-beta
 
 ### Neu
