@@ -2,10 +2,6 @@
 
 ## 0.0.5-beta
 
-### Neu
-
-- PV-Ertrag hinter einem DC-gekoppelten Speicher wird jetzt automatisch erkannt und korrekt auf PV-Erzeugung und Hausverbrauch verteilt.
-
 ### Verbessert
 
 - Löschen ist jetzt sowohl direkt an der jeweiligen Gerätekarte als auch in der aufklappbaren Verwaltung möglich.
@@ -15,6 +11,8 @@
 - Bei der Docker-Installation reicht zum Aktualisieren jetzt `docker compose pull && docker compose up -d` – die Compose-Datei holt sich selbst die neueste Version, eine feste Versionsnummer muss nicht mehr von Hand nachgezogen werden.
 
 ### Behoben
+
+- PV-Ertrag hinter einem DC-gekoppelten Speicher wird jetzt automatisch erkannt und korrekt auf PV-Erzeugung und Hausverbrauch verteilt.
 
 - Die PV-Prognose läuft der Sonne nicht mehr eine Viertelstunde hinterher.
 

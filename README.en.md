@@ -71,8 +71,8 @@ devices are already there.
 
 ### 0.0.5-beta
 
-- PV yield behind a DC-coupled battery is now detected automatically and split correctly between generation and household consumption.
 - Deleting a device now works both directly on its card and in the collapsible management list.
+- PV yield behind a DC-coupled battery is now detected automatically and split correctly between generation and household consumption.
 - The PV forecast no longer lags the sun by a quarter hour, and wind speed is now used in the correct unit.
 - Battery direction, derived household load and daily totals are now shown reliably.
 - Plus about a dozen further fixes across planning, setup and live control.
