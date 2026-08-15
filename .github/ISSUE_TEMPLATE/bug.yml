@@ -15,7 +15,7 @@ body:
     attributes:
       label: Version
       description: Steht in der App unter dem Namen in der Seitenleiste.
-      placeholder: "0.0.2-alpha"
+      placeholder: "0.0.5-beta"
     validations:
       required: true
   - type: dropdown
