@@ -68,6 +68,16 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.5-beta
+
+- PV-Ertrag hinter einem DC-gekoppelten Speicher wird automatisch erkannt und korrekt auf Erzeugung und Hausverbrauch verteilt.
+- Löschen geht jetzt sowohl direkt an der Gerätekarte als auch in der aufklappbaren Verwaltung.
+- Die PV-Prognose läuft der Sonne nicht mehr eine Viertelstunde hinterher, und die Windgeschwindigkeit wird in der richtigen Einheit gerechnet.
+- Batterierichtung, abgeleitete Hauslast und Tageswerte werden zuverlässig angezeigt.
+- Dazu rund ein Dutzend weiterer Fehlerbehebungen in Planung, Einrichtung und Live-Steuerung.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.3-beta
 
 - Der Netzbezug lässt sich hart begrenzen, und der Plan hält die Grenze ein.

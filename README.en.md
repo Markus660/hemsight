@@ -69,6 +69,16 @@ devices are already there.
 
 ## Versions
 
+### 0.0.5-beta
+
+- PV yield behind a DC-coupled battery is now detected automatically and split correctly between generation and household consumption.
+- Deleting a device now works both directly on its card and in the collapsible management list.
+- The PV forecast no longer lags the sun by a quarter hour, and wind speed is now used in the correct unit.
+- Battery direction, derived household load and daily totals are now shown reliably.
+- Plus about a dozen further fixes across planning, setup and live control.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.3-beta
 
 - Grid import can be capped, and the plan respects the cap.
