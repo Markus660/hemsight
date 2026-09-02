@@ -68,6 +68,18 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.6-beta
+
+- Der Strompreis darf jetzt aus jedem Home-Assistant-Sensor kommen, eigene Preislisten lassen sich als CSV- oder JSON-Datei einlesen, und Ostrom wird mit dem eigenen Kundenzugang angebunden.
+- HEMSight plant jetzt auch ohne Hausspeicher – eine PV-Anlage mit Wallbox oder nur schaltbaren Verbrauchern bekommt einen vollwertigen Plan.
+- Zwei ungleiche Speicher oder ein Speicher mit erhöhter Untergrenze machen den Plan nicht mehr unmöglich.
+- Ein schaltbarer Verbraucher hält seine eingestellte Tageslaufzeit jetzt wirklich ein.
+- Übersicht und Minutenoptimierung nennen einzeln, warum HEMSight noch nicht steuert, und führen zu der Einstellung, die es löst.
+- Die Phasenwahl beim E-Auto-Laden wirkt jetzt auf Vorschau, geplanten Fahrplan und Live-Steuerung.
+- Dazu rund vierzig weitere Fehlerbehebungen in Planung, flexiblen Verbrauchern, Einrichtung und Integrationen.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.5-beta
 
 - Löschen geht jetzt sowohl direkt an der Gerätekarte als auch in der aufklappbaren Verwaltung.
@@ -75,6 +87,18 @@ Geräte da schon hängen.
 - Die PV-Prognose läuft der Sonne nicht mehr eine Viertelstunde hinterher, und die Windgeschwindigkeit wird in der richtigen Einheit gerechnet.
 - Batterierichtung, abgeleitete Hauslast und Tageswerte werden zuverlässig angezeigt.
 - Dazu rund ein Dutzend weiterer Fehlerbehebungen in Planung, Einrichtung und Live-Steuerung.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
+### 0.0.4-beta
+
+- Flexible Verbraucher lassen sich direkt auf der Betriebsseite an- und ausschalten.
+- Probleme mit der Datenlage – abgelehnte Zugangsdaten, eine tote Quelle, ein fehlender Sensor – melden sich jetzt als eigene Benachrichtigung, statt im Log unterzugehen.
+- Das Betriebslog zeigt jeden Hinweis einzeln, übersetzt und nach Dringlichkeit sortiert.
+- Ein abgelehntes Speichern im Assistenten nennt jetzt Grund und betroffenes Feld; ein leer gelassenes Zahlenfeld wird nicht mehr als 0 gespeichert.
+- Spülmaschine und Waschmaschine melden bei langen Programmen wieder „fertig" statt „Laufzeit überschritten".
+- Ein einzelner überschriebener Zugang wirft eine eingerichtete Anlage nicht mehr in die Einrichtung zurück.
+- Dazu rund zwanzig weitere Fehlerbehebungen in Benachrichtigungen, Einrichtung und Datenhaltung.
 
 Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
 

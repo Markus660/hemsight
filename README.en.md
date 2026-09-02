@@ -69,6 +69,18 @@ devices are already there.
 
 ## Versions
 
+### 0.0.6-beta
+
+- Electricity prices can now come from any Home Assistant sensor, your own price lists can be imported as a CSV or JSON file, and Ostrom is connected with your own customer credentials.
+- HEMSight now plans without a home battery too – a solar system with a wallbox, or with switchable loads only, gets a full plan.
+- Two unequal batteries, or a battery with a raised lower limit, no longer make the plan impossible.
+- A switchable load now really keeps to its configured daily runtime.
+- Overview and minute optimisation now name each reason why HEMSight is not controlling yet, and lead to the setting that resolves it.
+- The phase selection for EV charging now takes effect in the preview, the planned schedule and live control.
+- Plus around forty further fixes across planning, flexible loads, setup and integrations.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.5-beta
 
 - Deleting a device now works both directly on its card and in the collapsible management list.
@@ -76,6 +88,18 @@ devices are already there.
 - The PV forecast no longer lags the sun by a quarter hour, and wind speed is now used in the correct unit.
 - Battery direction, derived household load and daily totals are now shown reliably.
 - Plus about a dozen further fixes across planning, setup and live control.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
+### 0.0.4-beta
+
+- Flexible loads can be switched on and off directly on the operations page.
+- Data problems – rejected credentials, a dead source, a missing sensor – now raise their own notification instead of getting lost in the log.
+- The operations log shows every notice separately, translated and sorted by urgency.
+- A rejected save in the setup assistant now names the reason and the field; a number field left empty is no longer stored as 0.
+- Dishwashers and washing machines report "finished" again on long programmes, instead of "runtime exceeded".
+- A single overwritten credential no longer throws a configured system back into setup.
+- Plus around twenty further fixes across notifications, setup and data storage.
 
 The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
 
