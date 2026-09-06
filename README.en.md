@@ -69,6 +69,18 @@ devices are already there.
 
 ## Versions
 
+### 0.0.7-beta
+
+- The plan now covers two days instead of three; the setting for it is gone.
+- When the car charges in PV mode, it now gets the solar surplus before the home battery does.
+- Large systems get a plan again: if the fine-grained run does not finish, HEMSight continues with a coarser one instead of giving up.
+- Anker devices can be read directly on the local network, without an Anker account and without Home Assistant.
+- Batteries that support it now charge from the grid steplessly instead of all or nothing.
+- If a device points at a Home Assistant entity that does not exist, HEMSight says so and lets you fix it in the settings.
+- Plus around thirty further fixes across planning, batteries, charge planning, hot water and setup.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.6-beta
 
 - Electricity prices can now come from any Home Assistant sensor, your own price lists can be imported as a CSV or JSON file, and Ostrom is connected with your own customer credentials.

@@ -68,6 +68,18 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.7-beta
+
+- Der Plan geht nur noch zwei Tage weit statt drei; die Einstellung dazu entfällt.
+- Lädt das Auto im PV-Modus, bekommt es den Sonnenüberschuss jetzt vor dem Hausakku.
+- Große Anlagen bekommen wieder einen Plan: Kommt die feine Rechnung nicht durch, rechnet HEMSight gröber weiter statt gar nicht.
+- Anker-Geräte lassen sich direkt im Heimnetz auslesen, ohne Anker-Konto und ohne Home Assistant.
+- Speicher, die es können, laden stufenlos aus dem Netz statt nur ganz oder gar nicht.
+- Zeigt ein Gerät auf eine Home-Assistant-Entity, die es nicht gibt, sagt HEMSight das und lässt es in den Einstellungen geradebiegen.
+- Dazu rund dreißig weitere Fehlerbehebungen in Planung, Speichern, Ladeplanung, Warmwasser und Einrichtung.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.6-beta
 
 - Der Strompreis darf jetzt aus jedem Home-Assistant-Sensor kommen, eigene Preislisten lassen sich als CSV- oder JSON-Datei einlesen, und Ostrom wird mit dem eigenen Kundenzugang angebunden.
