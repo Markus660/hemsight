@@ -1,5 +1,71 @@
 # Changelog
 
+## 0.0.9-beta
+
+### Wichtig
+
+**Im Home-Assistant-Add-on waren Planautomatik und Messwertaufzeichnung ab Werk abgeschaltet.** Wer HEMSight als Add-on betreibt, bekam nach der Einrichtung keine selbst gerechneten Pläne und keine aufgezeichneten Messwerte, ohne jeden Hinweis darauf. Auf einer betroffenen Anlage war der letzte Plan fast sechs Tage alt. Diese Version holt beides beim ersten Start zurück. Nur wer unter „Technische Details" schon einmal gespeichert hat, legt die zwei Schalter selbst um. Die Docker-Installation war nicht betroffen.
+
+### Neu
+
+#### Preis und Tarif
+
+- Der Börsenpreis darf jetzt aus Home Assistant kommen. Wer dort EPEX Spot, Nord Pool, ENTSO-E oder eine verwandte Integration hat, wählt deren Sensor aus, ohne eigenen Zugang und Schlüssel.
+
+- Vor dem Speichern zeigt „Reihe prüfen", was HEMSight aus dem Sensor liest: Form, Einheit, Preisart und Zeiträume. Eine Einheit, die sich nicht ablesen lässt, wird erfragt statt geraten.
+
+- Deckt deine Quelle nur heute und morgen ab, füllt HEMSight den Rest des Planungszeitraums wie bisher selbst auf.
+
+#### Einstellungen
+
+- Planautomatik und Messwertaufzeichnung lassen sich unter „Technische Details" ein- und ausschalten.
+
+### Verbessert
+
+#### Live-Steuerung
+
+- Ein Neustart von Home Assistant legt die Steuerung nicht mehr lahm. Fielen die Messwerte kurz aus, schalteten fünf Minuten später Batterie, Wallbox und alle Verbraucher ab. Jetzt trägt der letzte gute Plan darüber hinweg, bis zwei Läufe hintereinander scheitern oder er älter als fünfunddreißig Minuten wird.
+
+- Fehlt der Netzbezug oder der Ladestand des Speichers, hält die Steuerung weiterhin sofort an.
+
+- Während eines solchen Ausfalls kommt keine Meldung „Aktion erforderlich" mehr für Geräte, an denen nichts kaputt ist. Ein Ausfall, der länger dauert, meldet sich weiterhin.
+
+#### Planung
+
+- Ein eingeplanter Gerätestart wandert nicht mehr grundlos durch den Tag. Ein Umzug kostet jetzt umso mehr, je weiter er geht: Der Geschirrspüler rückt für ein wirklich günstigeres Fenster weiterhin, für kleine Schwankungen in der Vorhersage nicht mehr.
+
+#### Vorhersage
+
+- Die Vorhersage für deine PV-Anlage wechselt nicht mehr bei jeder kleinen Störung ihre Quelle. Vorher sprang der erwartete Ertrag dabei um 20 bis 32 Prozent.
+
+- Wechselt sie doch die Quelle, steht der Grund jetzt im Plan.
+
+#### Einstellungen
+
+- Die Betriebstakt-Maske speichert nur noch das, was du wirklich geändert hast. Wer dort ein Intervall anpasste, schrieb bisher die übrigen Werte mit fest.
+
+### Behoben
+
+#### Einstellungen
+
+- Eine Wallbox ließ sich weder anlegen noch ändern, und unter „Steuerpfade" kam kein neuer Aktor zustande. Beides brach beim Speichern mit „Nicht unterstützte Geräteeinstellung" ab.
+
+#### Geräte
+
+- Die Fertigmeldung am Ende eines Gerätelaufs gilt jetzt für jeden Verbraucher, auch für den Warmwasserspeicher. Bisher war sie nur bei Geräten mit eigener Statusmeldung zuverlässig.
+
+#### Diagramme
+
+- Plan-, Kosten-, Ladestands- und Statuswerte gingen auf neueren InfluxDB-Servern spurlos verloren. In den Diagrammen fehlte alles außer den Geräteverläufen, ohne jede Fehlermeldung.
+
+#### Diagnose
+
+- Systeminfo und Diagnosepaket nennen jetzt die Konfigurationsdatei, die wirklich geladen wurde. Auf jeder Add-on-Installation stand dort die Beispieldatei.
+
+#### Sprache
+
+- Die Bestätigung nach dem Speichern des Betriebstakts erscheint in der Sprache der Oberfläche. Auf Englisch stand dort ein deutscher Satz.
+
 ## 0.0.8-beta
 
 ### Wichtig

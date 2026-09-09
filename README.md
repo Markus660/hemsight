@@ -68,6 +68,18 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.9-beta
+
+- Im Add-on waren Planautomatik und Messwertaufzeichnung ab Werk abgeschaltet; diese Version holt beides zurück.
+- Der Börsenpreis darf jetzt aus einer Home-Assistant-Integration kommen, ohne eigenen Zugang und Schlüssel.
+- Ein Neustart von Home Assistant legt die Steuerung nicht mehr lahm.
+- Die Vorhersage für die PV-Anlage wechselt nicht mehr bei jeder kleinen Störung ihre Quelle.
+- Ein eingeplanter Gerätestart wandert nicht mehr grundlos durch den Tag.
+- Eine Wallbox ließ sich weder anlegen noch ändern; das geht wieder.
+- Plan-, Kosten- und Statuswerte gingen auf neueren InfluxDB-Servern spurlos verloren.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.8-beta
 
 - Der neue Planrechner war im Add-on und im Docker-Abbild gar nicht enthalten; jetzt ist er drin, und die Pläne werden besser und schneller.

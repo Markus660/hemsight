@@ -69,6 +69,18 @@ devices are already there.
 
 ## Versions
 
+### 0.0.9-beta
+
+- In the add-on, automatic planning and measurement recording shipped switched off; this version brings both back.
+- The exchange price may now come from a Home Assistant integration, with no separate account or key.
+- A restart of Home Assistant no longer paralyses control.
+- The forecast for your PV system no longer switches its source on every small glitch.
+- A scheduled appliance start no longer drifts through the day without reason.
+- A wallbox could neither be created nor edited; that works again.
+- Plan, cost and status values were silently lost on newer InfluxDB servers.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.8-beta
 
 - The new plan solver was not included in the add-on or the Docker image at all; it is now, and plans get better and faster.
