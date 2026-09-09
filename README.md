@@ -68,6 +68,18 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.8-beta
+
+- Der neue Planrechner war im Add-on und im Docker-Abbild gar nicht enthalten; jetzt ist er drin, und die Pläne werden besser und schneller.
+- In mehreren Lagen kam gar kein Plan zustande: bei einem Speicher über seiner Ladegrenze, bei einem gedrosselten Vorrangspeicher und bei einem Auto mit mehreren Speichern.
+- Der Plan sagt jetzt, ob er wirklich der beste ist. Kommt keiner zustande, steht dabei, was sich in die Quere kommt.
+- Die Live-Seite nennt zu jedem Gerät einzeln, welche Voraussetzung der Steuerung noch fehlt.
+- Geschirrspüler und Poolpumpe laufen wieder in der Sonne, auch wenn das Auto ansteckt.
+- Texte, die HEMSight unverändert vom Server durchgereicht hat, kommen jetzt in der eingestellten Sprache an.
+- Dazu rund zwanzig weitere Fehlerbehebungen in Planung, Speichern, Ladeplanung und Geräten.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.7-beta
 
 - Der Plan geht nur noch zwei Tage weit statt drei; die Einstellung dazu entfällt.

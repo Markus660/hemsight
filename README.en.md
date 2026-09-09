@@ -69,6 +69,18 @@ devices are already there.
 
 ## Versions
 
+### 0.0.8-beta
+
+- The new plan solver was not included in the add-on or the Docker image at all; it is now, and plans get better and faster.
+- Several situations produced no plan at all: a battery above its charge limit, a throttled primary battery, and a car alongside several batteries.
+- The plan now says whether it really is the best one. When none is found, it says what is in conflict.
+- The live page names, for each device individually, which precondition control is still missing.
+- Dishwasher and pool pump run in the sun again, even while the car is plugged in.
+- Texts that HEMSight passed through from the server unchanged now arrive in the language you selected.
+- Plus around twenty further fixes across planning, batteries, charge planning and devices.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.7-beta
 
 - The plan now covers two days instead of three; the setting for it is gone.
