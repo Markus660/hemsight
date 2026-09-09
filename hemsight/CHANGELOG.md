@@ -1,5 +1,91 @@
 # Changelog
 
+## 0.0.8-beta
+
+### Wichtig
+
+**Der neue Planrechner war in den fertigen Abbildern gar nicht drin.** Das ist ein Fehler von mir: Seit 0.0.7 plant HEMSight mit einem schnelleren Verfahren, aber ein Programmteil davon hat es weder ins Home-Assistant-Add-on noch ins Docker-Abbild geschafft. HEMSight ist trotzdem gestartet und hat geplant, nur eben mit dem alten, langsamen Ersatz. Die Pläne sollten ab jetzt besser und schneller werden. Was das ausmacht: Auf einer Anlage mit zwei Speichern und zwei Tagen Vorausschau lag der Ersatz 1,80 € neben dem besten Plan, das neue Verfahren 0,04 €. Bei größeren Anlagen kam manchmal gar kein Plan heraus. Wer HEMSight selbst aus den Quellen baut, war nie betroffen.
+
+### Neu
+
+#### Planung
+
+- Der Plan sagt jetzt, ob er wirklich der beste ist oder ob HEMSight nur die Zeit ausging. Hörte die Rechnung vorzeitig auf, steht auch da, warum. Zu sehen auf der Planungsseite.
+
+- HEMSight hört früher auf zu rechnen, wenn nichts Besseres mehr kommt. Ein Planlauf darf weiterhin bis zu vier Minuten dauern, aber wenn davon eine Minute ohne Verbesserung vergeht, ist Schluss. Der beste bis dahin gefundene Plan bleibt und steuert weiter. An der echten Anlage gemessen: 123 statt 240 Sekunden, bei genau demselben Plan. Beide Zeiten lassen sich einstellen.
+
+- Kommt gar kein Plan zustande, steht jetzt dabei, was sich in die Quere kommt. Vorher stand da nur „keine Lösung", und ohne Zugriff auf die Anlage war nicht mehr herauszufinden, woran es lag.
+
+#### Live-Steuerung
+
+- Die Live-Seite sagt zu jedem einzelnen Gerät, was der Steuerung noch fehlt. Diese Auskunft gab es bisher nur für die Anlage als Ganzes. Angezeigt wird nur, was wirklich im Weg steht.
+
+#### Fehlerberichte
+
+- Ein Fehlerbericht nimmt den Planlauf mit: wie er ausging, warum er aufhörte, wie weit er vom besten Plan weg war. Bei einem Problem mit der Planung war ein Bericht ohne das nicht zu gebrauchen.
+
+### Verbessert
+
+#### Planung
+
+- Die Planung ist schneller. Sie hat vieles doppelt gerechnet und Entscheidungen mitgeschleppt, die nichts entschieden haben. Für denselben Plan braucht sie jetzt 96 statt 195 Sekunden.
+
+#### Warmwasser
+
+- Der Warmwasserspeicher wird genauer gerechnet. Er bekam pauschal 20 Kelvin Spielraum nach oben und unten; jetzt zählt, was er in der Zeit überhaupt erreichen kann. Dabei kommen bessere Pläne heraus, in derselben Zeit.
+
+- Ab dem zweiten Tag plant HEMSight die Wärme in Stundenschritten statt in Viertelstunden. So weit voraus gibt der Plan sowieso nur die Richtung vor.
+
+### Behoben
+
+#### Planung
+
+- Steht ein Speicher über seiner eingestellten Maximal-Ladung, kam gar kein Plan mehr zustande und die Steuerung fiel auf den Ersatzplan zurück. Das passiert schneller als man denkt, etwa wenn die Grenze saisonal unter den aktuellen Ladestand rutscht. Betroffen waren Anlagen mit einem Speicher, zwei Speichern im Ausgleichsmodus und zwei Speichern mit fester Reihenfolge.
+
+- War der vorrangige Speicher gerade gedrosselt, gab es ebenfalls keinen Plan. HEMSight hat ihn an seiner vollen Ladeleistung gemessen, hielt ihn deshalb nie für ausgeschöpft, und der zweite Speicher kam nie an die Reihe.
+
+- Anlagen mit Auto und mehreren Speichern bekamen bei voller Ausstattung teils gar keinen Plan mehr. Die Rechnung lief in ihre vier Minuten, ohne überhaupt eine Lösung zu finden.
+
+- Stand im letzten Plan ein Lademodus fürs Auto, den HEMSight nicht kennt, ist der ganze Planlauf gescheitert, ohne erkennbaren Grund. Jetzt bleibt nur diese eine Viertelstunde ohne Ladung, und der Grund steht in den Planhinweisen.
+
+- Anlagen ohne schaltbare Geräte, ohne Wärmeplanung und ohne Speicher haben nie gesteuert. Ihr Plan galt immer als zu teuer, obwohl er nachweislich der beste war. Dasselbe passierte kurz nach einem Neustart, solange ein Speicher noch keinen Ladestand meldete.
+
+- Geschirrspüler und Poolpumpe laufen wieder in der Sonne, auch wenn das Auto ansteckt. Bisher sind sie bei angestecktem Auto in billige Netzstunden ausgewichen; eine Poolpumpe lief dadurch nur noch in 10 von 18 Sonnenstunden. Am Vorrang ändert sich nichts: Haus und schaltbare Geräte kommen weiter vor dem Auto.
+
+- Lief die Rechnung in ihre Zeit und kam trotzdem ein brauchbarer Plan heraus, hat HEMSight das vergessen und beim nächsten Mal wieder vier Minuten verbrannt. Jetzt merkt es sich das und rechnet gleich gröber weiter. Die feine Rechnung wird stündlich noch einmal versucht.
+
+- Ob ein Plan am Zeitlimit entstand, hat HEMSight aus der Laufzeit geraten. Ein Lauf, der eine halbe Sekunde darunter blieb, galt als bester Plan. Jetzt zählt, was die Rechnung selbst dazu sagt. Die Qualitätsprüfung hing an derselben Schätzung und fragt jetzt ebenfalls nach.
+
+- Die neue Bremse gegen ergebnisloses Weiterrechnen hat zu früh zugeschlagen: Sie zählte schon die Vorbereitung als Stillstand. Auf einer gut ausgestatteten Anlage war damit nach anderthalb Minuten Schluss, nachdem HEMSight drei Möglichkeiten geprüft hatte statt einiger Tausend.
+
+- Manche Pläne standen als „bester Plan, 0,00 € Abstand" da, obwohl gar nichts gerechnet worden war. Solche Läufe zählen jetzt nicht mehr als Ergebnis.
+
+- Was die Rechnung ausgab, wurde ungeprüft zum Steuerplan. HEMSight rechnet jetzt nach, ob das Ergebnis alle Vorgaben einhält und ob die genannten Kosten stimmen. Passt etwas nicht, rechnet es mit dem zweiten Verfahren weiter.
+
+- Der letzte Plan dient der neuen Rechnung als Startpunkt. Der wurde regelmäßig komplett weggeworfen, sobald ein einziger Wert nicht mehr passte. Vier Auslöser dafür sind im laufenden Betrieb der Normalfall: ein Speicher über seiner Ladegrenze, ein Speicher, der voll in den Zeitraum startet, eine Wärmequelle mitten in ihrer Mindestlaufzeit, und Heizzonen mit zu kurzen Schaltzeiten. Jetzt fällt nur weg, was wirklich nicht passt.
+
+- Zum Planbeginn rechnet HEMSight jetzt mit dem gemessenen Ladestand statt mit dem, der eine Viertelstunde vorher erwartet wurde. Die beiden stimmen fast nie überein.
+
+- Bei Speichern, die Erzeugung und Entladung über denselben Anschluss führen, etwa der Anker Solarbank, hat HEMSight nie erkannt, dass sie schon mit voller Leistung laden. Der Einspeisung und der Abregelung fehlte damit eine ihrer drei Begründungen.
+
+- Bei älteren gespeicherten Plänen konnte „vorzeitig abgebrochen" stehen, wo nie ein Plan zustande gekommen war. Im schlimmsten Fall fiel dadurch die ganze Bewertung des Plans aus, nicht nur dieser eine Wert.
+
+- Ist für den Planungszeitraum nichts zu planen, sagt HEMSight das, statt mit einem internen Fehler abzubrechen.
+
+- „Regelbasierter Ersatzplan genutzt" nennt jetzt den Grund. Er lag die ganze Zeit im Plan, wurde nur nirgends angezeigt.
+
+#### Geräte
+
+- Ein Geschirrspüler, der im Standby mehr zieht als die Abschlussschwelle, galt nach dem Programm nicht als fertig. Seine Sitzung blieb offen, bis Stunden später die Notbremse kam, und statt „fertig" gab es eine Warnung. Die Schwelle liegt jetzt bei fünf Watt.
+
+- Meldet sich ein Gerät gegen Programmende abwechselnd als laufend und als fertig, sprang die Planungsseite zwischen „läuft" und „fertig" hin und her, und die eingeplante Zeit und die Tagesbilanz mit. Beim Trocknen zieht ein Spüler zu wenig, um am Strom erkannt zu werden; da war die Meldung des Geräts das Einzige, was blieb. HEMSight beruhigt sie jetzt genauso wie die Leistung.
+
+- Endete ein Gerätelauf und meldete sich das Gerät sofort wieder als bereit, konnte die Fertigmeldung ganz ausbleiben. Ob sie kam, war Zufall. Jetzt kommt sie, weiterhin genau einmal, und eine per Notbremse beendete Laufzeit meldet sich nicht zusätzlich als fertig.
+
+#### Sprache
+
+- Überall dort, wo HEMSight die Antwort des Servers unverändert durchgereicht hat, stand der Text auf Deutsch oder Englisch, egal welche Sprache eingestellt war.
+
 ## 0.0.7-beta
 
 ### Bitte vorher lesen
