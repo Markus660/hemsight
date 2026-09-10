@@ -1,5 +1,8 @@
 # Changelog
 
+Jede Version steht zuerst auf Deutsch, darunter auf Englisch.
+Each version appears in German first, followed by English.
+
 ## 0.0.9-beta
 
 ### Wichtig
@@ -65,6 +68,72 @@
 #### Sprache
 
 - Die Bestätigung nach dem Speichern des Betriebstakts erscheint in der Sprache der Oberfläche. Auf Englisch stand dort ein deutscher Satz.
+
+---
+
+### Important
+
+**In the Home Assistant add-on, automatic planning and measurement recording shipped switched off.** If you run HEMSight as an add-on, it calculated no plans on its own after setup and recorded no measurements, with nothing anywhere to tell you. On one affected system the last plan was almost six days old. This version brings both back on the first start. Only if you have saved something under „Technical details" before do you flip the two switches yourself. The Docker installation was not affected.
+
+### New
+
+#### Price and tariff
+
+- The exchange price may now come from Home Assistant. If you already run EPEX Spot, Nord Pool, ENTSO-E or a related integration, you pick its sensor, with no account and no key of your own.
+
+- Before saving, „Check series" shows what HEMSight reads from the sensor: format, unit, price type and periods. A unit that cannot be read is asked for instead of guessed.
+
+- If your source only covers today and tomorrow, HEMSight fills the rest of the planning horizon itself, as before.
+
+#### Settings
+
+- Automatic planning and measurement recording can be switched on and off under „Technical details".
+
+### Improved
+
+#### Live control
+
+- A restart of Home Assistant no longer paralyses control. When measurements dropped out briefly, battery, wallbox and every appliance switched off five minutes later. The last good plan now carries across that gap, until two runs fail in a row or it grows older than thirty-five minutes.
+
+- If grid import or the battery's state of charge is missing, control still stops immediately.
+
+- During such an outage, no „Action required" message arrives any more for devices that are perfectly fine. An outage that lasts longer still reports itself.
+
+#### Planning
+
+- A scheduled appliance start no longer drifts through the day without reason. Moving it now costs more the further it goes: the dishwasher still moves for a genuinely cheaper window, but no longer for small changes in the forecast.
+
+#### Forecast
+
+- The forecast for your PV system no longer switches its source on every small glitch. Before, the expected yield jumped by 20 to 32 percent whenever it did.
+
+- If it does switch source, the reason is now in the plan.
+
+#### Settings
+
+- The operating interval form now saves only what you actually changed. Adjusting one interval used to write the other values down with it.
+
+### Fixed
+
+#### Settings
+
+- A wallbox could neither be created nor edited, and no new actuator could be added under „Control paths". Both failed on saving with „Unsupported device setting".
+
+#### Devices
+
+- The finished message at the end of an appliance run now applies to every load, including the hot water tank. Until now it was only reliable for devices that report a status of their own.
+
+#### Charts
+
+- Plan, cost, state-of-charge and status values were silently lost on newer InfluxDB servers. Everything but the device traces was missing from the charts, with no error message at all.
+
+#### Diagnostics
+
+- System info and the diagnostics bundle now name the configuration file that was actually loaded. On every add-on installation they showed the example file.
+
+#### Language
+
+- The confirmation after saving the operating intervals appears in the language of the interface. In English it showed a German sentence.
 
 ## 0.0.8-beta
 

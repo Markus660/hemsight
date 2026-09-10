@@ -79,7 +79,7 @@ devices are already there.
 - A wallbox could neither be created nor edited; that works again.
 - Plan, cost and status values were silently lost on newer InfluxDB servers.
 
-The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory. From 0.0.9-beta on, every version is there in German first and in English below it.
 
 ### 0.0.8-beta
 
