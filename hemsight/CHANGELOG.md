@@ -3,6 +3,44 @@
 Jede Version steht zuerst auf Deutsch, darunter auf Englisch.
 Each version appears in German first, followed by English.
 
+## 0.0.10-beta
+
+### Behoben
+
+#### Speicher
+
+- Will der Plan die Hauslast nicht aus der Solaranlage decken, schickt HEMSight den Solarstrom jetzt richtig in den Speicher statt ins Haus. Bisher regelte die Batterie in diesen Stunden nach der Hauslast, also genau umgekehrt zum Plan.
+
+- Im Plan steht keine Netzladung von einem Watt mehr, wo gar nichts aus dem Netz geladen wird. Am Gerät kam dieses Watt nie an. Es stand dort nur, weil der Plan sonst nicht ausdrücken konnte, dass der Speicher einem festen Wert folgt.
+
+### Verbessert
+
+#### Planung
+
+- Für die Netzladung plant HEMSight nur noch Werte, die dein Speicher wirklich annimmt, je nach Gerät in Schritten von zehn oder hundert Watt. Krumme Werte wurden beim Stellen abgerundet. Auf manchen Anlagen hätte das eine Watt sogar den Betrieb lahmgelegt, wäre es wirklich gestellt worden.
+
+- Für Stunden, in denen nur Solarstrom in den Speicher geht und das Netz das Haus versorgt, steht jetzt ein eigener Grund im Plan: „Solarstrom in den Speicher, Haus aus dem Netz (Preisvorteil)." Vorher stand dort „PV-Überschuss in die Batterie." und die Preisentscheidung dahinter blieb unsichtbar.
+
+---
+
+### Fixed
+
+#### Storage
+
+- When the plan does not want house load covered from solar, HEMSight now sends the solar power into the battery instead of into the house. Before, the battery followed house load in those hours, the exact opposite of the plan.
+
+- The plan no longer shows grid charging of one watt where nothing is charged from the grid at all. That watt never reached a device. It was only there because the plan had no other way to say that the battery follows a fixed value.
+
+### Improved
+
+#### Planning
+
+- For grid charging, HEMSight now plans only values your battery really accepts, in steps of ten or a hundred watts depending on the device. Odd values were rounded down when they were set. On some systems that single watt would even have taken operation down, had it really been set.
+
+- For hours in which only solar power goes into the battery while the grid supplies the house, the plan now gives a reason of its own: „Solar into storage, house from the grid (price advantage)." It previously read „PV surplus into the battery." and said nothing about the price decision behind it.
+
+---
+
 ## 0.0.9-beta
 
 ### Wichtig

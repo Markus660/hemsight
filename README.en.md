@@ -69,6 +69,13 @@ devices are already there.
 
 ## Versions
 
+### 0.0.10-beta
+
+- When the plan does not want house load covered from solar, solar power now goes into the battery instead of into the house.
+- The plan no longer shows grid charging of one watt where nothing is charged from the grid at all.
+- For grid charging, HEMSight now plans only values the battery really accepts.
+- For hours in which only solar power goes into the battery, the plan now gives a reason of its own.
+
 ### 0.0.9-beta
 
 - In the add-on, automatic planning and measurement recording shipped switched off; this version brings both back.

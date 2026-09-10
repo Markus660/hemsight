@@ -68,6 +68,13 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.10-beta
+
+- Will der Plan die Hauslast nicht aus der Solaranlage decken, geht der Solarstrom jetzt in den Speicher statt ins Haus.
+- Im Plan steht keine Netzladung von einem Watt mehr, wo gar nichts aus dem Netz geladen wird.
+- Für die Netzladung plant HEMSight nur noch Werte, die der Speicher wirklich annimmt.
+- Für Stunden, in denen nur Solarstrom in den Speicher geht, nennt der Plan jetzt einen eigenen Grund.
+
 ### 0.0.9-beta
 
 - Im Add-on waren Planautomatik und Messwertaufzeichnung ab Werk abgeschaltet; diese Version holt beides zurück.
