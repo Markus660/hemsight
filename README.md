@@ -68,12 +68,26 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.11-beta
+
+- Die PV-Vorhersage lernt jetzt von deiner Anlage und rechnet mit vier Wettermodellen statt einem.
+- Sie merkt selbst, an welchem Sonnenstand die Anlage verschattet ist und ob Schnee oder Laub auf den Modulen liegt.
+- Home Assistant bekommt eigene Sensoren für die PV-Vorhersage.
+- Der Warmwasserspeicher ging nicht mehr aus; jetzt schaltet er wieder ab.
+- Wie weit der Speicher geladen wird, entscheidet HEMSight selbst; die Zieltemperatur dazwischen entfällt.
+- Preisladen ohne Abfahrtszeit plante gar nichts; jetzt lädt das Auto in den günstigsten Stunden.
+- Einrichtungsassistent und Einstellungen zeigen dieselben Felder.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.10-beta
 
 - Will der Plan die Hauslast nicht aus der Solaranlage decken, geht der Solarstrom jetzt in den Speicher statt ins Haus.
 - Im Plan steht keine Netzladung von einem Watt mehr, wo gar nichts aus dem Netz geladen wird.
 - Für die Netzladung plant HEMSight nur noch Werte, die der Speicher wirklich annimmt.
 - Für Stunden, in denen nur Solarstrom in den Speicher geht, nennt der Plan jetzt einen eigenen Grund.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
 
 ### 0.0.9-beta
 

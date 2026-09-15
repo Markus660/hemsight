@@ -69,12 +69,26 @@ devices are already there.
 
 ## Versions
 
+### 0.0.11-beta
+
+- The PV forecast now learns from your system and calculates with four weather models instead of one.
+- It works out by itself at which sun position your system is shaded, and whether snow or leaves are on the panels.
+- Home Assistant gets its own sensors for the PV forecast.
+- The hot water tank no longer switched off; now it does again.
+- How far the tank is charged is decided by HEMSight itself; the target temperature in between has gone.
+- Price charging without a departure time planned nothing at all; now the car charges in the cheapest hours.
+- The setup wizard and the settings show the same fields.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.10-beta
 
 - When the plan does not want house load covered from solar, solar power now goes into the battery instead of into the house.
 - The plan no longer shows grid charging of one watt where nothing is charged from the grid at all.
 - For grid charging, HEMSight now plans only values the battery really accepts.
 - For hours in which only solar power goes into the battery, the plan now gives a reason of its own.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
 
 ### 0.0.9-beta
 
