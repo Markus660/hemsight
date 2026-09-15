@@ -73,7 +73,7 @@ Each version appears in German first, followed by English.
 
 #### Geräteanbindungen
 
-- Die Anbindungen laufen auf aktuellen Herstellerbibliotheken: Tesla, Kia, Hyundai, Genesis, Viessmann, Midea und Anker Solix. Die EEBus-Anbindung verträgt jetzt zwei gleichzeitige Verbindungen zu demselben Gerät. Der Funktionsumfang bleibt gleich.
+- Die Anbindungen laufen auf aktuellen Herstellerbibliotheken: Tesla, Kia, Hyundai, Genesis, Viessmann, Midea und Anker Solix. Der Funktionsumfang bleibt gleich.
 
 #### Installation
 
@@ -193,7 +193,7 @@ Each version appears in German first, followed by English.
 
 #### Device connections
 
-- The connections run on current manufacturer libraries: Tesla, Kia, Hyundai, Genesis, Viessmann, Midea and Anker Solix. The EEBus connection now copes with two simultaneous connections to the same device. The range of functions stays the same.
+- The connections run on current manufacturer libraries: Tesla, Kia, Hyundai, Genesis, Viessmann, Midea and Anker Solix. The range of functions stays the same.
 
 #### Installation
 
