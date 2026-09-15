@@ -3,6 +3,248 @@
 Jede Version steht zuerst auf Deutsch, darunter auf Englisch.
 Each version appears in German first, followed by English.
 
+## 0.0.11-beta
+
+### Wichtig
+
+**Die PV-Vorhersage lernt ab jetzt von deiner Anlage.** Das ist die Vorbereitung für ein großes PV-Prognose-Update, das bald kommt. Den Anfang macht die Wetterlage: Welche Wetterquellen HEMSight nutzt, entscheidet es ab jetzt selbst, die Einstellung dazu ist weg. Bestehende Anlagen werden beim ersten Start umgestellt.
+
+### Neu
+
+#### PV-Vorhersage
+
+- HEMSight lernt selbst, an welchem Sonnenstand deine Anlage verschattet ist, und rechnet das ein. Bisher musstest du dafür eine Dämpfung für Morgen und Abend von Hand eintragen. Unter „Einstellungen → PV-Prognose" steht, wie weit es damit ist.
+
+- Schnee, Laub oder eine Plane auf den Modulen erkennt HEMSight jetzt selbst und nimmt die Vorhersage zurück, bis die Module wieder frei sind.
+
+- HEMSight lernt aus den Messwerten ein eigenes Korrekturmodell. Übernommen wird es erst, wenn es eine Woche lang im Stillen besser lag als die bisherige Rechnung. Ein Knopf nimmt es wieder zurück.
+
+- Home Assistant bekommt eigene Sensoren für die PV-Vorhersage: erwartete Leistung, Tages- und Morgenenergie, Tagesspitze mit Uhrzeit. Ohne Nacharbeit im Dashboard brauchbar.
+
+#### Solaranlage
+
+- Für einen zweiten Wechselrichter ohne eigenen Akku, zum Beispiel ein Balkonkraftwerk, trägst du jetzt ein, welche Dachflächen zu ihm gehören. Der Plan weiß dann, dass dessen Sonne ins Haus und ins Netz geht und nicht in den Speicher. Bei akku-gekoppelten Wechselrichtern ändert sich nichts.
+
+#### Flexible Verbraucher
+
+- Die Warmwasser-Karte im Reiter „Flexible Verbraucher" zeigt jetzt Mindest- und Maximaltemperatur, die gemessene Entnahme je Tag und die Verlustrate, mit der geplant wurde. Die Rate stand vorher nur in der Diagnose.
+
+#### Einstellungen
+
+- Den „Testen"-Knopf gibt es jetzt auch an Werten aus Anker, Shelly, go-e und den übrigen Direktintegrationen. Bisher ging das nur bei Home-Assistant-Entitäten. Kommt kein Wert zurück, steht der Grund dabei.
+
+### Verbessert
+
+#### PV-Vorhersage
+
+- Die eigene Vorhersage rechnet mit vier Wettermodellen gleichzeitig statt mit einem: ICON vom Deutschen Wetterdienst, ECMWF, GFS und das norwegische MEPS.
+
+#### Warmwasser
+
+- Solarstrom geht nicht mehr zuerst ins Warmwasser, wenn dein Hausspeicher noch Platz hat. Vorher heizte der Speicher bei jeder freien Sonne bis zum Maximum hoch, und die Wärme war bis zum nächsten Sonnentag größtenteils wieder weg.
+
+- Wie weit der Speicher geladen wird, entscheidet HEMSight jetzt selbst: so viel, dass es bis zum nächsten günstigen Fenster reicht. Die Zieltemperatur zwischen Minimum und Maximum ist dafür weggefallen.
+
+- HEMSight unterscheidet jetzt, ob der Speicher von allein auskühlt oder ob jemand warmes Wasser gezapft hat. Vorher war beides eine Zahl, und der Speicher galt als undichter, als er ist.
+
+#### Einrichtung
+
+- Assistent und Einstellungen zeigen dieselben Felder. Beide waren getrennt gebaut und liefen auseinander. Wochentage beim Tag/Nacht-Tarif, die Prüfung einer Börsenpreisreihe und die Gebotszone stehen jetzt auf beiden Seiten.
+
+- Der Assistent wählt keinen Preisanbieter mehr vor. Wer den Schritt bisher durchklickte, richtete Tibber ein, ohne es gewählt zu haben.
+
+#### Planung
+
+- Der Plan kommt in derselben Zeit näher ans günstigste Ergebnis, weil der Planlauf nicht mehr vorzeitig aufhört, solange er noch etwas holen kann.
+
+- Hast du zwei Speicher verschiedener Bauart, plant HEMSight für jeden die Schrittweite, die er selbst annimmt. Bisher galt die des einen für beide.
+
+#### E-Auto
+
+- Der Regler „Limit-Stop" heißt jetzt „Hausakku-Reserve" und sagt, wofür er gilt: Unter diesem Ladestand gibt der Hausakku nichts mehr ans Auto. Beim Sofortladen wirkt er jetzt genauso wie beim Preisladen.
+
+#### Oberfläche
+
+- Formulare reagieren schneller auf jede Taste. Das Negativpreis-Panel sortierte bei jedem Tastendruck dreimal den ganzen Gerätekatalog aus Home Assistant.
+
+- Der Plan, den die Oberfläche alle zwei Minuten lädt, ist weniger als halb so groß. Der Rest war Rechenprotokoll, das niemand zu sehen bekam.
+
+- Jeder Wert frischt sich in seinem eigenen Takt auf. Bisher hing das daran, welche Seite gerade offen war.
+
+#### Geräteanbindungen
+
+- Die Anbindungen laufen auf aktuellen Herstellerbibliotheken: Tesla, Kia, Hyundai, Genesis, Viessmann, Midea und Anker Solix. Die EEBus-Anbindung verträgt jetzt zwei gleichzeitige Verbindungen zu demselben Gerät. Der Funktionsumfang bleibt gleich.
+
+#### Installation
+
+- Das Update lädt weniger. Mitgebaut wurden bisher fünfundzwanzig Sprachen, auswählen ließen sich vier.
+
+### Behoben
+
+#### Warmwasser
+
+- Der Warmwasserspeicher ging nicht mehr aus. Eingeschaltet hat HEMSight ihn planmäßig, der Abschaltbefehl entstand aber nie, und er heizte weiter, bis jemand von Hand ausschaltete.
+
+- Ein Speicher, dessen Temperaturfühler direkt an einer Integration hängen, ließ sich nicht mehr speichern. Der Dialog verlangte einen Sensor aus Home Assistant, den es dort nicht gab.
+
+#### E-Auto
+
+- Preisladen ohne Abfahrtszeit plante gar nichts, auch keine Solarladung. Jetzt nimmt das Auto den Sonnenüberschuss und lädt aus dem Netz in den günstigsten Stunden.
+
+- Stand „Batterieentladung verhindern" auf Nein, zog der Plan beim Preisladen deinen Hausakku fürs Auto bis zur allgemeinen Mindestladung leer. Jetzt hält er an der Hausakku-Reserve an.
+
+- Ein Sofortladen mit Akku-Anteil, den der Akku nicht liefern konnte, ließ den ganzen Planlauf scheitern. Jetzt übernimmt das Netz den Rest.
+
+#### Live-Steuerung
+
+- Alle sechs Stunden räumt HEMSight alte Verlaufsdaten auf. Auf MariaDB ließ das den Live-Optimierer einen Takt aussetzen, und der fertige Plan wurde fälschlich als fehlgeschlagen gemeldet.
+
+#### Einrichtung
+
+- Wer §14a eingerichtet hatte, den Assistenten erneut durchlief und dort „Nein, überspringen" wählte, verlor seinen ganzen Vertrag ohne Hinweis. Jetzt wird nur ausgeschaltet.
+
+- Beim Wärmeerzeuger griffen drei Änderungen nicht: Ein ausgeschalteter Heizungspuffer blieb an, eine geleerte Steuer-Entität blieb stehen, und der Wechsel auf „nur beobachten" wurde abgewiesen.
+
+- Ein Klick auf die Beschriftung über einer Kachelauswahl wählte still die erste Kachel. Der Text ist jetzt nur noch Text.
+
+#### Einstellungen
+
+- Für Preisanbieter mit eigener Internetadresse ließ sich die Anmeldeart nur auf fünf von neun Werten stellen, und ausgerechnet die aus dem Assistenten war keine davon. Wer dort etwas anklickte, verlor sie ohne Weg zurück.
+
+- Wer die Auto-Kalibrierung der PV-Vorhersage einschaltete und danach irgendetwas unter „PV-Prognose" speicherte, hatte sie wieder aus, ohne Hinweis.
+
+- Ein neuer Negativpreis-Zusatzverbraucher startete ausgeschaltet und mit null Watt. Er sah eingerichtet aus und konnte nie laufen.
+
+#### Geräte
+
+- Wer im Wallbox-Dialog nur den Ladestrom änderte, verlor beim Speichern die Home-Assistant-Entitäten der Wallbox.
+
+#### Diagramme
+
+- Im Diagramm-Reiter des Plans blieb die Auswahl „7 Tage" leer. Jetzt gelten dieselben sieben Tage wie beim Live-Verlauf.
+
+---
+
+### Important
+
+**The PV forecast now learns from your system.** This is the groundwork for a large PV forecast update that is coming soon. It starts with the weather: HEMSight now decides for itself which weather sources it uses, and the setting for it is gone. Existing systems are switched over on the first start.
+
+### New
+
+#### PV forecast
+
+- HEMSight now works out by itself at which sun position your system is shaded, and takes that into account. Until now you had to enter a damping for morning and evening by hand. „Settings → PV forecast" shows how far along it is.
+
+- Snow, leaves or a tarpaulin on the panels are now spotted by HEMSight itself, and it holds the forecast back until the panels are clear again.
+
+- HEMSight also learns a correction model of its own from the measurements. It is only adopted once it has quietly done better than the previous calculation for a week. A button takes it back again.
+
+- Home Assistant gets its own sensors for the PV forecast: expected power, daily and morning energy, daily peak with time. Usable in a dashboard without any further work.
+
+#### Solar system
+
+- For a second inverter without a battery of its own, a balcony power plant for example, you now enter which roof areas belong to it. The plan then knows that its sun goes into the house and into the grid and not into the battery. Nothing changes for battery-coupled inverters.
+
+#### Flexible appliances
+
+- The hot water card in the „Flexible appliances" tab now shows minimum and maximum temperature, the measured draw per day and the loss rate it planned with. The rate was previously only in the diagnostics.
+
+#### Settings
+
+- The „Test" button is now also available for values from Anker, Shelly, go-e and the other direct integrations. Until now it only worked for Home Assistant entities. If no value comes back, the reason is shown next to it.
+
+### Improved
+
+#### PV forecast
+
+- The built-in forecast calculates with four weather models at once instead of one: ICON from the German weather service, ECMWF, GFS and the Norwegian MEPS.
+
+#### Hot water
+
+- Solar power no longer goes into hot water first while your house battery still has room. The tank used to heat up to its maximum on every bit of free sun, and by the next sunny day most of that warmth was gone again.
+
+- How far the tank is charged is now decided by HEMSight itself: enough to last until the next cheap window. The target temperature between minimum and maximum has gone with it.
+
+- HEMSight now tells apart whether the tank cools down on its own or whether somebody drew hot water. Both used to be one number, and the tank looked leakier than it is.
+
+#### Setup
+
+- The wizard and the settings show the same fields. Both were built separately and had drifted apart. Weekdays for the day/night tariff, checking an exchange price series and the bidding zone are now on both sides.
+
+- The wizard no longer preselects a price provider. Anyone who clicked through that step used to set up Tibber without having chosen it.
+
+#### Planning
+
+- The plan gets closer to the cheapest result in the same time, because the planning run no longer stops early while there is still something to gain.
+
+- If you have two batteries of different types, HEMSight plans for each of them the step size it really accepts. The step size of the one used to apply to both.
+
+#### Electric car
+
+- The „Limit stop" slider is now called „House battery reserve" and says what it is for: below this charge level the house battery gives nothing more to the car. With immediate charging it now works just as it does with price charging.
+
+#### Interface
+
+- Forms react faster to every keystroke. The negative price panel used to sort the whole Home Assistant device catalogue three times on every key.
+
+- The plan that the interface loads every two minutes is less than half its previous size. The rest was calculation log that nobody ever saw.
+
+- Every value now refreshes at its own rate. Until now that depended on which page happened to be open.
+
+#### Device connections
+
+- The connections run on current manufacturer libraries: Tesla, Kia, Hyundai, Genesis, Viessmann, Midea and Anker Solix. The EEBus connection now copes with two simultaneous connections to the same device. The range of functions stays the same.
+
+#### Installation
+
+- The update downloads less. Twenty-five languages used to be built in, four could be selected.
+
+### Fixed
+
+#### Hot water
+
+- The hot water tank no longer switched off. HEMSight switched it on as planned, but the off command never came about, and it kept heating until somebody switched it off by hand.
+
+- A tank whose temperature probes hang directly off an integration could no longer be saved. The dialogue demanded a sensor from Home Assistant that was not there.
+
+#### Electric car
+
+- Price charging without a departure time planned nothing at all, not even solar charging. Now the car takes the solar surplus and charges from the grid in the cheapest hours.
+
+- With „Prevent battery discharge" set to no, the plan drained your house battery for the car down to the general minimum charge during price charging. It now stops at the house battery reserve.
+
+- An immediate charge with a battery share that the battery could not deliver made the whole planning run fail. The grid now covers the rest.
+
+#### Live control
+
+- Every six hours HEMSight clears out old history data. On MariaDB that made the live optimiser skip a cycle, and the finished plan was wrongly reported as failed.
+
+#### Setup
+
+- Anyone who had set up §14a, went through the wizard again and chose „No, skip" there lost their entire contract without any warning. It is now only switched off.
+
+- Three changes did not take effect for the heat generator: a switched-off heating buffer stayed on, a cleared control entity stayed in place, and switching to „observe only" was rejected.
+
+- A click on the label above a tile selection silently picked the first tile. The text is now only text.
+
+#### Settings
+
+- For price providers with their own internet address, the login type could only be set to five of nine values, and the one the wizard enters was not among them. Anyone who clicked something there lost it with no way back.
+
+- Anyone who switched on auto calibration of the PV forecast and then saved anything under „PV forecast" had it switched off again, without any warning.
+
+- A new negative price appliance started switched off and at zero watts. It looked set up and could never run.
+
+#### Devices
+
+- Anyone who only changed the charging current in the wallbox dialogue lost the Home Assistant entities of the wallbox on saving.
+
+#### Charts
+
+- The „7 days" option in the plan's chart tab stayed empty. The same seven days as in the live history now apply.
+
+---
+
 ## 0.0.10-beta
 
 ### Behoben
