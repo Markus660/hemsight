@@ -1,5 +1,5 @@
 name: HEMSight
-version: "0.0.11-beta"
+version: "0.0.12-beta"
 slug: hemsight
 description: Home energy management and live optimization for Home Assistant
 url: https://hemsight.de
