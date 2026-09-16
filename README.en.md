@@ -74,7 +74,7 @@ devices are already there.
 - A maximum price can be set for price charging; above it no grid power goes into the car.
 - A scheduled departure comes first: to reach it, the car charges above the maximum price, just as far as needed.
 - The weather models are queried once per hour instead of on every planning run.
-- The plan often showed „Limited" when a weather source dropped out briefly; that no longer happens.
+- The plan often showed "Limited" when a weather source dropped out briefly; that no longer happens.
 
 The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
 
