@@ -72,7 +72,7 @@ devices are already there.
 ### 0.0.12-beta
 
 - A maximum price can be set for price charging; above it no grid power goes into the car.
-- A scheduled departure comes first: if cheap power is not enough, the car charges just as far above the limit as needed.
+- A scheduled departure comes first: to reach it, the car charges above the maximum price, just as far as needed.
 - The weather models are queried once per hour instead of on every planning run.
 - The plan often showed „Limited" when a weather source dropped out briefly; that no longer happens.
 
