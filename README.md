@@ -68,6 +68,15 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.12-beta
+
+- Für das Preisladen lässt sich ein Höchstpreis eintragen; über diesem Preis geht kein Netzstrom ins Auto.
+- Eine eingetragene Abfahrt geht vor: reicht der günstige Strom nicht, lädt das Auto so weit wie nötig darüber.
+- Die Wettermodelle werden nur noch einmal pro Stunde abgefragt statt bei jedem Planlauf.
+- Der Plan stand oft auf „Eingeschränkt", wenn eine Wetterquelle kurz ausfiel; das passiert nicht mehr.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.11-beta
 
 - Die PV-Vorhersage lernt jetzt von deiner Anlage und rechnet mit vier Wettermodellen statt einem.

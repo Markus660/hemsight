@@ -3,6 +3,36 @@
 Jede Version steht zuerst auf Deutsch, darunter auf Englisch.
 Each version appears in German first, followed by English.
 
+## 0.0.12-beta
+
+### Neu
+
+#### E-Auto
+
+- Neu unter „E-Mobilität" und im Einrichtungsassistenten: die Geldgrenze für Netzstrom. Über deinem Höchstpreis geht kein Netzstrom ins Auto. Ist der ganze Tag teuer, wartet es, statt zum Tageshöchstpreis zu laden. Sofortladen lädt weiter ohne Grenze.
+
+- Eine eingetragene Abfahrt geht vor. Reicht der günstige Strom nicht, lädt das Auto in den nächstgünstigen Stunden darüber weiter, so weit wie nötig.
+
+### Behoben
+
+#### PV-Vorhersage
+
+- Konnte eine Wetterquelle nicht abgerufen werden, stand der Plan auf „Eingeschränkt". Die Wettermodelle werden jetzt nur noch einmal pro Stunde abgefragt statt bei jedem Planlauf, und sie blockieren sich dabei nicht mehr gegenseitig.
+
+### New
+
+#### Electric car
+
+- New under „E-mobility" and in the setup assistant: the money limit for grid power. Above your maximum price, no grid power goes into the car. If the whole day is expensive, the car waits instead of charging at the day's peak price. Instant charging keeps charging without a limit.
+
+- A scheduled departure comes first. If cheap power is not enough, the car keeps charging in the next cheapest hours above the limit, just as far as needed.
+
+### Fixed
+
+#### PV forecast
+
+- If a weather source could not be fetched, the plan showed „Limited". The weather models are now queried once per hour instead of on every planning run, and they no longer block each other.
+
 ## 0.0.11-beta
 
 ### Wichtig

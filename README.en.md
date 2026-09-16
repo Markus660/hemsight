@@ -69,6 +69,15 @@ devices are already there.
 
 ## Versions
 
+### 0.0.12-beta
+
+- A maximum price can be set for price charging; above it no grid power goes into the car.
+- A scheduled departure comes first: if cheap power is not enough, the car charges just as far above the limit as needed.
+- The weather models are queried once per hour instead of on every planning run.
+- The plan often showed „Limited" when a weather source dropped out briefly; that no longer happens.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.11-beta
 
 - The PV forecast now learns from your system and calculates with four weather models instead of one.
