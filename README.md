@@ -68,6 +68,15 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.13-beta
+
+- Ein vortrainiertes Prototyp-Modell der PV-Prognose rechnet ab jetzt mit.
+- HEMSight hat eine eigene Preisprognose für die Stunden, die der dynamische Anbieter noch nicht kennt.
+- Geräte aus Zigbee2MQTT lassen sich direkt übernehmen und über HEMSight steuern.
+- Der Anker SOLIX Smart Plug Gen 2 wird über Cloud und Modbus unterstützt.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.12-beta
 
 - Für das Preisladen lässt sich ein Höchstpreis eintragen; über diesem Preis geht kein Netzstrom ins Auto.
