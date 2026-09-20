@@ -3,6 +3,189 @@
 Jede Version steht zuerst auf Deutsch, darunter auf Englisch.
 Each version appears in German first, followed by English.
 
+## 0.0.13-beta
+
+### Wichtig
+
+**Ein weiterer Teil des großen PV-Prognose-Updates.** Ein vortrainiertes Prototyp-Modell rechnet ab jetzt mit.
+
+### Neu
+
+#### Preise
+
+- HEMSight hat jetzt eine eigene Preisprognose für die Stunden, die dein dynamischer Anbieter noch nicht kennt. Gerechnet wird sie aus Wetter-, Gas- und Preisverlaufsdaten. Die rohen Börsenpreise, die dabei herauskommen, vergleicht HEMSight mit den Preisen deines Anbieters und rechnet daraus deinen Aufschlag. Ganz genau wird die Prognose aber erst, wenn du deine Aufschläge in den Einstellungen einträgst. Sie stehen auf deiner Stromrechnung.
+- Ein gerechneter Preis trägt in der Plan-Tabelle ein kleines „ca.".
+
+#### Geräte über MQTT
+
+- Geräte aus Zigbee2MQTT lassen sich direkt übernehmen. Ein Heizungsthermostat wird zur Wärmezone, eine schaltbare Steckdose zum Verbraucher. Die Liste zeigt dir vorher, was aus jedem Gerät wird. Steuern kannst du sie danach auch über HEMSight.
+- Den MQTT-Broker trägst du jetzt einmal in den Einstellungen ein statt in jeder Anbindung, auf Wunsch verschlüsselt. Was in der alten MQTT-Anbindung stand, steht nach dem Update im neuen Abschnitt.
+
+#### Geräte
+
+- Der Anker SOLIX Smart Plug Gen 2 wird jetzt über Cloud und Modbus unterstützt.
+
+#### Anzeige
+
+- Im Browser-Tab steht endlich das HEMSight-Zeichen statt des leeren Platzhalters.
+
+### Verbessert
+
+#### Demo
+
+- Die Struktur der Demo wurde komplett überarbeitet. Du kannst sie jetzt von vorn bis hinten bedienen: Assistent, Einstellungen, Benachrichtigungen und Szenarien wirken, und der Plan rechnet mit dem, was du eingibst.
+
+### Behoben
+
+#### E-Auto
+
+- Hing das Auto an der Wallbox, während seine Hersteller-App noch „nicht angesteckt" meldete, kam gar kein Ladeplan zustande. Der Ladepunkt zeigte „Fahrzeug verbunden", die Planung blieb bei null und sagte nicht, warum.
+- Kommt der Steckerstatus deines Autos aus Home Assistant, galt es nie als angesteckt. Bei zwei Autos sprang die Wahl im Fahrzeugdialog deshalb immer wieder zurück.
+
+#### Steuerung
+
+- Fanden zwei Planläufe hintereinander keinen genauen Plan, setzte die Steuerung aus. Mit Auto am Ladepunkt stand dann alles still, obwohl der letzte Plan noch galt. Ein freigegebener Plan steuert jetzt weiter, solange er gilt.
+
+#### PV-Vorhersage
+
+- Die gelernte Verschattungskarte wurde zu selten scharf. Ein einziger bewölkter Tag reichte, um eine Karte abzulehnen, an der HEMSight sechs Wochen gelernt hatte. Jetzt zählen Tage und nicht nur Messpunkte.
+
+#### Einstellungen
+
+- Ein Gerät auf „Planen" zu stellen, legte die Zeitreihen-Datenbank und die Preisquelle lahm. HEMSight verlor beim Speichern die hinterlegten Zugangsdaten. Zu sehen war es Minuten später am fehlenden Lastverlauf, ein Neustart brachte alles zurück.
+- Ein Gerät, das absichtlich auf „Planen" steht, meldet nicht mehr jede Minute „Gerät blockiert".
+
+#### Flexible Verbraucher
+
+- Warmwasser ohne Leistungsmessung ließ sich nicht speichern. Der Assistent bot „keine Messung" an, und die Prüfung lehnte genau das ab.
+- Warmwasser mit Home-Assistant-Schalter bekam auf einer frischen Installation keinen Steuerweg. HEMSight hätte den Schalter nie angefasst.
+
+#### Speicher
+
+- Ein Speicherverbund mit einem Anker SOLIX Power Dock galt dauerhaft als „nicht bestätigt", obwohl er genau das tat, was der Plan wollte.
+- Hinter „nicht bestätigt" standen Seriennummern und ein Fehlercode. Jetzt steht da, welche Größe nicht stimmt, beim Sollwert mit beiden Werten in Watt.
+- Den Sollwert eines Speicherverbunds las HEMSight nur einmal pro Stunde, obwohl er sich mit jeder Planänderung bewegt. Jetzt liest es ihn jede Minute.
+
+#### Geräte über MQTT
+
+- Über Zigbee2MQTT ausgewählte Werte kamen nie an. Die Geräte standen eingetragen da, ohne Fehler und ohne einen einzigen Messwert. Nach dem Update laufen sie, ohne dass du etwas neu einträgst.
+
+#### Einrichtung
+
+- Lehnte HEMSight eine Zuordnung ab, kam ein Sammelsatz, der nichts sagte. Jetzt steht da, was fehlt: „Diese Zuordnung fehlt: Leistungsmessung".
+- War „Speichern" bei einem flexiblen Verbraucher gesperrt, stand für jeden Grund derselbe Satz, und der nannte eine Mindestlaufzeit, die es nie gab. Jetzt steht der Grund am Knopf, für jede Bedingung einzeln.
+- Eine Entität, die es in Home Assistant gibt und die gerade nicht antwortet, blockiert das Speichern nicht mehr. HEMSight warnt und speichert, geplant wird, sobald wieder Werte kommen.
+- War Home Assistant beim Speichern nicht erreichbar, hieß es obendrein, die Entitäten gäbe es dort nicht. Jetzt steht da nur, dass sie nicht geprüft werden konnten.
+- Der rote Kasten über eine abgelehnte Speicherung blieb stehen, auch wenn du das beanstandete Feld längst geändert hattest. Das betraf dreizehn Bereiche des Assistenten.
+
+#### Datenbank
+
+- Unter Schreiblast brach ein Lesezugriff nach fünf Sekunden mit „database is locked" ab.
+
+#### Preise
+
+- Bei Tibber, Octopus und Ostrom und bei festen wie Tag/Nacht-Tarifen behauptete die Preisübersicht „geschätzte Aufschläge für deinen Standort", obwohl deren Preis vollständig ist.
+
+#### Anzeige
+
+- Nach dem Leeren des Browserspeichers stand auf der Anlagenseite Euro und die Zeitzone deines Rechners statt dessen, was du eingestellt hast.
+
+### Important
+
+**Another part of the big PV forecast update.** A pre-trained prototype model now takes part in the calculation.
+
+### New
+
+#### Prices
+
+- HEMSight now has its own price forecast for the hours your dynamic provider does not know yet. It is calculated from weather, gas and price history data. The raw exchange prices that come out of it are compared against your provider's prices, and your surcharge is derived from that. The forecast only gets fully accurate once you enter your surcharges in the settings. You find them on your electricity bill.
+
+- A calculated price carries a small „approx." in the plan table.
+
+#### Devices over MQTT
+
+- Devices from Zigbee2MQTT can be taken over directly. A heating thermostat becomes a heat zone, a switchable socket becomes a load. The list shows you beforehand what each device will become. You can then control them through HEMSight as well.
+
+- You now enter the MQTT broker once in the settings instead of in every integration, encrypted if you want. What used to sit in the old MQTT integration is in the new section after the update.
+
+#### Devices
+
+- The Anker SOLIX Smart Plug Gen 2 is now supported over cloud and Modbus.
+
+#### Display
+
+- The browser tab finally shows the HEMSight mark instead of the empty placeholder.
+
+### Improved
+
+#### Demo
+
+- The structure of the demo has been completely reworked. You can now operate it from front to back: assistant, settings, notifications and scenarios take effect, and the plan calculates with what you enter.
+
+### Fixed
+
+#### Electric car
+
+- If the car was plugged in at the wallbox while its manufacturer app still reported „not plugged in", no charging plan came about at all. The charge point showed „vehicle connected", planning stayed at zero and did not say why.
+
+- If your car's plug status comes from Home Assistant, the car never counted as plugged in. With two cars, the choice in the vehicle dialog kept jumping back.
+
+#### Control
+
+- If two planning runs in a row found no accurate plan, control stopped. With a car at the charge point everything then stood still, although the last plan was still valid. A released plan now keeps controlling as long as it is valid.
+
+#### PV forecast
+
+- The learned shading map went live too rarely. A single cloudy day was enough to reject a map HEMSight had learned over six weeks. Days now count, not just measuring points.
+
+#### Settings
+
+- Setting a device to „plan" brought the time series database and the price source down. HEMSight lost the stored credentials while running. It showed minutes later in the missing load history, and a restart brought everything back.
+
+- A device deliberately set to „plan" no longer reports „device blocked" every minute.
+
+#### Flexible loads
+
+- Hot water without power metering could not be saved. The assistant offered „no metering", and the check rejected exactly that.
+
+- Hot water with a Home Assistant switch got no control path on a fresh installation. HEMSight would never have touched the switch.
+
+#### Storage
+
+- A storage cluster with an Anker SOLIX Power Dock permanently counted as „not confirmed", although it did exactly what the plan wanted.
+
+- Behind „not confirmed" there were serial numbers and an error code. It now says which value is off, for the setpoint with both figures in watts.
+
+- HEMSight read the setpoint of a storage cluster only once per hour, although it moves with every change of plan. It now reads it every minute.
+
+#### Devices over MQTT
+
+- Values selected over Zigbee2MQTT never arrived. The devices sat there entered, without an error and without a single reading. After the update they run, without you entering anything again.
+
+#### Setup
+
+- When HEMSight rejected an assignment, a collective sentence came up that said nothing. It now says what is missing: „This assignment is missing: power metering".
+
+- When „save" was blocked on a flexible load, the same sentence appeared for every reason, and it named a minimum runtime that never existed. The reason now sits at the button, separately for each condition.
+
+- An entity that exists in Home Assistant and is not answering right now no longer blocks saving. HEMSight warns and saves, planning follows as soon as values come back.
+
+- If Home Assistant was unreachable while saving, it also claimed the entities did not exist there. It now only says they could not be checked.
+
+- The red box about a rejected save stayed up even after you had long since changed the field in question. That affected thirteen areas of the assistant.
+
+#### Database
+
+- Under write load, a read access broke off after five seconds with „database is locked".
+
+#### Prices
+
+- With Tibber, Octopus and Ostrom and with fixed and day/night tariffs, the price overview claimed „estimated surcharges for your location", although their price is complete.
+
+#### Display
+
+- After clearing browser storage, the system page showed euro and your computer's time zone instead of what you had set.
+
 ## 0.0.12-beta
 
 ### Neu
