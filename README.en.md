@@ -69,6 +69,15 @@ devices are already there.
 
 ## Versions
 
+### 0.0.14-beta
+
+- Heat pump, radiator thermostats and air conditioning are locked for now, hot water keeps running.
+- Night charging now really charges the car from the home battery in the current night.
+- The HA export can be deselected per sensor and runs as its own MQTT device if you want.
+- An „Off“ on a device now arrives even without a valid plan.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.13-beta
 
 - A pre-trained prototype model of the PV forecast now takes part in the calculation.

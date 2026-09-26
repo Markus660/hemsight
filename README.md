@@ -68,6 +68,15 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.14-beta
+
+- Wärmepumpe, Heizkörper-Thermostate und Klimaanlage sind vorerst gesperrt, Warmwasser läuft weiter.
+- Nachtladen lädt das Auto jetzt wirklich in der laufenden Nacht aus dem Hausakku.
+- Der HA-Export lässt sich pro Sensor abwählen und läuft wahlweise als eigenes MQTT-Gerät.
+- Ein „Aus“ an einem Gerät kommt jetzt auch ohne gültigen Plan an.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.13-beta
 
 - Ein vortrainiertes Prototyp-Modell der PV-Prognose rechnet ab jetzt mit.

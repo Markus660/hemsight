@@ -3,6 +3,120 @@
 Jede Version steht zuerst auf Deutsch, darunter auf Englisch.
 Each version appears in German first, followed by English.
 
+## 0.0.14-beta
+
+### Wichtig
+
+Wärmepumpe, Heizkörper-Thermostate und Klimaanlage funktionieren derzeit nicht richtig und sind deshalb gesperrt. HEMSight plant und steuert sie nicht mehr. Vorhandene Geräte werden abgeschaltet und lassen sich löschen. Warmwasser läuft unverändert weiter.
+
+### Neu
+
+#### PV-Prognose
+
+- Weitere Vorbereitungen für das PV-Prognose-Update, etwa Wetterstation und eine vorsichtige PV-Erwartung, aktuell noch ohne Einstellmöglichkeit.
+
+#### HA-Export
+
+- Sensoren lassen sich jetzt gruppenweise und einzeln abwählen, statt immer alle zu schreiben.
+- Läuft wahlweise über ein eigenes MQTT-Gerät statt über REST.
+- Folgt jetzt automatisch der App-Sprache.
+
+### Verbessert
+
+#### E-Auto
+
+- Nachtladen nutzte den Hausakku bisher nur auf dem Papier. Der Plan verschob die Ladung faktisch auf den nächsten Sonnentag, in der Nacht selbst blieb der Akku unangetastet. Er lädt das Auto jetzt wirklich in der laufenden Nacht.
+- Die Wallbox schaltete beim Anlauf im Halbminutentakt ein und aus. Das ist behoben.
+
+#### Planer
+
+- Ein Ladeplan mit Auto am Ladepunkt im Preisladen-Modus braucht jetzt weniger Rechenzeit und wird dadurch öfter wirklich angewendet, statt nur angezeigt zu werden.
+
+#### HA-Export
+
+- Läuft jetzt auch bei gedrücktem Not-Aus weiter, statt komplett zu stoppen. Die Sollwerte stehen dann neutral.
+- Sensoren tragen jetzt Einheit, Gerätetyp und übersetzten Namen.
+
+### Behoben
+
+#### Steuerung
+
+- Ein Gerät auf „Aus“ zu stellen wirkte manchmal nicht, wenn gerade kein gültiger Plan vorlag. Ein ausdrücklicher Abschaltbefehl kommt jetzt unabhängig davon am Gerät an.
+- Eine gestörte Verbindung zu einem einzelnen Gerät blockierte bisher die Steuerung aller anderen Geräte mit. Sie blockiert jetzt nur noch das betroffene Gerät selbst.
+- Eine seit Stunden andauernde Blockade sah in der Meldung genauso aus wie ein kurzer Aussetzer. Dafür gibt es jetzt eine eigene, klare Meldung.
+
+#### Preise
+
+- Ein hinterlegter Zugangsschlüssel, etwa der Tibber-Token, ging verloren, sobald danach eine zweite Preiseinstellung gespeichert wurde. Er bleibt jetzt erhalten.
+
+#### Geräte
+
+- Eine eigene Sicherung ließ sich nicht mehr einspielen, die Prüfung wies die eigene Exportdatei ab. Das ist behoben, und ein zwischenzeitlich gelöschtes Gerät kommt beim Einspielen zurück.
+
+#### Anker Solix
+
+- Ein einzelner Anmeldefehler bei der Anker Solix Cloud legte bisher auch die MQTT-Anbindung für bis zu 30 Minuten lahm. Das ist behoben.
+
+#### Einrichtung
+
+- Verbindungstests zeigen jetzt den genauen Fehlgrund statt nur „Verbindung fehlgeschlagen“.
+
+### Important
+
+Heat pump, radiator thermostats and air conditioning do not work properly at the moment and are therefore locked. HEMSight no longer plans or controls them. Existing devices are switched off and can be deleted. Hot water keeps running as before.
+
+### New
+
+#### PV forecast
+
+- Further preparations for the PV forecast update, such as a weather station and a cautious PV expectation, currently without settings.
+
+#### HA export
+
+- Sensors can now be deselected by group and individually, instead of always writing all of them.
+- Runs either over its own MQTT device or over REST.
+- Now follows the app language automatically.
+
+### Improved
+
+#### Electric car
+
+- Night charging only used the home battery on paper. The plan effectively pushed charging to the next sunny day, and the battery stayed untouched during the night itself. It now really charges the car in the current night.
+- The wallbox switched on and off every half minute when starting. This is fixed.
+
+#### Planner
+
+- A charging plan with the car at the charge point in price charging mode now needs less calculation time and is therefore applied more often, instead of only being shown.
+
+#### HA export
+
+- Now keeps running when the emergency stop is pressed, instead of stopping completely. The setpoints are neutral then.
+- Sensors now carry unit, device type and a translated name.
+
+### Fixed
+
+#### Control
+
+- Setting a device to „Off“ sometimes had no effect when no valid plan was available. An explicit switch-off command now reaches the device regardless.
+- A disturbed connection to a single device used to block control of all other devices too. It now only blocks the affected device itself.
+- A block lasting for hours looked the same in the message as a short dropout. There is now a separate, clear message for it.
+
+#### Prices
+
+- A stored access key, such as the Tibber token, was lost as soon as a second price setting was saved afterwards. It is now kept.
+
+#### Devices
+
+- Your own backup could no longer be restored, the check rejected its own export file. This is fixed, and a device deleted in the meantime comes back on restore.
+
+#### Anker Solix
+
+- A single login error at the Anker Solix cloud also brought down the MQTT connection for up to 30 minutes. This is fixed.
+
+#### Setup
+
+- Connection tests now show the exact reason for the failure instead of only „Connection failed“.
+
 ## 0.0.13-beta
 
 ### Wichtig
