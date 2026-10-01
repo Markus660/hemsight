@@ -3,6 +3,274 @@
 Jede Version steht zuerst auf Deutsch, darunter auf Englisch.
 Each version appears in German first, followed by English.
 
+## 0.0.15-beta
+
+### Neu
+
+#### Speicher
+
+- Growatt-Hybrid-Wechselrichter (SPH, SPA, MIN, MOD, MID-XH, WIT, WIS) laden und entladen den Speicher jetzt nach dem Plan. HEMSight zeigt, ob die gemessene Leistung folgt. Fällt HEMSight aus, endet die Vorgabe nach drei Minuten am Gerät.
+- Growatt NOAH und NEXA lassen sich über die Growatt-Cloud einbinden und steuern, die NEXA auf Wunsch direkt im Heimnetz.
+- Mehrere Growatt-Wechselrichter im Heimnetz sind möglich. HEMSight liest jeden einzeln und steuert den, den du im Speicher-Schritt wählst.
+- Zendure-Speicher lassen sich nun korrekt steuern: SolarFlow direkt im Heimnetz, Hub, Hyper, AIO, ACE und SuperBase V über den Cloud-Key aus der Zendure-App.
+- EcoFlow PowerStream, Stream und PowerOcean lassen sich einbinden und steuern. Ein PowerOcean mit freigeschaltetem Modbus, auch der Ocean 2, wird direkt im Heimnetz gesteuert.
+- Hängen mehrere Geräte an einem Konto, wählst du im Speicher-Schritt das richtige. Kann HEMSight ein Gerät nur lesen, legt der Assistent den Speicher als reine Messung an und sagt es dazu.
+- Nutzkapazität sowie Lade- und Entladegrenzen übernimmt HEMSight vom Gerät, wo es sie meldet. Planung und Live-Regelung rechnen nie mit mehr, als das Gerät leisten kann.
+
+#### PV-Prognose
+
+- Eine eigene Wetterstation lässt sich im Assistenten und in den Einstellungen einbinden: ein Sensor je Messgröße, und HEMSight prüft beim Auswählen, ob er passt.
+- Die PV-Prognose zeigt ihren Lernstand, etwa „Tag 4 von 10 bis zur ersten Karte“.
+- Eine eigene Strahlungsmessung wirkt erst auf die Prognose, wenn sie nachweislich besser liegt. Bis dahin läuft sie nur mit, und die technischen Details zeigen den Vergleich.
+- Die technischen Details zeigen, wie brauchbar der nachgeladene Verlauf ist: Lücken, falsches Vorzeichen, Zählerstand statt Leistung, Kilowatt statt Watt. Solche Zeiträume lernt die Prognose nicht.
+
+#### Assistent
+
+- Beim Testen eines Messfelds prüft HEMSight, ob die Einheit des Sensors passt. Ein Thermometer als Netzleistung wird nun nicht mehr funktionieren.
+- Die Bestätigung der Messquellen warnt, wenn derselbe Sensor als Netzleistung und als PV-Erzeugung eingetragen ist.
+
+### Verbessert
+
+#### Übersicht
+
+- Wer HEMSight nur planen lässt, sieht einen ausblendbaren Hinweis statt eines dauerhaften.
+
+#### PV-Prognose
+
+- Das mitgelieferte Prognosemodell ist genauer und rechnet auf jedem Gerät.
+- Die gelernte Schattenkarte lernt nicht mehr an Tagen, die der Wetterdienst mittags als trüb sieht. Dünne Wolken gelten so nicht mehr als Schatten.
+- Die kurzfristige Anpassung an die aktuelle Leistung nutzt die Bewölkung aller Wetterdienste statt der eines einzelnen.
+- Korrekturen der Wetterdaten, die Gewichtung der Wetterdienste und das Unsicherheitsband gelten nur noch dort, wo sie sich an den Folgetagen als besser erweisen.
+
+#### E-Auto
+
+- Die eingetragene Abfahrt wirkt nur noch im Preisladen. In den anderen Lademodi wird sie gespeichert, aber nicht mehr beachtet.
+- Die Grenze „EV PV-Laden ab“ gilt in jedem Lademodus außer Batterieladen. Steht der Hausakku darunter, lädt die Sonne den Hausakku statt des Autos, außer im Preisladen, wenn die Abfahrt drängt. Vorschau, Plan und Live-Regelung rechnen dieselbe Grenze.
+- Kopfleiste und Fahrzeugkacheln zeigen die Abfahrt nur noch im Preisladen, und die Begründungen im Plan nennen sie nur dort.
+
+#### Speicher
+
+- Der Speicher-Assistent gibt keine Lade- und Entladegrenze mehr vor. Meldet das Gerät seine Grenzen, stehen sie nach der Gerätewahl in den Feldern, sonst trägst du sie selbst ein.
+- Die Einstellungen zeigen den Ladestand-Bereich je Speicher mit dessen eigenen Grenzen.
+- Eine bestehende Konfiguration mit Netzladestufen über der Summe der Speicherleistungen lädt nach dem Update weiter. HEMSight streicht diese Stufen und legt die alte Datei als Sicherung ab.
+
+#### Assistent
+
+- Jeder Auswahlschritt hat einen „Weiter“-Knopf: Die Karte wählt, „Weiter“ übernimmt.
+- Ohne Preisanbieter ist kein Anbieter mehr vorbelegt.
+
+#### HA-Export
+
+- Die Namen der Exportsensoren folgen der Sprache von Home Assistant.
+
+#### Integrationen
+
+- Anker Solix, Tesla, Kia/Hyundai, Renault, Viessmann, Fronius Wattpilot, Tibber Pulse und weitere Anbindungen laufen auf aktuellen Bibliotheksständen.
+
+#### EEBus
+
+- Der Verbindungsaufbau prüft das Zertifikat der Gegenstelle gegen den vertrauten Fingerabdruck. Wartende Nachrichten gehen vor dem Schließen einer Verbindung noch raus.
+
+### Behoben
+
+#### Planung
+
+- Liegt die erwartete Hauslast über der Netzbezugsgrenze, fällt der Plan nicht mehr aus. HEMSight bezieht dann nur, was das Haus braucht, und zeigt einen Hinweis.
+- Ein Plan, der sich nicht lösen lässt, hält den Planlauf nicht mehr minutenlang auf.
+- Bei mehreren Speichern plant HEMSight einen, der noch nichts gemeldet hat, nicht mehr mit Ladestand und Kapazität eines anderen. Zwei Speicher derselben Marke bekamen denselben Ladestand, jetzt gilt alles je Speicher.
+
+#### Netzanschluss
+
+- Direkt nach dem Netzzähler fragt der Assistent nach dem Netzanschluss: maximaler Netzbezug als Absicherung (Ampere je Phase) oder in Watt. Dieselbe Eingabe steht in den Einstellungen.
+
+#### Wallbox
+
+- Wechselt HEMSight das Ladeziel, hält es die Hauslast von davor kurz fest. Der eigene Schaltbefehl machte die Messung für Sekunden unbrauchbar, und daraus folgte eine zu hohe Stromstärke.
+- Die Notbremse gegen Netzbezug schaltet die Wallbox erst ab, wenn der Bezug zwei Regelrunden lang über der Grenze lag. Vorher blieb die Wallbox abgeschaltet, obwohl die Messung längst wieder 0 W zeigte.
+- Über der Grenze „EV PV-Laden ab“ nimmt das Auto den Sonnenüberschuss auch dann, wenn der Hausakku es nicht stützen darf. Vorher lud es dort voll aus dem Netz, während der Hausakku jede Kilowattstunde Sonne bekam.
+- Die Sperrzeit für den Phasenwechsel gilt auch über eine Ladepause hinweg. Vorher schaltete HEMSight nach 30 Sekunden trotz Sperre von einer auf drei Phasen um.
+- Ändert oder deaktivierst du die OCPP-Anbindung einer Wallbox, gibt HEMSight den Anschluss wieder frei. Vorher blieb der alte Server aktiv, und die Wallbox sprach weiter mit ihm.
+- Bei zwei Wallbox-Anbindungen zeigt HEMSight Ist- und Höchststrom nur von der eingestellten Wallbox.
+- Jeder Befehl an die Wallbox steht im Verlauf der Live-Steuerung.
+
+#### Steuerung
+
+- Ein Gerät, das HEMSight nicht schreiben kann, lässt sich nicht mehr auf „Steuern“ stellen. Ein früher so gespeichertes steht nach dem Start auf „Planen“, und die Autonomie-Seite nennt den Grund.
+- Die Übersicht zeigt keine Gerätegruppen mehr als gesteuert, für die kein Gerät eingerichtet ist.
+
+#### Messwerte
+
+- Sensoren in Kilowatt, Megawatt oder Kilowattstunden rechnet HEMSight jetzt um. Vorher lief ein Sensor mit 1,5 kW als 1,5 W.
+- Ist ein Gerät als Netzzähler eingestellt, etwa Tibber Pulse, gilt sein Wert. Vorher konnte der Netzwert eines anderen Geräts ihn übertrumpfen, und die Netzquelle wechselte von Lauf zu Lauf.
+- Wie frisch ein Wert ist, misst HEMSight jetzt an dem Gerät, von dem er kommt. Vorher ging eine Außentemperatur, die seit Stunden nicht mehr eintraf, noch als aktuell durch.
+- Netz- und Akkuwerte, die ein Gerät von sich aus schickt, etwa Anker Solix über MQTT, kommen mit ihrem echten Zeitpunkt in der Live-Regelung an. Vorher konnten sie über eine Minute alt sein.
+- Nach dem Firmware-Update der Tibber-Pulse-Bridge im September liest HEMSight den Netzzähler wieder. Über die Bridge im Heimnetz wird er alle 10 Sekunden abgefragt, und ein Wert gilt nach 30 statt 180 Sekunden als veraltet.
+- Der nachgeladene Verlauf rechnet die Hauslast mit demselben Speicher-Vorzeichen wie die laufende Aufzeichnung. Ein seither umgepolter Sensor verdreht ältere Tage nicht mehr.
+
+#### Tibber Pulse
+
+- Die Anbindung ist aktualisiert und funktioniert wieder.
+
+#### PV-Prognose
+
+- Wetterstation und Außentemperatur lernten bei getrennten Datenbanken nie, weil HEMSight den Verlauf in der eigenen statt in der Datenbank von Home Assistant suchte.
+- Die gelernte Verschattung einer Wetterstation konnte nie entstehen: Sie braucht 30 Tage Verlauf, gelesen wurden 15.
+- Die Wettervorhersage des norwegischen Dienstes bricht nicht mehr nach gut zwei Tagen ab.
+- Der Vergleich der Strahlungsprognose mit der Wetterstation stand um eine Viertelstunde versetzt und lernte eine Korrektur, die die Prognose verschlechterte.
+- Die Schattenkarte zog den Schatten doppelt ab und fiel im Herbst und nach einem Quellenwechsel zu Unrecht zurück. Nach einem Wechsel der Wetterquellen kalibriert die Prognose ab dem siebten Tag nur noch auf der neuen Quelle.
+- Im Modellvergleich sieht das mitgelieferte Modell dieselbe Wettervorschau wie im Betrieb. Vorher konnte es zu Unrecht verlieren.
+- Ein kurzer Datenbankausfall löscht die gelernten PV-Modelle nicht mehr.
+- Springt die gemessene PV-Leistung dauerhaft auf ein anderes Niveau, etwa weil ein Sensor nach einem Update Kilowatt statt Watt meldet, lernt die Prognose aus diesen Tagen nicht.
+
+#### Tarif
+
+- Festpreis und Börsenpreis lassen sich speichern, ohne dass Zugangsdaten eines Anbieters verlangt werden.
+
+#### Toyota
+
+- Der E-Auto-Status kam nie an: Die Bibliothek fehlte im Abbild, und der Aufruf passte nicht zur aktuellen Version. Ladestand, Ladestatus, Reichweite und Restladezeit kommen jetzt über den heutigen Weg der Bibliothek.
+
+#### Smart
+
+- Smart #1, #3 und #5: Die Bibliothek der Anbindung lag nicht im Abbild und ist jetzt enthalten.
+
+#### Anzeige
+
+- Ein ruhender Speicher zeigt „0 W“ statt „-0 W“.
+
+### New
+
+#### Storage
+
+- Growatt hybrid inverters (SPH, SPA, MIN, MOD, MID-XH, WIT, WIS) now charge and discharge the storage according to the plan. HEMSight shows whether the measured power follows. If HEMSight goes down, the setpoint ends at the device after three minutes.
+- Growatt NOAH and NEXA can be connected and controlled over the Growatt cloud, the NEXA directly in your home network if you prefer.
+- Several Growatt inverters in the home network are possible. HEMSight reads each one separately and controls the one you pick in the storage step.
+- Zendure storage units can now be controlled correctly: SolarFlow directly in the home network, Hub, Hyper, AIO, ACE and SuperBase V over the cloud key from the Zendure app.
+- EcoFlow PowerStream, Stream and PowerOcean can be connected and controlled. A PowerOcean with Modbus enabled, including the Ocean 2, is controlled directly in the home network.
+- If several devices hang on one account, you pick the right one in the storage step. If HEMSight can only read a device, the assistant creates the storage as a pure measurement and says so.
+- HEMSight takes usable capacity and charge and discharge limits from the device where it reports them. Planning and live control never calculate with more than the device can deliver.
+
+#### PV forecast
+
+- Your own weather station can be connected in the assistant and in the settings: one sensor per measured quantity, and HEMSight checks while you select whether it fits.
+- The PV forecast shows its learning progress, for example „Day 4 of 10 until the first map“.
+- Your own irradiance measurement only affects the forecast once it is demonstrably better. Until then it just runs along, and the technical details show the comparison.
+- The technical details show how usable the loaded history is: gaps, wrong sign, a meter reading instead of a power, kilowatts instead of watts. The forecast does not learn from such periods.
+
+#### Assistant
+
+- When testing a measurement field, HEMSight checks whether the sensor's unit fits. A thermometer as grid power will no longer work.
+- The confirmation of the measurement sources warns if the same sensor is entered as grid power and as PV generation.
+
+### Improved
+
+#### Overview
+
+- If you only let HEMSight plan, you see a dismissible notice instead of a permanent one.
+
+#### PV forecast
+
+- The bundled forecast model is more accurate and runs on every device.
+- The learned shading map no longer learns on days the weather service sees as overcast at noon. Thin clouds no longer count as shade.
+- The short-term adjustment to the current power uses the cloud cover of all weather services instead of a single one.
+- Weather data corrections, the weighting of the weather services and the uncertainty band only apply where they prove better on the following days.
+
+#### Electric car
+
+- The entered departure time now only applies in price charging. In the other charging modes it is saved but no longer taken into account.
+- The limit „EV PV charging from“ applies in every charging mode except battery charging. If the home battery is below it, the sun charges the home battery instead of the car, except in price charging when the departure is pressing. Preview, plan and live control calculate the same limit.
+- Header bar and vehicle tiles show the departure only in price charging, and the reasons in the plan mention it only there.
+
+#### Storage
+
+- The storage assistant no longer presets a charge and discharge limit. If the device reports its limits, they appear in the fields after you pick the device, otherwise you enter them yourself.
+- The settings show the charge level range per storage unit with its own limits.
+- An existing configuration with grid charging steps above the sum of the storage powers keeps charging after the update. HEMSight removes these steps and keeps the old file as a backup.
+
+#### Assistant
+
+- Every selection step has a „Next“ button: the card selects, „Next“ confirms.
+- Without a price provider, no provider is preselected any more.
+
+#### HA export
+
+- The names of the export sensors follow the language of Home Assistant.
+
+#### Integrations
+
+- Anker Solix, Tesla, Kia/Hyundai, Renault, Viessmann, Fronius Wattpilot, Tibber Pulse and other integrations run on current library versions.
+
+#### EEBus
+
+- The connection setup checks the counterpart's certificate against the trusted fingerprint. Queued messages still go out before a connection is closed.
+
+### Fixed
+
+#### Planning
+
+- If the expected house load is above the grid draw limit, the plan no longer fails. HEMSight then draws only what the house needs and shows a hint.
+- A plan that cannot be solved no longer holds up the planning run for minutes.
+- With several storage units, HEMSight no longer plans one that has not reported anything yet with the charge level and capacity of another. Two storage units of the same brand got the same charge level, now everything applies per unit.
+
+#### Grid connection
+
+- Right after the grid meter, the assistant asks for the grid connection: maximum grid draw as a fuse rating (amperes per phase) or in watts. The same input is in the settings.
+
+#### Wallbox
+
+- When HEMSight switches the charging target, it briefly holds the house load from before. Its own switching command made the measurement useless for seconds, and a current that was too high followed.
+- The emergency brake against grid draw only switches the wallbox off when the draw was above the limit for two control rounds. Before, the wallbox stayed off although the measurement showed 0 W again long ago.
+- Above the limit „EV PV charging from“, the car takes the solar surplus even when the home battery may not support it. Before, it charged fully from the grid there while the home battery got every kilowatt hour of sun.
+- The lock time for phase switching also applies across a charging pause. Before, HEMSight switched from one to three phases after 30 seconds despite the lock.
+- If you change or deactivate the OCPP connection of a wallbox, HEMSight frees the port again. Before, the old server stayed active and the wallbox kept talking to it.
+- With two wallbox connections, HEMSight shows actual and maximum current only from the selected wallbox.
+- Every command to the wallbox appears in the live control history.
+
+#### Control
+
+- A device that HEMSight cannot write to can no longer be set to „Control“. One saved that way earlier is set to „Plan“ after the start, and the autonomy page names the reason.
+- The overview no longer shows device groups as controlled for which no device is set up.
+
+#### Measurements
+
+- HEMSight now converts sensors in kilowatts, megawatts or kilowatt hours. Before, a sensor with 1.5 kW ran as 1.5 W.
+- If a device is set as grid meter, such as Tibber Pulse, its value counts. Before, the grid value of another device could outrank it, and the grid source changed from run to run.
+- HEMSight now measures how fresh a value is at the device it comes from. Before, an outdoor temperature that had not arrived for hours still passed as current.
+- Grid and battery values that a device sends on its own, such as Anker Solix over MQTT, reach live control with their real timestamp. Before, they could be over a minute old.
+- After the firmware update of the Tibber Pulse bridge in September, HEMSight reads the grid meter again. Over the bridge in the home network it is polled every 10 seconds, and a value counts as stale after 30 instead of 180 seconds.
+- The loaded history calculates the house load with the same storage sign as the running recording. A sensor that has been reversed since then no longer distorts older days.
+
+#### Tibber Pulse
+
+- The integration has been updated and works again.
+
+#### PV forecast
+
+- Weather station and outdoor temperature never learned with separate databases, because HEMSight looked for the history in its own database instead of the one of Home Assistant.
+- The learned shading of a weather station could never come about: it needs 30 days of history, 15 were read.
+- The weather forecast of the Norwegian service no longer breaks off after a good two days.
+- The comparison of the irradiance forecast with the weather station was shifted by a quarter of an hour and learned a correction that made the forecast worse.
+- The shading map subtracted the shade twice and wrongly fell back in autumn and after a source change. After a change of weather sources, the forecast calibrates only on the new source from the seventh day.
+- In the model comparison, the bundled model sees the same weather forecast as in operation. Before, it could lose unjustly.
+- A short database outage no longer deletes the learned PV models.
+- If the measured PV power jumps permanently to another level, for example because a sensor reports kilowatts instead of watts after an update, the forecast does not learn from those days.
+
+#### Tariff
+
+- Fixed price and exchange price can be saved without asking for a provider's credentials.
+
+#### Toyota
+
+- The electric car status never arrived: the library was missing from the image, and the call did not match the current version. State of charge, charging status, range and remaining charging time now come through the library's current route.
+
+#### Smart
+
+- Smart #1, #3 and #5: the library of the integration was not part of the image and is now included.
+
+#### Display
+
+- A resting storage unit shows „0 W“ instead of „-0 W“.
+
 ## 0.0.14-beta
 
 ### Wichtig

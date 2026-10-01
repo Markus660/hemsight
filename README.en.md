@@ -69,6 +69,17 @@ devices are already there.
 
 ## Versions
 
+### 0.0.15-beta
+
+- Growatt, Zendure and EcoFlow storage units can be connected and controlled.
+- Your own weather station improves the PV forecast, and its learning progress is visible.
+- The departure time only applies in price charging, „EV PV charging from“ applies in every charging mode except battery charging.
+- Storage units no longer have a preset charge and discharge power of 4800 W.
+- Wallbox: emergency brake, charging target switch and phase switch work with more reliable measurements.
+- The Toyota and Smart integrations are now part of the image.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.14-beta
 
 - Heat pump, radiator thermostats and air conditioning are locked for now, hot water keeps running.

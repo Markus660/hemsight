@@ -68,6 +68,17 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.15-beta
+
+- Growatt-, Zendure- und EcoFlow-Speicher lassen sich einbinden und steuern.
+- Eine eigene Wetterstation verbessert die PV-Prognose, und ihr Lernstand ist sichtbar.
+- Die Abfahrt wirkt nur noch im Preisladen, „EV PV-Laden ab“ gilt in jedem Lademodus außer Batterieladen.
+- Speicher haben keine feste Lade- und Entladeleistung von 4800 W mehr als Vorgabe.
+- Wallbox: Notbremse, Ladeziel-Wechsel und Phasenwechsel arbeiten mit verlässlicheren Messwerten.
+- Die Anbindungen für Toyota und Smart liegen jetzt im Abbild.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.14-beta
 
 - Wärmepumpe, Heizkörper-Thermostate und Klimaanlage sind vorerst gesperrt, Warmwasser läuft weiter.

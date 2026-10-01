@@ -25,6 +25,9 @@ ingress_port: 8099
 # every time.
 ingress_panel: true
 panel_icon: mdi:home-lightning-bolt
+ports:
+  7006/tcp: 7006
+  9000/tcp: 9000
 options:
   log_level: info
   access_log: true
