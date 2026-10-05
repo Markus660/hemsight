@@ -68,6 +68,16 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.16-beta
+
+- Neuer Lademodus „Fremdsteuerung“: Steuert ein anderer Anbieter das Laden, lässt HEMSight die Wallbox in Ruhe.
+- Octopus Energy Deutschland ist als Preisquelle wählbar, und die §14a-Werte gelten je Kalenderjahr.
+- Der Verlaufsspeicher braucht nach dem Umbau beim ersten Start deutlich weniger Platz.
+- Ein Planlauf endet früher, wenn keine bessere Lösung mehr kommt.
+- openWB, Easee und OCPP liefern ihre Ladeleistung zuverlässig.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.15-beta
 
 - Growatt-, Zendure- und EcoFlow-Speicher lassen sich einbinden und steuern.

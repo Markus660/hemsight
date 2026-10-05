@@ -69,6 +69,16 @@ devices are already there.
 
 ## Versions
 
+### 0.0.16-beta
+
+- New charging mode „External control“: if another provider controls the charging, HEMSight leaves the wallbox alone.
+- Octopus Energy Germany can be selected as a price source, and the §14a values apply per calendar year.
+- After the rebuild on the first start, the history storage needs much less space.
+- A planning run ends earlier when no better solution is coming.
+- openWB, Easee and OCPP deliver their charging power reliably.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.15-beta
 
 - Growatt, Zendure and EcoFlow storage units can be connected and controlled.

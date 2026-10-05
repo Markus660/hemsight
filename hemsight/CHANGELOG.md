@@ -3,6 +3,220 @@
 Jede Version steht zuerst auf Deutsch, darunter auf Englisch.
 Each version appears in German first, followed by English.
 
+## 0.0.16-beta
+
+### Wichtig
+
+#### System
+
+- Der Verlaufsspeicher wird beim ersten Start nach dem Update umgebaut und braucht danach deutlich weniger Platz. Das läuft im Hintergrund, HEMSight arbeitet normal weiter. Schlägt der Umbau fehl, bleibt die alte Ablage in Betrieb.
+
+#### Wallbox
+
+- Ein gespeichertes „Aus“ der Wallbox wird beim Update zu „Fremdsteuerung“. Das Verhalten bleibt gleich.
+
+#### §14a
+
+- Ein §14a-Satz mit Zeitfenstern verlangt jetzt die Standardstufe deines Preisblatts. Fehlt sie, bleibt Modul 3 aus, bis du sie nachträgst.
+
+### Neu
+
+#### Wallbox
+
+- Neuer Lademodus „Fremdsteuerung“: Steuert ein anderer Anbieter wie z. B. Tibber mit SmartCharging das Laden, lässt HEMSight die Wallbox in Ruhe. Der Assistent bietet den Modus an und erklärt ihn.
+- Ohne gemessene Ladeleistung lassen sich „Fremdsteuerung“ und „Preis“ nicht mehr neu wählen. Fehlt sie einer bestehenden Wallbox, führt die Einrichtung gleich zum Nachtragen.
+
+#### Speicher
+
+- Im EV-Lademodus „Fremdsteuerung“ versorgt der Hausakku nur noch das Haus, nicht mehr das Auto, auch wenn der Plan fehlt. Das gilt für jeden steuerbaren Speicher.
+- Das Journal zeigt bei jedem Takt der Speicherregel, mit welchen Werten sie entschieden hat. Reißt der Netzbezug während einer fremden Ladung die Grenze, steht dazu ein Befund da.
+
+#### Preise
+
+- Octopus Energy Deutschland ist als Preisquelle wählbar, auch mit dem dynamischen Tarif für Smart Meter.
+- HEMSight erkennt selbst, ob die §14a-Staffel schon im Lieferantenpreis steckt. Du kannst es beim Strompreis auch festlegen: „automatisch messen“, „Staffel ist enthalten“ oder „Staffel fehlt“.
+- Fehlt das Preisblatt deines Netzbetreibers für ein Jahr, zeigt HEMSight einen Hinweis. Vorher rechnete es still mit dem Vorjahr weiter.
+
+#### §14a
+
+- Die Einstellungen nehmen die Werte deines Preisblatts je Kalenderjahr auf. Ein neues Jahr überschreibt kein altes, und vorhandene Werte lassen sich ins nächste Jahr kopieren.
+
+### Verbessert
+
+#### Wallbox
+
+- Die openWB-Vorlage fragt nach API-Version, Ladepunkt und Port, die Easee-Vorlage nach der E-Mail. Bestehende Anlagen werden beim Start einmal umgezogen.
+- Bei Integrationen, die die Ladeleistung nicht selbst liefern, ordnest du jetzt immer einen Messwert zu.
+
+#### Speicher
+
+- Die Einstellung „Netzladen-vor-PV-Strafe“ entfällt. Der Speicher lädt dafür nicht mehr über seinen Bedarf hinaus voll.
+
+#### Preise
+
+- Die Ersparnis aus §14a Modul 2 wird am Zähler des Geräts gemessen. Dafür ordnest du den Zähler in den §14a-Einstellungen zu.
+- Die Hilfe beschreibt die Jahressätze, die Wahl beim Strompreis und den §14a-Atlas.
+
+#### System
+
+- Planrechnung und Modelltraining bremsen Home Assistant nun weniger aus.
+- HEMSight liest Einstellungen deutlich schneller und fragt Home Assistant gezielter ab.
+- Ein unverändert blockiertes Gerät steht nicht mehr in jedem Takt im Verlauf.
+- Die Leistung ist allgemein etwas besser.
+
+### Behoben
+
+#### Planung
+
+- Ein Planlauf endet früher, wenn keine bessere Lösung mehr kommt. An einem Test sank die Wartezeit von vier auf etwa eineinhalb Minuten, der Plan blieb gleich.
+- Der Speicher kauft bei unsicheren Preisprognosen nicht mehr Strom auf Vorrat. Auf einer Anlage lud er 15,6 statt 3,6 kWh aus dem Netz.
+- Ein Gerät, das spät vorbereitet wurde, wird am nächsten passenden Tag geplant, statt bis Mitternacht zu blockieren.
+
+#### Speicher
+
+- Der Speicher lädt günstigen Netzstrom auch dann nach, wenn Warmwasser und Geräte ihn später leerziehen würden.
+- Bei mehreren Speichern gibt jeder nur seinen Anteil der Hauslast ab. Vorher gaben zwei Speicher zusammen doppelt so viel ab, wie das Haus braucht.
+- Der Anker-Speicher bekommt seine Betriebsart nicht mehr bei jedem Planwechsel erneut in die Cloud geschickt. Stehen zwei Anker-Anlagen im Konto, liest HEMSight nur noch die eigene.
+
+#### Wallbox
+
+- openWB 2.x und 1.x liefern wieder Messwerte, ebenso eine Wallbox mit OCPP 2.0.1. Bei openWB, Easee und OCPP erkennt HEMSight die Ladeleistung jetzt als solche.
+- Nach dem Ladeende bleibt die Ladeleistung nicht mehr auf dem letzten Wert stehen. Der Akku-Schutz hielt deshalb ein längst beendetes Laden für fremd.
+- Beim Aufräumen alter Anbindungen bleibt der Leistungssensor der Wallbox erhalten.
+
+#### Preise
+
+- Der §14a-Netzentgelt-Tarif (Modul 3) wirkt nur noch mit dem Unterschied zum Standardtarif. Die Nachtstunden werden günstiger, die Abendstunden teurer, alle übrigen bleiben, wie der Lieferant sie nennt.
+- Die Preisprognose fragt Börsenpreise nicht mehr über das Ende der Auktion hinaus. Das galt auch für die eingebaute Marktquelle.
+- Fehlen bei einer Preisquelle die Zugangsdaten, nennt der Befund die Felder. Nach dem Nachtragen liefert die Prognose sofort neu, und der Prüfknopf nennt fehlende Felder, bevor er den Anbieter anruft.
+
+#### Verlauf und Prognose
+
+- Lehnt InfluxDB 3 die Abfrage deines Basislast-Sensors ab, versucht HEMSight es noch zweimal.
+- Große Zeitfenster liest HEMSight aus InfluxDB 3 wieder. Bei viel Verlauf kam sonst „0 Zeilen“, obwohl der Sensor über 280 000 Zeilen trug.
+- Das Prognoseband einer frischen Anlage hat jetzt eine Breite, der Planer hält auch in den ersten Tagen eine Reserve für unsichere Sonnentage.
+- „Plan gegen Ist“ zeigt für vergangene Zeitpunkte den Plan, der damals wirklich galt.
+
+#### Einrichtung
+
+- Ein unterbrochener Einrichtungsassistent lässt sich fortsetzen. Vorher half nur ein neuer Datenordner.
+- Ein Benutzername, Passwort oder Token mit Umlauten führt nicht mehr zu einem Serverfehler bei der Anmeldung.
+- Der Werksreset arbeitet auch im Docker-Betrieb. Wo er nicht starten kann, nennt er den Grund.
+- Beim Speichern meldet HEMSight keine Passwörter mehr als „geändert“, die niemand angefasst hat.
+
+#### Integrationen
+
+- Antwortet Home Assistant nicht, steht das als Fehler da und nicht als lauter unbekannte Geräte.
+- Zahlen, die eine Integration als Text liefert, zählen als Messwert.
+- Tibber Pulse: Ein beschädigtes Telegramm der Bridge lässt den Netzzähler nicht mehr ausfallen, und ein Zählerstand ohne Einheit Wh erscheint nicht mehr um den Faktor 1000 zu groß.
+- Per MQTT kommen die Attribute der PV-Prognosesensoren jetzt in Home Assistant an.
+
+### Important
+
+#### System
+
+- The history storage is rebuilt on the first start after the update and needs much less space afterwards. This runs in the background, HEMSight keeps working normally. If the rebuild fails, the old store stays in use.
+
+#### Wallbox
+
+- A saved „Off“ of the wallbox becomes „External control“ with the update. The behavior stays the same.
+
+#### §14a
+
+- A §14a set with time windows now requires the standard tier of your price sheet. If it is missing, module 3 stays off until you add it.
+
+### New
+
+#### Wallbox
+
+- New charging mode „External control“: if another provider such as Tibber with SmartCharging controls the charging, HEMSight leaves the wallbox alone. The assistant offers the mode and explains it.
+- Without a measured charging power, „External control“ and „Price“ can no longer be newly selected. If an existing wallbox lacks it, the setup leads you straight to adding it.
+
+#### Storage
+
+- In the EV charging mode „External control“, the home battery only supplies the house, no longer the car, even if the plan is missing. This applies to every controllable storage unit.
+- The journal shows at every cycle of the storage rule which values it decided with. If the measured grid draw exceeds the limit during an external charge, a finding is recorded for it.
+
+#### Prices
+
+- Octopus Energy Germany can be selected as a price source, also with the dynamic tariff for smart meters.
+- HEMSight detects on its own whether the §14a tier scheme is already included in the supplier price. You can also set it at the electricity price: „measure automatically“, „tier scheme is included“ or „tier scheme is missing“.
+- If the price sheet of your grid operator is missing for a year, HEMSight shows a notice. Before, it silently kept calculating with the previous year.
+
+#### §14a
+
+- The settings take the values of your price sheet per calendar year. A new year does not overwrite an old one, and existing values can be copied to the next year.
+
+### Improved
+
+#### Wallbox
+
+- The openWB template asks for the API version, charge point and port, the Easee template for the email address. Existing installations are migrated once at start.
+- For integrations that do not deliver the charging power themselves, you now always assign a measured value.
+
+#### Storage
+
+- The setting „Grid charging before PV penalty“ is removed. In return, the storage no longer charges beyond its need.
+
+#### Prices
+
+- The saving from §14a module 2 is measured at the device's meter. For this you assign the meter in the §14a settings.
+- The help describes the annual rates, the choice at the electricity price and the §14a atlas.
+
+#### System
+
+- Plan calculation and model training slow down Home Assistant less.
+- HEMSight reads settings much faster and queries Home Assistant more selectively.
+- A device that stays blocked no longer appears in the history at every cycle.
+- Performance is slightly better overall.
+
+### Fixed
+
+#### Planning
+
+- A planning run ends earlier when no better solution is coming. In one test the waiting time dropped from four to about one and a half minutes, the plan stayed the same.
+- The storage no longer buys electricity in advance when price forecasts are uncertain. On one installation it charged 15.6 instead of 3.6 kWh from the grid.
+- A device that was prepared late is planned for the next suitable day instead of being blocked until midnight.
+
+#### Storage
+
+- The storage also recharges cheap grid power when hot water and appliances would drain it later.
+- With several storage units, each one only gives its share of the house load. Before, two units together gave twice as much as the house needs.
+- The Anker storage no longer has its operating mode sent to the cloud again at every plan change. If two Anker systems are in the account, HEMSight only reads its own.
+
+#### Wallbox
+
+- openWB 2.x and 1.x deliver measured values again, as does a wallbox with OCPP 2.0.1. For openWB, Easee and OCPP, HEMSight now recognizes the charging power as such.
+- After charging ends, the charging power no longer stays at the last value. Because of that, the battery protection took a long-finished charge for a foreign one.
+- When old connections are cleaned up, the power sensor of the wallbox is kept.
+
+#### Prices
+
+- The §14a grid fee tariff (module 3) only applies the difference to the standard tariff. The night hours get cheaper, the evening hours more expensive, all others stay as the supplier states them.
+- The price forecast no longer requests exchange prices beyond the end of the auction. This also applied to the built-in market source.
+- If a price source lacks its credentials, the finding names the fields. After you add them, the forecast updates immediately, and the test button names missing fields before it calls the provider.
+
+#### History and forecast
+
+- If InfluxDB 3 rejects the query for your base load sensor, HEMSight tries twice more.
+- HEMSight reads large time windows from InfluxDB 3 again. With a lot of history it otherwise returned „0 rows“, although the sensor carried over 280,000 rows.
+- The forecast band of a fresh installation now has a width, and the planner keeps a reserve for uncertain sunny days even in the first days.
+- „Plan versus actual“ shows, for past points in time, the plan that was really valid then.
+
+#### Setup
+
+- An interrupted setup assistant can be resumed. Before, only a new data folder helped.
+- A username, password or token with umlauts no longer causes a server error at login.
+- The factory reset also works in Docker operation. Where it cannot start, it names the reason.
+- When saving, HEMSight no longer reports passwords as „changed“ that nobody touched.
+
+#### Integrations
+
+- If Home Assistant does not answer, this is shown as an error and not as lots of unknown devices.
+- Numbers that an integration delivers as text count as a measured value.
+- Tibber Pulse: a damaged telegram from the bridge no longer makes the grid meter fail, and a meter reading without the unit Wh no longer appears too large by a factor of 1000.
+- Via MQTT, the attributes of the PV forecast sensors now arrive in Home Assistant.
+
 ## 0.0.15-beta
 
 ### Neu
