@@ -3,6 +3,44 @@
 Jede Version steht zuerst auf Deutsch, darunter auf Englisch.
 Each version appears in German first, followed by English.
 
+## 0.0.17-beta
+
+### Neu
+
+#### Preise
+
+- Fehlt der Börsenpreis für die §14a-Prüfung, zeigt HEMSight einen Hinweis. Solange er fehlt, bleibt der Preis deines Lieferanten unverändert.
+
+### Behoben
+
+#### Preise
+
+- Die §14a-Prüfung bleibt messbar, auch wenn Energy-Charts Anfragen abweist. HEMSight holt die Preise je Quelle höchstens einmal pro Stunde, und alle Bereiche teilen sich diesen Abruf.
+- Fehlermeldungen von Preisquellen zeigen im Protokoll keine Zugangsschlüssel mehr, auch bei ausführlicher Protokollierung.
+- Eine eigene Preisquellen-Adresse behält ihre Parameter, etwa einen Schlüssel. Bisher gingen sie beim Abruf verloren.
+
+#### Home Assistant
+
+- Eine Home-Assistant-Adresse mit Benutzername und Passwort meldet sich jetzt mit dem Token an. Bisher lehnte Home Assistant die Anmeldung ab.
+
+### New
+
+#### Prices
+
+- If the exchange price for the §14a check is missing, HEMSight shows a notice. As long as it is missing, your supplier's price stays unchanged.
+
+### Fixed
+
+#### Prices
+
+- The §14a check stays measurable even when Energy-Charts rejects requests. HEMSight fetches prices at most once per hour per source, and all areas share this one request.
+- Error messages from price sources no longer show access keys in the log, even with verbose logging.
+- A custom price source address keeps its parameters, such as a key. Before, they were lost when the price was fetched.
+
+#### Home Assistant
+
+- A Home Assistant address with a username and password in it now signs in with the token. Before, Home Assistant rejected the sign-in.
+
 ## 0.0.16-beta
 
 ### Wichtig

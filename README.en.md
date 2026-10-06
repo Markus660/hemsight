@@ -69,6 +69,16 @@ devices are already there.
 
 ## Versions
 
+### 0.0.17-beta
+
+- If the exchange price for the §14a check is missing, HEMSight shows a notice.
+- The §14a check stays measurable even when Energy-Charts rejects requests.
+- Error messages from price sources no longer show access keys in the log.
+- A custom price source address keeps its parameters, such as a key.
+- A Home Assistant address with a username and password in it now signs in with the token.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.16-beta
 
 - New charging mode „External control“: if another provider controls the charging, HEMSight leaves the wallbox alone.

@@ -68,6 +68,16 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.17-beta
+
+- Fehlt der Börsenpreis für die §14a-Prüfung, zeigt HEMSight einen Hinweis.
+- Die §14a-Prüfung bleibt messbar, auch wenn Energy-Charts Anfragen abweist.
+- Fehlermeldungen von Preisquellen zeigen im Protokoll keine Zugangsschlüssel mehr.
+- Eine eigene Preisquellen-Adresse behält ihre Parameter, etwa einen Schlüssel.
+- Eine Home-Assistant-Adresse mit Benutzername und Passwort meldet sich jetzt mit dem Token an.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.16-beta
 
 - Neuer Lademodus „Fremdsteuerung“: Steuert ein anderer Anbieter das Laden, lässt HEMSight die Wallbox in Ruhe.
