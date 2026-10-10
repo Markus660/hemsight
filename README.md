@@ -68,6 +68,17 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.18-beta
+
+- Der Plan nennt für jeden Speicher und jeden Abschnitt eine Betriebsart: normal, halten, laden oder entladen.
+- Bei einer fremden Ladung gibt der Hausspeicher nur noch so viel ab, wie das Haus ohne Auto braucht. Das gilt für viele weitere Marken.
+- Bei freigegebener Abgabe ins Netz entladen jetzt auch viele weitere Speichermarken mit der geplanten Leistung.
+- FoxESS im Heimnetz, Alpha ESS über das lokale Modbus-Gateway und eine wattgenaue sonnenBatterie.
+- HEMSight reagiert beim Planlauf und beim Speichern der Einstellungen nicht mehr bis zu 17 Sekunden lang nicht.
+- Die PV-Prognose lernt stabiler und geht für übermorgen voll in den Plan ein.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.17-beta
 
 - Fehlt der Börsenpreis für die §14a-Prüfung, zeigt HEMSight einen Hinweis.

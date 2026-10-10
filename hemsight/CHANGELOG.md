@@ -3,6 +3,188 @@
 Jede Version steht zuerst auf Deutsch, darunter auf Englisch.
 Each version appears in German first, followed by English.
 
+## 0.0.18-beta
+
+### Wichtig
+
+#### Speicher
+
+- Ist die Abgabe ins Netz freigegeben, entladen jetzt auch KOSTAL, Sungrow, Huawei, Victron, Sigenergy, SolaX, GoodWe, Fronius, E3/DC, Solis, SMA, Sofar, dreiphasige Deye/Sunsynk, Alpha ESS und ältere Growatt-Speicher mit der geplanten Leistung ins Netz. Ohne Freigabe bleibt es beim Entladen ins Haus.
+
+### Neu
+
+#### Speicher
+
+- Der Plan nennt für jeden Speicher und jeden Abschnitt eine Betriebsart: normal, halten, laden oder entladen. HEMSight schreibt dieselbe Betriebsart ans Gerät, soweit das Gerät sie ausführen kann und sie freigegeben ist.
+- Bei einer fremden Ladung gibt der Hausspeicher nur noch so viel ab, wie das Haus ohne Auto braucht. Das gilt jetzt für KOSTAL, Fronius, E3/DC, Sungrow, Huawei, SolarEdge, SMA, Sofar, Deye/Sunsynk, VARTA, Victron, Sigenergy, RCT Power und Marstek.
+- SolaX, Solis, Alpha ESS, die Tesla Powerwall und ältere Growatt-Wechselrichter halten bei einer fremden Ladung an. GoodWe wechselt auf Battery Standby.
+- Viele Speicher lassen sich jetzt halten, am Laden hindern und, wo das Gerät es kann, aus dem Netz laden. Dazu gehören neu Victron, SolaX, Solis, Sigenergy, Alpha ESS, die Tesla Powerwall, EcoFlow Stream und ältere Growatt-Wechselrichter. SENEC lässt sich aus dem Netz laden.
+- RCT Power, Marstek und GoodWe halten und laden mit Leistung. E3/DC, Solis, Alpha ESS und SolaX laden aus dem Netz mit der geplanten Leistung statt mit voller Kraft.
+- Die sonnenBatterie wird wieder wattgenau gesteuert. Den Normalbetrieb, Eigenverbrauch oder Time-of-Use, wählst du im Assistenten.
+- FoxESS lässt sich im Heimnetz steuern (H3, H3-Pro/Smart, Avocado). Das SMA Sunny Island hält bei 0 W und lädt mit Leistung.
+- Alpha ESS lässt sich über das lokale Modbus-Gateway steuern. Bei der Tesla Powerwall führt der Assistent Schritt für Schritt durch die Einrichtung der eigenen Tesla-App.
+- Der Modbus-Speicher hat optionale Felder für Entladegrenze, Betriebsart und Reserve, alle im Assistenten.
+- Gibt HEMSight die Steuerung ab, stellen die unterstützten Speicher die Einstellung wieder her, die vor der Übernahme am Gerät galt.
+
+### Verbessert
+
+#### Plan
+
+- Ein Speicher kann auch ohne Netzladefreigabe halten: Er gibt nichts ab, die Sonne lädt ihn, und das Haus läuft am Netz, wenn die gespeicherte Energie später mehr wert ist.
+- Ein Speicher, den HEMSight nicht steuern kann, wird so gerechnet, wie er von selbst läuft. Er versorgt das Haus und beim Preisladen auch das Auto, selbst wenn das Entladen fürs Auto gesperrt ist.
+- Zwei Speicher dürfen gleichzeitig Verschiedenes tun, etwa einer aus dem Netz laden, während der andere das Haus versorgt.
+- Die PV-Prognose für übermorgen geht voll in den Plan ein statt nur zur Hälfte.
+
+#### Live-Steuerung
+
+- Wechselt der Plan die Betriebsart eines Speichers, geht der Wechsel sofort ans Gerät, auch innerhalb der Haltezeit.
+
+#### PV-Prognose
+
+- Ein neu gelerntes Modell wird sofort an den Prognosen der letzten sieben Tage beurteilt, statt eine Woche mitzulaufen.
+- Neben der Morgenprognose um 6 Uhr hält HEMSight jetzt auch die Prognose um 18 Uhr fest, nach der nachts geladen wird. So lässt sich messen, wie gut sie war.
+- Die Diagnose der Schattenkarte nennt je Lerntag Messpunkte und Ertrag. Wechselt die Karte ihren Zustand oder fällt die Prognose auf die Ersatzprognose zurück, steht der Grund mit Zahlen im Protokoll.
+
+### Behoben
+
+#### System
+
+- HEMSight reagierte während eines Planlaufs bis zu 17 Sekunden lang nicht. Dasselbe konnte beim Speichern der Einstellungen, im Einrichtungsassistenten, beim Versand von Benachrichtigungen und beim Erstellen eines Support-Pakets passieren. Diese Arbeiten laufen jetzt im Hintergrund, die Oberfläche bleibt bedienbar.
+
+#### Verbrauchsprognose
+
+- Während die Prognose rechnete, hingen Oberfläche und Statusabfragen teils bis zu 20 Sekunden. Sie liest ihre Verlaufsdaten jetzt im Hintergrund und nur noch den neuesten Stand.
+- Mit einer großen InfluxDB 3 lehnte die Datenbank die Verlaufsdaten des Basislast-Sensors immer öfter ab, und der Plan sprang zwischen zwei Lastkurven. HEMSight liest die 90 Tage jetzt einmal in kleinen Abschnitten und danach nur noch das Neue.
+- Geplante Lasten wie ein PC fielen aus der Prognose, sobald ein Planlauf seine Daten aus einer anderen Quelle bekam als das gelernte Modell.
+- Verbraucher mit längerer Zeit gleichbleibendem Verbrauch, etwa eine Wallbox oder ein PC mit 0 W, fehlten nach 15 Minuten im Verlauf. Ihr Wert wird jetzt durchgehend mitgeschrieben.
+
+#### Plan
+
+- Bei zwei gleichen Speichern fiel ein Planlauf gelegentlich auf den Grundplan zurück, weil eine lösbare Aufgabe als unlösbar gemeldet wurde.
+- Die Vorschau fürs Preisladen rechnete den Akku-Anteil eines Speichers ohne Steuerweg auf null, und der Plan zeigte das Auto mit zu hohen Kosten am Netz.
+
+#### PV-Prognose
+
+- Die gelernte Schattenkarte wechselte bei jeder Auswertung zwischen aktiv und zurückgenommen. Sie geht jetzt nur in Kraft, wenn sie keinen Schaden zeigt, und wird erst nach einem gemessenen Puffer zurückgenommen.
+- Ein einzelner Mikrowechselrichter wird nicht mehr gegen die Leistung der ganzen Anlage auf „Kilowatt statt Watt“ geprüft und sperrt das Lernen nicht mehr.
+- Kurz nach Mitternacht (UTC) fiel die Auslieferung manchmal auf die Ersatzprognose zurück. Ein Lauf am Nachmittag oder Abend wird nicht mehr als Morgenprognose des Tages festgeschrieben.
+- Nach einem Wechsel der Wetterquelle lernt die Prognose nicht mehr wochenlang auf Tagen der alten Quelle weiter. Auf einer Anlage lag die Tagesprognose dadurch im Herbst um rund 14 % zu hoch.
+- Das Urteil, ob die eigene Wetterstation die Kurzfristprognose verbessert, mischt keine älteren Rechenweisen mehr ein. Die anlageneigene Anpassung lernt auch aus den jüngsten Tagen und wird nur eingesetzt, wenn sie das Grundmodell schlägt.
+- Das Öffnen der PV-Auswertung löst kein Neulernen mehr aus, gelernt wird nur im Takt der Planung. Die Auswertung zeigt, von wann ihr Stand ist.
+- Das mitgelieferte Prognosemodell bekommt den Niederschlag als Menge je Stunde. Bei Viertelstunden sah es bisher nur ein Viertel davon.
+
+#### Speicher
+
+- SolarEdge und Sigenergy speisen nur noch ins Netz ein, wenn die Abgabe ausdrücklich freigegeben ist. SolarEdge entlud bisher immer mit voller Leistung statt mit der geplanten.
+- Wechselt der Plan weg vom Entladen ins Netz, endet die Abgabe auch dann, wenn das Tageslimit für Schreibvorgänge erreicht ist oder ein Schreibversuch scheitert.
+- Sofar schreibt seinen Sollwert jetzt so, dass er die Batterie trifft und nicht den Netzanschluss. Bei SolaX wird der Manuell-Modus mit dem richtigen Wert gesetzt.
+- Bei einphasigen Deye/Sunsynk-Wechselrichtern nimmt HEMSight die früher gesetzte Sperre von 0 A für Laden und Entladen beim ersten Schreiben einmalig zurück. Dreiphasige Geräte lesen die richtigen Register.
+- Deye/Sunsynk und Growatt bekommen beim Zurückgeben der Steuerung ihre Zeitfenster zurück, auch wenn sie vor diesem Update übernommen wurden.
+- Die Anmeldung beim Tesla-Konto nutzt die Adresse und Angaben, die Tesla für die Fleet-API verlangt. FoxESS über die Cloud entlädt nicht mehr ins Netz.
+
+#### Live-Steuerung
+
+- Ein Not-Aus, während HEMSight mehrere Geräte an ihren vorherigen Zustand zurückgibt, hält jetzt auch die übrigen an. Sie werden nach dem Not-Aus zurückgegeben.
+
+#### Wallbox
+
+- Die Fremdsteuerung bleibt geschützt, wenn die Einstellungsdatenbank kurz nicht lesbar ist. Eine OCPP-Wallbox meldet nach dem Trennen keine Ladeleistung mehr, und Statusmeldungen der Ladestation selbst gelten nicht als Status des Ladepunkts.
+
+#### Home Assistant
+
+- Im Home-Assistant-Add-on bemerkt HEMSight einen Neustart von Home Assistant wieder und schreibt die Exportsensoren sofort neu. Bisher blieben sie bis zum nächsten Takt leer.
+- Ohne gültigen Plan meldet der MQTT-Export den geplanten Start einer Schaltlast als unbekannt statt als 0. Home Assistant protokollierte sonst jede Minute „Invalid state message“.
+
+### Important
+
+#### Storage
+
+- If feeding into the grid is enabled, KOSTAL, Sungrow, Huawei, Victron, Sigenergy, SolaX, GoodWe, Fronius, E3/DC, Solis, SMA, Sofar, three-phase Deye/Sunsynk, Alpha ESS and older Growatt storage units now also discharge into the grid at the planned power. Without it, discharging stays limited to the house.
+
+### New
+
+#### Storage
+
+- The plan names an operating mode for every storage unit and every period: normal, hold, charge or discharge. HEMSight writes the same operating mode to the device, as far as the device can carry it out and it is enabled.
+- During an external charge, the home battery now only gives as much as the house needs without the car. This now applies to KOSTAL, Fronius, E3/DC, Sungrow, Huawei, SolarEdge, SMA, Sofar, Deye/Sunsynk, VARTA, Victron, Sigenergy, RCT Power and Marstek.
+- SolaX, Solis, Alpha ESS, the Tesla Powerwall and older Growatt inverters hold during an external charge. GoodWe switches to Battery Standby.
+- Many storage units can now be held, kept from charging and, where the device allows it, charged from the grid. Newly included are Victron, SolaX, Solis, Sigenergy, Alpha ESS, the Tesla Powerwall, EcoFlow Stream and older Growatt inverters. SENEC can be charged from the grid.
+- RCT Power, Marstek and GoodWe hold and charge with a set power. E3/DC, Solis, Alpha ESS and SolaX charge from the grid at the planned power instead of at full power.
+- The sonnenBatterie is controlled to the watt again. You choose the normal operation, self-consumption or Time-of-Use, in the assistant.
+- FoxESS can be controlled in the home network (H3, H3-Pro/Smart, Avocado). The SMA Sunny Island holds at 0 W and charges with a set power.
+- Alpha ESS can be controlled through the local Modbus gateway. For the Tesla Powerwall, the assistant guides you step by step through setting up your own Tesla app.
+- The Modbus storage has optional fields for discharge limit, operating mode and reserve, all in the assistant.
+- When HEMSight hands control back, the supported storage units restore the setting that was on the device before the takeover.
+
+### Improved
+
+#### Plan
+
+- A storage unit can also hold without grid charging enabled: it gives nothing out, the sun charges it, and the house runs on the grid if the stored energy is worth more later.
+- A storage unit that HEMSight cannot control is calculated the way it runs on its own. It supplies the house and, when charging by price, also the car, even if discharging for the car is blocked.
+- Two storage units may do different things at the same time, for example one charging from the grid while the other supplies the house.
+- The PV forecast for the day after tomorrow now enters the plan in full instead of only by half.
+
+#### Live control
+
+- When the plan changes the operating mode of a storage unit, the change goes to the device immediately, even within the hold time.
+
+#### PV forecast
+
+- A newly learned model is judged right away on the forecasts of the last seven days, instead of running along for a week first.
+- Besides the morning forecast at 6 a.m., HEMSight now also records the forecast at 6 p.m., the one night charging is based on. This makes it possible to measure how good it was.
+- The diagnosis of the shadow map names measuring points and yield for each learning day. If the map changes its state or the forecast falls back to the substitute forecast, the reason is in the log with figures.
+
+### Fixed
+
+#### System
+
+- HEMSight did not respond for up to 17 seconds during a planning run. The same could happen when saving the settings, in the setup assistant, when sending notifications and when creating a support package. This work now runs in the background, and the interface stays usable.
+
+#### Consumption forecast
+
+- While the forecast was calculating, the interface and status queries sometimes hung for up to 20 seconds. It now reads its history data in the background and only the latest state.
+- With a large InfluxDB 3, the database increasingly rejected the history data of the base load sensor, and the plan jumped between two load curves. HEMSight now reads the 90 days once in small sections and afterwards only the new data.
+- Planned loads such as a PC dropped out of the forecast as soon as a planning run got its data from a different source than the learned model.
+- Consumers that drew the same amount for a long time, for example a wallbox or a PC at 0 W, were missing from the history after 15 minutes. Their value is now written continuously.
+
+#### Plan
+
+- With two identical storage units, a planning run occasionally fell back to the basic plan because a solvable task was reported as unsolvable.
+- The preview for price charging counted the battery share of a storage unit without a control path as zero, and the plan showed the car with too high costs from the grid.
+
+#### PV forecast
+
+- The learned shadow map switched between active and withdrawn at every evaluation. It now only takes effect if it shows no harm, and is withdrawn only after a measured buffer.
+- A single microinverter is no longer checked against the power of the whole system for „kilowatt instead of watt“ and no longer blocks learning.
+- Shortly after midnight (UTC), delivery sometimes fell back to the substitute forecast. A run in the afternoon or evening is no longer recorded as the morning forecast of the day.
+- After a change of the weather source, the forecast no longer keeps learning on days of the old source for weeks. On one installation the daily forecast was about 14 % too high in autumn because of this.
+- The verdict on whether your own weather station improves the short-term forecast no longer mixes in older calculation methods. The system-specific adjustment also learns from the most recent days and is only used if it beats the base model.
+- Opening the PV evaluation no longer triggers new learning; learning only happens in the planning cycle. The evaluation shows the date of its state.
+- The bundled forecast model receives precipitation as an amount per hour. With quarter-hours it previously saw only a quarter of it.
+
+#### Storage
+
+- SolarEdge and Sigenergy only feed into the grid if feeding is explicitly enabled. SolarEdge previously always discharged at full power instead of the planned power.
+- When the plan switches away from discharging into the grid, the feed-in also ends if the daily limit for write operations is reached or a write attempt fails.
+- Sofar now writes its setpoint so that it hits the battery and not the grid connection. On SolaX, manual mode is set with the correct value.
+- For single-phase Deye/Sunsynk inverters, HEMSight lifts the previously set lock of 0 A for charging and discharging once, at the first write. Three-phase devices read the correct registers.
+- When control is handed back, Deye/Sunsynk and Growatt get their time windows back, even if they were taken over before this update.
+- The sign-in to the Tesla account uses the address and details that Tesla requires for the Fleet API. FoxESS via the cloud no longer discharges into the grid.
+
+#### Live control
+
+- An emergency stop during which HEMSight is returning several devices to their previous state now also stops the others. They are returned after the emergency stop.
+
+#### Wallbox
+
+- External control stays protected when the settings database is briefly unreadable. An OCPP wallbox no longer reports a charging power after disconnecting, and status messages from the charging station itself do not count as the status of the charge point.
+
+#### Home Assistant
+
+- In the Home Assistant add-on, HEMSight notices a restart of Home Assistant again and rewrites the export sensors immediately. Before, they stayed empty until the next cycle.
+- Without a valid plan, the MQTT export reports the planned start of a switchable load as unknown instead of 0. Home Assistant otherwise logged „Invalid state message“ every minute.
+
 ## 0.0.17-beta
 
 ### Neu

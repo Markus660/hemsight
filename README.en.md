@@ -69,6 +69,17 @@ devices are already there.
 
 ## Versions
 
+### 0.0.18-beta
+
+- The plan names an operating mode for every storage unit and every period: normal, hold, charge or discharge.
+- During an external charge, the home battery now only gives as much as the house needs without the car. This applies to many more brands.
+- With feeding into the grid enabled, many more storage brands now discharge into the grid at the planned power.
+- FoxESS in the home network, Alpha ESS through the local Modbus gateway and a sonnenBatterie controlled to the watt.
+- HEMSight no longer stops responding for up to 17 seconds during a planning run or when saving the settings.
+- The PV forecast learns more steadily, and the forecast for the day after tomorrow enters the plan in full.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.17-beta
 
 - If the exchange price for the §14a check is missing, HEMSight shows a notice.
