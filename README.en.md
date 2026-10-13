@@ -69,6 +69,17 @@ devices are already there.
 
 ## Versions
 
+### 0.0.19-beta
+
+- The plan now spares the battery at a high state of charge. Threshold and amount are under „Expert weights“ → „Storage“.
+- New is a planning buffer that keeps a few percent above the lower limit free for unplanned consumption.
+- The state-of-charge limits can be taken from Home Assistant, and there are three new sensors.
+- A new, more accurate PV forecast model, and the forecast follows a trend in yield faster.
+- Systems with two batteries get a plan again, and holding one battery no longer curtails the sun for all of them.
+- Smart recognises a plugged-in car even without charging, and Renault and Teslemetry report in the interface language.
+
+The full [changelog](hemsight/CHANGELOG.md) is in the add-on directory.
+
 ### 0.0.18-beta
 
 - The plan names an operating mode for every storage unit and every period: normal, hold, charge or discharge.

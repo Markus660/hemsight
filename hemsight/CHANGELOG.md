@@ -3,6 +3,144 @@
 Jede Version steht zuerst auf Deutsch, darunter auf Englisch.
 Each version appears in German first, followed by English.
 
+## 0.0.19-beta
+
+### Wichtig
+
+#### Speicher
+
+- Der Plan schont den Speicher im oberen Ladestand. Ladung über 70 % kostet im Plan jetzt einen kleinen Betrag je Stunde. Darum ist der Akku an sonnigen Tagen kürzer ganz voll. Schwelle und Betrag lassen sich unter „Experten-Gewichte“ → „Speicher“ einstellen, 0 schaltet die Schonung ab.
+
+#### Geräte
+
+- Im Assistenten erscheint schon der Vorlagenkatalog für Geräte. Er ist eine Vorbereitung für das nächste Release und noch nicht fertig.
+
+### Neu
+
+#### Speicher
+
+- Neu ist ein Planungspuffer für den Speicher, einstellbar unter „Experten-Gewichte“ → „Speicher“. Er hält einige Prozent über der Untergrenze frei, in die der Plan nicht hineinplant. Bei ungeplantem Verbrauch darf der Akku ihn trotzdem nutzen. Ab Werk steht er auf 0.
+- Die untere und die obere Ladestandsgrenze lassen sich aus einem Wert in Home Assistant übernehmen, etwa aus einem Schieberegler. Eine Änderung wirkt innerhalb einer Minute, ohne neue Planung. Ein Kalendereintrag geht weiter vor. Ist der Wert unbrauchbar, gilt die bisherige Grenze.
+
+#### Home Assistant
+
+- Für Anlagen mit Speicher gibt es drei neue Sensoren: den geplanten Ladestand am Ende des laufenden Abschnitts sowie die gerade wirksame untere und obere Ladestandsgrenze.
+
+### Verbessert
+
+#### PV-Prognose
+
+- Das mitgelieferte Prognosemodell ist neu. Im Vergleich über viele Anlagen trifft es den Ertrag deutlich besser als das bisherige.
+- Die Prognose folgt einem Trend im Ertrag schneller, etwa im Herbst, wenn die Sonne tiefer steht. Neben dem 30-Tage-Profil wirkt dafür auch das Niveau der letzten sieben Tage.
+- Alle Rechenwege der Prognose sammeln jetzt gleichzeitig Probezeit. Bisher bekam nur der Tagessieger einen Probeplatz, und ein knapp zweites Modell kam nie zum Zug. Läuft noch kein gelerntes Modell, übernimmt der Sieger sofort.
+- Das Lernen läuft in einem eigenen Prozess, der hinter der Planung zurücksteht.
+- Der Vergleich zwischen deiner eigenen Prognose und der von HEMSight zeigt jetzt die genauere Quelle mit ihren Werten, egal in welche Richtung. Er erscheint, sobald beide genug Messtage haben, auch wenn die HEMSight-Prognose aktiv ist.
+
+#### Plan
+
+- Die Begründung eines Planabschnitts nennt einen Preisvorteil nur noch, wo es einen gibt. Entlädt der Akku ohne Preisunterschied, steht dort „Batterie deckt Hauslast“. Hält er seine Ladung für einen teureren Abschnitt, während das Haus aus dem Netz läuft, steht genau das da.
+
+#### Speicher
+
+- Zwei Regler haben neue Namen: „Notreserve schützen“ heißt jetzt „Reserve und Planungspuffer schützen“; „Prognose-Risiko-Puffer“ heißt jetzt „Prognose-Risiko-Aufschlag“. Beide wirken nur, wenn Reserve oder Planungspuffer über der Untergrenze liegen.
+
+### Behoben
+
+#### Speicher
+
+- Anlagen mit zwei Speichern und Vorrang für den Hauptspeicher bekamen manchmal keinen Plan. Das passierte, wenn beide voll waren, keine Sonne schien und das Haus mehr brauchte, als der zweite Speicher abgeben konnte. Jetzt hilft das Netz mit, sobald jeder Speicher voll abgibt, an seiner Reserve steht oder seine Ladung für später hält.
+- Bei mehreren Speichern sperrte das Halten eines einzelnen Speichers die Sonne für die ganze Anlage. Sie wurde abgeregelt, während ein anderer Speicher das Haus versorgte. Jetzt gilt das Halten je Speicher, und abgeregelt wird erst, wenn kein Speicher mehr aufnehmen kann.
+
+#### PV-Prognose
+
+- Die Spanne um die PV-Prognose war zu breit: 89 statt der angestrebten 80 von 100 Werten lagen darin. Jetzt trifft sie ihr Ziel wieder.
+- Wurde die Anlage umgebaut, wartete ein am selben Tag gelerntes Modell eine Nacht länger auf seine Prüfung.
+- Fehlt die Datei eines eingesetzten Modells oder passt sie nicht mehr, wird das Modell abgesetzt. Bisher rechnete still die Physik weiter. Nach einem Wechsel des mitgelieferten Modells lernt die anlageneigene Anpassung sofort neu.
+- Fiel ein Modell bei der Prüfung durch, war seine ganze Art eine Woche lang gesperrt. Das traf auch ein frisch gelerntes Modell, das den Vergleich gerade gewonnen hatte. Jetzt tritt es beim nächsten Lernlauf wieder an.
+- Im Abschnitt „Vergleich: deine Prognose vs. HEMSight“ zeigte die Zeile zur eigenen Prognose die Werte der gerade aktiven Quelle.
+
+#### E-Auto
+
+- Ein eingestecktes Smart-Fahrzeug, das gerade nicht lädt, galt als abgesteckt. Jetzt zählt auch der Verbindungsstatus des Ladekabels.
+- Ein Renault-Konto mit Zwei-Faktor-Anmeldung zeigte nur „(403101, 'Account Pending TFA Registration')“. Jetzt sagt HEMSight in der Sprache der Oberfläche, dass Renault eine Zwei-Faktor-Anmeldung verlangt, die HEMSight noch nicht unterstützt. Kommt im nächsten Release.
+- Teslemetry zeigt den Hinweis „keine VIN konfiguriert“ jetzt in der Sprache der Oberfläche statt immer auf Deutsch.
+
+#### Einstellungen
+
+- Zahlenfelder nehmen kein „true“, „nan“ oder „inf“ mehr an. Aus „true“ wurde bisher still 1. Steht so ein Wert in einer bestehenden Konfiguration, wird er beim Start repariert, und das Feld fällt auf den Standard zurück.
+
+#### Benachrichtigungen
+
+- War die Liste der verschickten Meldungen kurz unlesbar, konnte eine Meldung doppelt ankommen. Jetzt wird in so einem Durchlauf nichts verschickt, und der nächste holt es nach.
+
+### Important
+
+#### Storage
+
+- The plan now spares the battery at a high state of charge. Charge above 70 % costs a small amount per hour in the plan. On sunny days the battery therefore stays completely full for a shorter time. Threshold and amount can be set under „Expert weights“ → „Storage“; 0 turns the battery care off.
+
+#### Devices
+
+- The setup assistant already shows the template catalogue for devices. It is preparation for the next release and not finished yet.
+
+### New
+
+#### Storage
+
+- New is a planning buffer for the battery, adjustable under „Expert weights“ → „Storage“. It keeps a few percent above the lower limit free, which the plan does not plan into. The battery may still use it for unplanned consumption. By default it is set to 0.
+- The lower and the upper state-of-charge limit can be taken from a value in Home Assistant, for example a slider. A change takes effect within a minute, without a new planning run. A calendar entry still takes precedence. If the value is unusable, the previous limit applies.
+
+#### Home Assistant
+
+- Systems with a battery get three new sensors: the planned state of charge at the end of the current period and the currently effective lower and upper state-of-charge limit.
+
+### Improved
+
+#### PV forecast
+
+- The bundled forecast model is new. Compared across many installations, it matches the yield clearly better than the previous one.
+- The forecast follows a trend in yield faster, for example in autumn when the sun is lower. Besides the 30-day profile, the level of the last seven days now counts as well.
+- All forecasting methods now collect trial time at the same time. Before, only the day's winner got a trial slot, and a close second model never got its turn. If no learned model is in use yet, the winner takes over immediately.
+- Learning runs in its own process, which gives way to planning.
+- The comparison between your own forecast and the HEMSight forecast now shows the more accurate source with its figures, in either direction. It appears as soon as both have enough measurement days, even when the HEMSight forecast is active.
+
+#### Plan
+
+- The reason given for a plan period only mentions a price advantage where there is one. If the battery discharges without a price difference, it says „Battery covers house load“. If it holds its charge for a more expensive period while the house runs from the grid, that is exactly what it says.
+
+#### Storage
+
+- Two controls have new names: „Protect emergency reserve“ is now „Protect reserve and planning buffer“; „Forecast risk buffer“ is now „Forecast risk surcharge“. Both only have an effect when the reserve or the planning buffer is above the lower limit.
+
+### Fixed
+
+#### Storage
+
+- Systems with two batteries and priority for the main battery sometimes got no plan. This happened when both were full, there was no sun and the house needed more than the second battery could deliver. Now the grid helps out as soon as every battery is discharging at full power, is at its reserve or is holding its charge for later.
+- With several batteries, holding a single battery blocked the sun for the whole system. The sun was curtailed while another battery supplied the house. Holding now applies per battery, and curtailment only happens when no battery can take in more.
+
+#### PV forecast
+
+- The band around the PV forecast was too wide: 89 instead of the intended 80 out of 100 values fell inside it. It now hits its target again.
+- When the system had been modified, a model learned on the same day waited one night longer for its check.
+- If the file of a model in use is missing or no longer fits, the model is retired. Before, the physics calculation silently took over. After a change of the bundled model, the system-specific adjustment learns again immediately.
+- If a model failed its check, its whole type was blocked for a week. This also affected a freshly learned model that had just won the comparison. Now it competes again at the next learning run.
+- In the section „Comparison: your forecast vs. HEMSight“, the row for your own forecast showed the values of the currently active source.
+
+#### Electric car
+
+- A plugged-in Smart vehicle that was not charging counted as unplugged. Now the connection status of the charging cable counts as well.
+- A Renault account with two-factor authentication only showed „(403101, 'Account Pending TFA Registration')“. Now HEMSight says in the interface language that Renault requires two-factor authentication, which HEMSight does not support yet. Coming in the next release.
+- Teslemetry now shows the notice „No VIN configured“ in the interface language instead of always in German.
+
+#### Settings
+
+- Number fields no longer accept „true“, „nan“ or „inf“. Before, „true“ silently became 1. If such a value is in an existing configuration, it is repaired at startup and the field falls back to the default.
+
+#### Notifications
+
+- If the list of sent messages was briefly unreadable, a message could arrive twice. Now nothing is sent in such a run, and the next one catches up.
+
 ## 0.0.18-beta
 
 ### Wichtig

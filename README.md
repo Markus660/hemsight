@@ -68,6 +68,17 @@ Geräte da schon hängen.
 
 ## Versionen
 
+### 0.0.19-beta
+
+- Der Plan schont den Speicher im oberen Ladestand. Schwelle und Betrag stehen unter „Experten-Gewichte“ → „Speicher“.
+- Neu ist ein Planungspuffer, der einige Prozent über der Untergrenze für ungeplanten Verbrauch freihält.
+- Die Ladestandsgrenzen lassen sich aus Home Assistant übernehmen, dazu gibt es drei neue Sensoren.
+- Ein neues, genaueres PV-Prognosemodell, und die Prognose folgt einem Trend im Ertrag schneller.
+- Anlagen mit zwei Speichern bekommen wieder einen Plan, und das Halten eines Speichers regelt die Sonne nicht mehr für alle ab.
+- Smart erkennt ein eingestecktes Auto auch ohne Ladevorgang, Renault und Teslemetry melden sich in der Sprache der Oberfläche.
+
+Das vollständige [Änderungsprotokoll](hemsight/CHANGELOG.md) steht im Add-on-Ordner.
+
 ### 0.0.18-beta
 
 - Der Plan nennt für jeden Speicher und jeden Abschnitt eine Betriebsart: normal, halten, laden oder entladen.
